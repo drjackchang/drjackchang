@@ -96,6 +96,33 @@
             text-align: center; padding: 30px; color: var(--text-gray);
             border-top: 1px solid #eaeaea; font-size: 0.9em; margin-top: 40px;
         }
+	/* ==================== 手機版專屬排版 (RWD) ==================== */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column; /* 將橫向排列改為上下排列 */
+                padding: 15px 10px 10px 10px;
+            }
+            nav div:first-child {
+                margin-bottom: 15px; /* 名字與選單之間的距離 */
+                font-size: 1.4em !important;
+            }
+            nav div:last-child {
+                display: flex;
+                flex-wrap: wrap; /* 允許空間不夠時自動換行 */
+                justify-content: center; /* 讓選單按鈕置中對齊 */
+                gap: 10px; /* 按鈕之間的上下左右間距 */
+            }
+            nav a {
+                margin: 0; 
+                font-size: 0.95em;
+                background-color: rgba(255, 255, 255, 0.15); /* 加上半透明背景，變成按鈕形狀 */
+                padding: 6px 12px; /* 增加手指點擊的範圍 */
+                border-radius: 8px; /* 按鈕圓角 */
+            }
+            nav a:hover {
+                background-color: rgba(255, 255, 255, 0.3);
+            }
+        }
     </style>
 </head>
 <body>
