@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yu-Tung Chang, Ph.D. | Academic Profile</title>
+    <style>
+        /* ==================== Global Styles & Professional Theme ==================== */
+        :root {
+            --primary-blue: #1e3a8a; 
+            --secondary-blue: #3b82f6; 
+            --light-bg: #f8fafc;
+            --text-dark: #334155;
+            --text-gray: #64748b;
+        }
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+        }
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+
+        /* ==================== Navigation Bar ==================== */
+        nav {
+            background-color: var(--primary-blue);
+            color: white; padding: 15px 20px;
+            position: sticky; top: 0; z-index: 100;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        nav a { color: white; text-decoration: none; margin: 0 15px; font-weight: 500; }
+        nav a:hover { color: #cbd5e1; }
+
+        /* ==================== Hero Section (Profile & Contact) ==================== */
+        .hero {
+            text-align: center; padding: 60px 20px;
+            background-color: var(--light-bg); border-radius: 12px;
+            margin-bottom: 40px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .profile-img {
+            width: 180px; height: 180px; border-radius: 50%; object-fit: cover;
+            border: 4px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 20px;
+        }
+        .hero h1 { color: var(--primary-blue); margin-bottom: 5px; font-size: 2.5em; }
+        .hero h2 { color: var(--text-gray); font-size: 1.2em; font-weight: normal; margin-top: 0; }
+        .expertise-tags { margin-top: 20px; }
+        .expertise-tags span {
+            display: inline-block; background: #e0f2fe; color: var(--secondary-blue);
+            padding: 6px 15px; border-radius: 20px; font-size: 0.85em; margin: 5px; font-weight: bold;
+        }
+        .hero-bio {
+            max-width: 750px; margin: 20px auto 0; color: var(--text-dark);
+            text-align: justify;
+        }
+        .contact-links { margin-top: 25px; font-size: 1em; }
+        .contact-links a {
+            display: inline-block; color: white; background-color: var(--secondary-blue);
+            padding: 8px 16px; border-radius: 6px; text-decoration: none;
+            margin: 0 5px 10px 5px; transition: background-color 0.2s;
+        }
+        .contact-links a:hover { background-color: var(--primary-blue); }
+
+        /* ==================== Sections & Cards ==================== */
+        section { margin-bottom: 50px; }
+        h3.section-title {
+            color: var(--primary-blue); border-bottom: 2px solid var(--secondary-blue);
+            padding-bottom: 10px; margin-bottom: 25px; font-size: 1.8em;
+        }
+        .card-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;
+        }
+        .card {
+            background: white; border: 1px solid #e2e8f0; padding: 20px;
+            border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: transform 0.2s;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .card h4 { color: var(--secondary-blue); margin-top: 0; }
+
+        .item-list { list-style-type: none; padding: 0; }
+        .item-list li {
+            background: #fff; margin-bottom: 15px; padding: 15px 15px 15px 20px;
+            border-left: 4px solid var(--primary-blue); box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .my-name { font-weight: bold; text-decoration: underline; }
+        .publication-journal { font-style: italic; color: var(--text-dark); }
+        .doi-link { color: var(--secondary-blue); font-size: 0.9em; text-decoration: none; }
+        .doi-link:hover { text-decoration: underline; }
+        
+        footer {
+            text-align: center; padding: 30px; color: var(--text-gray);
+            border-top: 1px solid #eaeaea; font-size: 0.9em; margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div style="font-weight: bold; font-size: 1.2em;">Dr. Yu-Tung Chang</div>
+        <div>
+            <a href="#about">About</a>
+            <a href="#projects">Research</a>
+            <a href="#publications">Publications</a>
+            <a href="#news">News</a>
+            <a href="index.html">🌐 中文</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <section id="about" class="hero">
+            <img src="profile.jpg" alt="Dr. Yu-Tung Chang" class="profile-img" onerror="this.src='https://via.placeholder.com/180x180?text=Photo'">
+            
+            <h1>Yu-Tung Chang, Ph.D. [cite: 76]</h1>
+            <h2>Assistant Professor, National Taipei University of Nursing and Health Sciences [cite: 97]</h2>
+            <h2>General Secretary, Taiwan Society of Paramedicine [cite: 92]</h2>
+            
+            <div class="expertise-tags">
+                <span>Paramedicine [cite: 109]</span>
+                <span>Disaster Management [cite: 109]</span>
+                <span>Health Behavior Science [cite: 109]</span>
+                <span>Biostatistics [cite: 109]</span>
+                <span>Digital Learning & VR [cite: 109]</span>
+            </div>
+
+            <p class="hero-bio">
+                Experienced academic and researcher focusing on Emergency Health and Paramedicine, Healthcare Facility Emergency Management, and Health Behavioral Science. Committed to advancing the professional development and occupational health of emergency medical technicians through innovative digital learning and spatial analysis. [cite: 82, 83]
+            </p>
+
+            <div class="contact-links">
+                <a href="mailto:yutung@ntunhs.edu.tw">✉️ Contact via Email [cite: 8]</a>
+                <a href="https://www.researchgate.net/profile/Yu-Tung-Chang" target="_blank">🔬 ResearchGate [cite: 78]</a>
+                <a href="https://sndn.link/emtpjack" target="_blank">🎙️ Podcast [cite: 81]</a>
+            </div>
+        </section>
+
+        <section id="projects">
+            <h3 class="section-title">Research & Projects</h3>
+            <div class="card-grid">
+                <div class="card">
+                    <h4>Take Action 3.0</h4>
+                    <p>Collaborating with the American Institute in Taiwan (AIT) to establish a medical resilience promotion base to strengthen community disaster response networks.</p>
+                </div>
+                <div class="card">
+                    <h4>Responding to the Call</h4>
+                    <p>A comprehensive study on the mental health and peer support systems for first responders in Taiwan's emergency services.</p>
+                </div>
+                <div class="card">
+                    <h4>PERIC 2026</h4>
+                    <p>Organizing the "Paramedicine and Emergency Response International Conference" with a focus on Resilience and Technology in EMS.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="publications">
+            <h3 class="section-title">Selected Publications</h3>
+            
+            <h4 style="color: var(--primary-blue);">Journal Papers</h4>
+            <ul class="item-list">
+                <li>
+                    Tzu-Fu Huang, Chung-Chia Chang, <span class="my-name">Yu-Tung Chang</span> (2025, Aug). Injury profiles and attitudes toward safety handling skills among emergency medical technicians: an integrated behavioral model analysis. <span class="publication-journal">BMC Public Health</span>, 25, 2986. (Corresponding Author) [cite: 182, 183]
+                </li>
+                <li>
+                    Ko-Chin Hsu, Hsiao-Kuan Wu, Shih-Yen Weng, <span class="my-name">Yu-Tung Chang</span>, Chao-Yang Kuo (2025, Feb). Deep Learning-Based Image Recognition for Emergency Vehicle Classification: Evaluation and Validation with Public and Local Datasets. <span class="publication-journal">Journal of Paramedicine and Emergency Response</span>, (6), 8-13. [cite: 184, 186]
+                </li>
+                <li>
+                    Chen-Bin Chen, et al., <span class="my-name">Yu-Tung Chang</span>, et al. (2024, Oct). Installation of Public Access Defibrillators for Out-of-Hospital Cardiac Arrests: Identifying Suitable Locations by Using a Geographic Information System. <span class="publication-journal">Journal of the American Heart Association</span>, 13:e034045. [cite: 187, 189]
+                </li>
+                <li>
+                    <span class="my-name">Yu-Tung Chang</span>, Kun-Chia Wu, Hsiang-Wen Yang, Chung-Yi Lin, Tzu-Fu Huang, Yi-Chi Yu, Yih-Jin Hu (2023, Mar). Effects of different cardiopulmonary resuscitation education interventions among university students: A randomized controlled trial. <span class="publication-journal">PLOS ONE</span>, 18(3): e0283099. (First Author) [cite: 191, 192]
+                </li>
+                <li>
+                    <span class="my-name">Yu-Tung Chang</span>, Yih-Jin Hu (2022, Feb). Burnout and Health Issues among Prehospital Personnel in Taiwan Fire Departments during a Sudden Spike in Community COVID-19 Cases: A Cross-Sectional Study. <span class="publication-journal">Int. J. Environ. Res. Public Health</span>, 19:2257. (First Author) [cite: 196, 131]
+                </li>
+                <li>
+                    <span class="my-name">Chang YT</span>, Tsai KC, Williams B (2018). Development of New Core Competencies for Taiwanese EMTs. <span class="publication-journal">Advances in Medical Education and Practice</span>, 9: 147-158. [cite: 136, 137]
+                </li>
+            </ul>
+
+            <h4 style="color: var(--primary-blue);">Conference Presentations</h4>
+            <ul class="item-list">
+                <li>
+                    Wei-Te Wang, et al., <span class="my-name">Yu-Tung Chang</span>, et al. (2025, May). The First Responder Training for Nurses under High-Risk Environment. <span class="publication-journal">23rd Congress on Disaster and Emergency Medicine</span>. [cite: 209, 211]
+                </li>
+                <li>
+                    <span class="my-name">YU-TUNG CHANG</span>, et al. (2025, May). Study of the Adoption of Safety Manual Handling Skills Among EMTs by Using the Integrated Behavioral Model. <span class="publication-journal">WADEM Congress 2025</span>. (First Author) [cite: 215, 217]
+                </li>
+                <li>
+                    Wei-Tong Lin, <span class="my-name">Yu-Tung Chang</span>, Lun-Ping Hung (2024, May). Development of a Serious Game-Based Mechanism for Sarcopenia Training. <span class="publication-journal">ITDSO 2024</span>. [cite: 219, 221]
+                </li>
+            </ul>
+
+            <h4 style="color: var(--primary-blue);">Books</h4>
+            <ul class="item-list">
+                <li>
+                    <span class="my-name">Yu-Tung Chang</span>. (2022). Chapter 31: Descriptive Statistics, Missing data and Testing Assumptions. <span class="publication-journal">Introducing, Designing and Conducting Research for Paramedics</span> (ISBN: 9780729544092). [cite: 204, 205]
+                </li>
+            </ul>
+        </section>
+
+        <section id="news">
+            <h3 class="section-title">Latest Updates</h3>
+            <div class="card-grid">
+                <div class="card">
+                    <div style="color: var(--text-gray); font-size: 0.9em;">Spring 2026</div>
+                    <h4>Course Launch</h4>
+                    <p>New course "Health Risk Assessment and Management" started at NTUNHS, integrating practical EMS risk analysis.</p>
+                </div>
+                <div class="card">
+                    <div style="color: var(--text-gray); font-size: 0.9em;">Upcoming</div>
+                    <h4>WADEM Congress 2025</h4>
+                    <p>Preparing to present multiple research findings on EMT occupational safety and community resilience in May 2025.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Yu-Tung Chang. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
