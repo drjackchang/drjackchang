@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>張育通 (Yu-Tung Chang, Ph.D.) | 個人網站</title>
+    <style>
+        /* ==================== 網頁全域與顏色設定 ==================== */
+        :root {
+            --primary-blue: #1e3a8a; /* 深藍色 (導航列、大標題) */
+            --secondary-blue: #3b82f6; /* 亮藍色 (連結、強調色) */
+            --light-bg: #f8fafc;
+            --text-dark: #334155;
+            --text-gray: #64748b;
+        }
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* ==================== 導航列排版設定 ==================== */
+        nav {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav a { color: white; text-decoration: none; margin: 0 15px; font-weight: 500; }
+        nav a:hover { color: #cbd5e1; }
+
+        /* ==================== 首頁大頭照與自我介紹設定 ==================== */
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background-color: var(--light-bg);
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        /* 大頭照的圓角與陰影 */
+        .profile-img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .hero h1 { color: var(--primary-blue); margin-bottom: 5px; font-size: 2.5em; }
+        .hero h2 { color: var(--text-gray); font-size: 1.2em; font-weight: normal; margin-top: 0; }
+        .expertise-tags { margin-top: 20px; }
+        .expertise-tags span {
+            display: inline-block;
+            background: #e0f2fe;
+            color: var(--secondary-blue);
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.9em; margin: 5px; font-weight: bold;
+        }
+        .hero-bio {
+            max-width: 700px; margin: 20px auto 0; color: var(--text-dark);
+            text-align: justify; text-align-last: center;
+        }
+        
+        /* 聯絡方式區塊設定 */
+        .contact-links {
+            margin-top: 25px;
+            font-size: 1em;
+        }
+        .contact-links a {
+            display: inline-block;
+            color: white;
+            background-color: var(--secondary-blue);
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            margin: 0 5px 10px 5px;
+            transition: background-color 0.2s;
+        }
+        .contact-links a:hover { background-color: var(--primary-blue); }
+
+        /* ==================== 專案卡片與清單排版設定 ==================== */
+        section { margin-bottom: 50px; }
+        h3.section-title {
+            color: var(--primary-blue);
+            border-bottom: 2px solid var(--secondary-blue);
+            padding-bottom: 10px; margin-bottom: 25px; font-size: 1.8em;
+        }
+        .card-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;
+        }
+        .card {
+            background: white; border: 1px solid #e2e8f0; padding: 20px;
+            border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: transform 0.2s;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .card h4 { color: var(--secondary-blue); margin-top: 0; }
+
+        .item-list { list-style-type: none; padding: 0; }
+        .item-list li {
+            background: #fff; margin-bottom: 15px; padding: 15px 15px 15px 20px;
+            border-left: 4px solid var(--primary-blue); box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .my-name { font-weight: bold; text-decoration: underline; }
+        .publication-journal { font-style: italic; color: var(--text-dark); }
+        
+        /* ==================== 頁尾設定 ==================== */
+        footer {
+            text-align: center; padding: 30px; color: var(--text-gray);
+            border-top: 1px solid #eaeaea; font-size: 0.9em; margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========================================== -->
+    <!-- 1. 頂部導航列 (Navbar) -->
+    <!-- ========================================== -->
+    <nav>
+        <div style="font-weight: bold; font-size: 1.2em;">Dr. Yu-Tung Chang</div>
+        <div>
+            <a href="#about">關於我</a>
+            <a href="#projects">研究與專案</a>
+            <a href="#publications">學術著作</a>
+            <a href="#news">媒體與動態</a>
+            <a href="en.html">🌐 English</a>
+        </div>
+    </nav>
+    <!-- 導航列結束 -->
+
+    <div class="container">
+        
+        <!-- ========================================== -->
+        <!-- 2. 首頁主視覺、大頭照與聯絡方式 (Hero Section) -->
+        <!-- ========================================== -->
+        <section id="about" class="hero">
+            
+            <!-- ⬇️ 替換大頭照的地方 ⬇️ -->
+            <!-- 請將您的照片命名為 profile.jpg，並與 index.html 放在同一個資料夾 -->
+            <img src="profile.jpg" alt="張育通博士照片" class="profile-img" onerror="this.src='https://via.placeholder.com/180x180?text=Photo'">
+            
+            <h1>張育通 (Yu-Tung Chang, Ph.D.)</h1>
+            <h2>國立臺北護理健康大學 健康科技學院 助理教授</h2>
+            <h2>台灣救護員學會 秘書長</h2>
+            
+            <div class="expertise-tags">
+                <span>緊急救護 (Paramedicine)</span>
+                <span>災難管理 (Crisis Management)</span>
+                <span>健康行為科學</span>
+                <span>生物統計</span>
+                <span>智慧醫療與 VR 應用</span>
+            </div>
+
+            <p class="hero-bio">
+                致力於結合行為科學、健康科技與生物統計，強化緊急醫療系統 (EMS) 與社區災難應變之韌性。具備豐富的到院前救護實務經驗（台灣與澳洲），並持續推動醫療救護人員專業發展、職業安全及創新數位學習模式。
+            </p>
+
+            <!-- ⬇️ 聯絡方式區塊 ⬇️ -->
+            <div class="contact-links">
+                <a href="mailto:yutung@ntunhs.edu.tw">✉️ Email 聯繫</a>
+                <a href="https://www.researchgate.net/profile/Yu-Tung-Chang" target="_blank">🔬 ResearchGate</a>
+                <a href="https://sndn.link/emtpjack" target="_blank">🎙️ Podcast 節目</a>
+            </div>
+
+        </section>
+        <!-- 首頁主視覺結束 -->
+
+
+        <!-- ========================================== -->
+        <!-- 3. 研究與專案卡片 (Research & Projects) -->
+        <!-- ========================================== -->
+        <section id="projects">
+            <h3 class="section-title">重點研究與專案 (Featured Projects)</h3>
+            <div class="card-grid">
+                
+                <!-- 專案 1 -->
+                <div class="card">
+                    <h4>Take Action 3.0 社區醫療韌性計畫</h4>
+                    <p>與美國在台協會 (AIT) 合作，推動建立醫療韌性推廣基地，強化民眾災難應變能力與社區防救災網絡。</p>
+                </div>
+                
+                <!-- 專案 2 -->
+                <div class="card">
+                    <h4>第一線人員心理健康研究</h4>
+                    <p>執行「Responding to the Call」專案，深入調查並建立緊急救護與消防人員的心理健康支持與同儕支持系統。</p>
+                </div>
+
+                <!-- 專案 3 -->
+                <div class="card">
+                    <h4>PERIC 2026 國際研討會籌備</h4>
+                    <p>以「Resilience and Technology in EMS」為主題，籌辦 2026 醫療救護與緊急應變國際研討會，促進國際學術交流。</p>
+                </div>
+
+            </div>
+        </section>
+        <!-- 研究與專案結束 -->
+
+
+        <!-- ========================================== -->
+        <!-- 4. 學術著作清單 (Publications) -->
+        <!-- ========================================== -->
+        <section id="publications">
+            <h3 class="section-title">近期學術著作 (Selected Publications)</h3>
+            
+            <h4 style="color: var(--primary-blue);">研討會論文 (Conference Papers)</h4>
+            <ul class="item-list">
+                <!-- ⬇️ 新增研討會論文請複製這個 <li> 區塊 ⬇️ -->
+                <li>
+                    Wei-Te Wang, Yi-Ming Weng, Ya-Wen Hsiau, <span class="my-name">Yu-Tung Chang</span>, Chung-Yi Lin and Yu-Han Liu (2025, May). The First Responder Training for Nurses under High-Risk Environment - a Non-Profit Organization Case Study. <span class="publication-journal">23rd Congress on Disaster and Emergency Medicine</span>.
+                </li>
+                <!-- ⬆️ 結束 ⬆️ -->
+                <li>
+                    <span class="my-name">YU-TUNG CHANG</span>, LIANG-FU CHEN, CHUNG-CHIA CHANG, TZU-FU HUANG, WEI-TE WANG (2025, May). Study of the Adoption of Safety Manual Handling Skills Among Emergency Medical Technicians by Using the Integrated Behavioral Model. <span class="publication-journal">World Association for Disaster and Emergency Medicine Congress 2025</span>. <span style="color:#e67e22; font-size: 0.9em;">(第一作者)</span>
+                </li>
+            </ul>
+
+            <h4 style="color: var(--primary-blue);">期刊論文 (Journal Papers)</h4>
+            <ul class="item-list">
+                <!-- ⬇️ 新增期刊論文請複製這個 <li> 區塊 ⬇️ -->
+                <li>
+                    Tzu-Fu Huang, Chung-Chia Chang, <span class="my-name">Yu-Tung Chang</span> (2025, Aug). Injury profiles and attitudes toward safety handling skills among emergency medical technicians: an integrated behavioral model analysis. <span class="publication-journal">BMC Public Health</span>, 25, 2986. <span style="color:#e67e22; font-size: 0.9em;">(通訊作者)</span>
+                </li>
+                <!-- ⬆️ 結束 ⬆️ -->
+                <li>
+                    Chen-Bin Chen, Ming-Fang Wang, Chen-June Seak... <span class="my-name">Yu-Tung Chang</span>, et al. (2024, Oct). Installation of Public Access Defibrillators for Out-of-Hospital Cardiac Arrests: Identifying Suitable Locations by Using a Geographic Information System. <span class="publication-journal">Journal of the American Heart Association</span>, 13:e034045.
+                </li>
+            </ul>
+        </section>
+        <!-- 學術著作結束 -->
+
+
+        <!-- ========================================== -->
+        <!-- 5. 媒體報導與最新動態 (News & Updates) -->
+        <!-- ========================================== -->
+        <section id="news">
+            <h3 class="section-title">媒體報導與最新動態 (News & Updates)</h3>
+            <div class="card-grid">
+                
+                <!-- ⬇️ 新增新聞請複製這個 .card 區塊 ⬇️ -->
+                <div class="card">
+                    <div style="color: var(--text-gray); font-size: 0.9em;">2026年 春季</div>
+                    <h4><a href="#" style="color: var(--secondary-blue); text-decoration: none;">北護大健康風險評估與管理課程啟動</a></h4>
+                    <p>帶領學生從實務面探討健康風險評估，並融入現代健康科技應用。</p>
+                </div>
+                <!-- ⬆️ 結束 ⬆️ -->
+
+                <div class="card">
+                    <div style="color: var(--text-gray); font-size: 0.9em;">2024年 範例日期</div>
+                    <h4><a href="#" style="color: var(--secondary-blue); text-decoration: none;">推動醫療救護發展：參與 TSP 年度大會</a></h4>
+                    <p>持續推動緊急救護技術員專業核心能力發展與相關教育訓練。</p>
+                </div>
+
+            </div>
+        </section>
+        <!-- 媒體動態結束 -->
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 6. 頁尾 (Footer) -->
+    <!-- ========================================== -->
+    <footer>
+        <p>&copy; 2026 Yu-Tung Chang. All Rights Reserved.</p>
+    </footer>
+    <!-- 頁尾結束 -->
+
+</body>
+</html>
