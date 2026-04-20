@@ -1,317 +1,665 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>張育通 (Yu-Tung Chang, Ph.D.) | 個人網站</title>
-    <style>
-        /* ==================== 網頁全域與顏色設定 ==================== */
-        :root {
-            --primary-blue: #1e3a8a; 
-            --secondary-blue: #3b82f6; 
-            --light-bg: #f8fafc;
-            --text-dark: #334155;
-            --text-gray: #64748b;
-        }
-        body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--text-dark);
-            margin: 0;
-            padding: 0;
-            background-color: #ffffff;
-        }
-        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>張育通 Yu-Tung Chang, Ph.D.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0d2545;
+  --navy-mid: #163560;
+  --navy-light: #1e4a82;
+  --gold: #b8965a;
+  --gold-light: #d4b07a;
+  --cream: #f6f3ee;
+  --cream-dark: #ede9e0;
+  --text: #1c1c2e;
+  --text-muted: #566070;
+  --text-light: #8a95a8;
+  --white: #ffffff;
+  --border: #ddd8ce;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 15px; }
+body {
+  font-family: 'Source Sans 3', 'Noto Sans TC', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  line-height: 1.75;
+}
 
-        /* ==================== 導航列排版設定 ==================== */
-        nav {
-            background-color: var(--primary-blue);
-            color: white; padding: 15px 20px;
-            position: sticky; top: 0; z-index: 100;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        nav a { color: white; text-decoration: none; margin: 0 15px; font-weight: 500; }
-        nav a:hover { color: #cbd5e1; }
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  height: 56px;
+  background: var(--navy);
+  border-bottom: 2px solid var(--gold);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px;
+}
+.nav-brand {
+  font-family: 'Noto Serif TC', serif;
+  color: #fff; font-size: 14px; font-weight: 700; letter-spacing: .06em;
+}
+.nav-brand .sub { color: var(--gold-light); font-weight: 400; font-size: 12px; margin-left: 6px; }
+.nav-right { display: flex; align-items: center; gap: 4px; }
+.nav-right a {
+  color: rgba(255,255,255,.7); text-decoration: none; font-size: 12.5px;
+  font-weight: 500; padding: 5px 12px; border-radius: 3px;
+  transition: all .2s; letter-spacing: .03em;
+}
+.nav-right a:hover { color: #fff; background: rgba(255,255,255,.08); }
+.lang-btn {
+  margin-left: 8px;
+  border: 1px solid rgba(184,150,90,.5) !important;
+  color: var(--gold-light) !important;
+  border-radius: 3px;
+}
+.lang-btn:hover { background: var(--gold) !important; color: #fff !important; border-color: var(--gold) !important; }
 
-        /* ==================== 首頁大頭照與自我介紹設定 ==================== */
-        .hero {
-            text-align: center; padding: 60px 20px;
-            background-color: var(--light-bg); border-radius: 12px;
-            margin-bottom: 40px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-        .profile-img {
-            width: 180px; height: 180px; border-radius: 50%; object-fit: cover;
-            border: 4px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 20px;
-        }
-        .hero h1 { color: var(--primary-blue); margin-bottom: 5px; font-size: 2.5em; }
-        .hero h2 { color: var(--text-gray); font-size: 1.2em; font-weight: normal; margin-top: 0; }
-        .expertise-tags { margin-top: 20px; }
-        .expertise-tags span {
-            display: inline-block; background: #e0f2fe; color: var(--secondary-blue);
-            padding: 6px 15px; border-radius: 20px; font-size: 0.9em; margin: 5px; font-weight: bold;
-        }
-        .hero-bio {
-            max-width: 700px; margin: 20px auto 0; color: var(--text-dark);
-            text-align: justify; text-align-last: center;
-        }
-        .contact-links { margin-top: 25px; font-size: 1em; }
-        .contact-links a {
-            display: inline-block; color: white; background-color: var(--secondary-blue);
-            padding: 8px 16px; border-radius: 6px; text-decoration: none;
-            margin: 0 5px 10px 5px; transition: background-color 0.2s;
-        }
-        .contact-links a:hover { background-color: var(--primary-blue); }
+/* ─── HERO ─── */
+.hero {
+  margin-top: 56px;
+  background: linear-gradient(135deg, #0a1f40 0%, #1a3d6e 60%, #0f2d55 100%);
+  padding: 56px 40px 52px;
+  position: relative; overflow: hidden;
+}
+.hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(90deg, transparent, transparent 72px,
+    rgba(255,255,255,.018) 72px, rgba(255,255,255,.018) 73px);
+  pointer-events: none;
+}
+.hero-inner {
+  max-width: 960px; margin: 0 auto;
+  display: grid; grid-template-columns: 160px 1fr; gap: 44px; align-items: center;
+  position: relative; z-index: 1;
+}
+.hero-avatar {
+  width: 160px; height: 160px; border-radius: 50%;
+  background: var(--navy-mid);
+  border: 3px solid var(--gold);
+  box-shadow: 0 0 0 6px rgba(184,150,90,.12);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Noto Serif TC', serif; font-size: 42px; color: var(--gold-light); font-weight: 700;
+  overflow: hidden;
+}
+.hero-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.hero-name {
+  font-family: 'Noto Serif TC', serif;
+  color: #fff; font-size: 30px; font-weight: 700; line-height: 1.3;
+}
+.hero-name em {
+  display: block; font-family: 'Libre Baskerville', serif;
+  font-size: 19px; font-weight: 400; font-style: italic;
+  color: var(--gold-light); margin-top: 4px;
+}
+.hero-titles { margin: 14px 0; display: flex; flex-direction: column; gap: 5px; }
+.hero-title {
+  color: rgba(255,255,255,.82); font-size: 13.5px;
+  display: flex; align-items: center; gap: 8px;
+}
+.hero-title::before {
+  content: ''; width: 4px; height: 4px; border-radius: 50%;
+  background: var(--gold); flex-shrink: 0;
+}
+.hero-tags { display: flex; flex-wrap: wrap; gap: 7px; margin: 16px 0; }
+.tag {
+  background: rgba(255,255,255,.07); border: 1px solid rgba(184,150,90,.3);
+  color: rgba(255,255,255,.72); font-size: 11.5px; padding: 3px 11px;
+  border-radius: 2px; letter-spacing: .04em; font-weight: 500;
+}
+.hero-links { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 18px; border-radius: 3px; font-size: 12.5px; font-weight: 600;
+  text-decoration: none; transition: all .2s; letter-spacing: .04em; cursor: pointer;
+}
+.btn-gold { background: var(--gold); color: #fff; border: none; }
+.btn-gold:hover { background: var(--gold-light); }
+.btn-outline { border: 1px solid rgba(255,255,255,.28); color: rgba(255,255,255,.8); background: none; }
+.btn-outline:hover { border-color: var(--gold-light); color: var(--gold-light); }
 
-        /* ==================== 專案卡片與清單排版設定 ==================== */
-        section { margin-bottom: 50px; }
-        h3.section-title {
-            color: var(--primary-blue); border-bottom: 2px solid var(--secondary-blue);
-            padding-bottom: 10px; margin-bottom: 25px; font-size: 1.8em;
-        }
-        .card-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;
-        }
-        .card {
-            background: white; border: 1px solid #e2e8f0; padding: 20px;
-            border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: transform 0.2s;
-        }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .card h4 { color: var(--secondary-blue); margin-top: 0; }
+/* ─── LAYOUT ─── */
+.page {
+  max-width: 960px; margin: 0 auto;
+  display: grid; grid-template-columns: 230px 1fr;
+  gap: 0; padding: 0 0 80px;
+}
 
-        .item-list { list-style-type: none; padding: 0; }
-        .item-list li {
-            background: #fff; margin-bottom: 15px; padding: 15px 15px 15px 20px;
-            border-left: 4px solid var(--primary-blue); box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        .my-name { font-weight: bold; text-decoration: underline; }
-        .publication-journal { font-style: italic; color: var(--text-dark); }
-        .doi-link { color: var(--secondary-blue); font-size: 0.9em; text-decoration: none; }
-        .doi-link:hover { text-decoration: underline; }
-        .author-role {
-            display: inline-block; font-size: 0.85em; color: #e67e22;
-            background-color: #fdf2e9; padding: 2px 6px; border-radius: 4px; margin-left: 10px;
-        }
-        
-        footer {
-            text-align: center; padding: 30px; color: var(--text-gray);
-            border-top: 1px solid #eaeaea; font-size: 0.9em; margin-top: 40px;
-        }
-	/* ==================== 手機版專屬排版 (RWD) ==================== */
-        @media (max-width: 768px) {
-            nav {
-                flex-direction: column; /* 將橫向排列改為上下排列 */
-                padding: 15px 10px 10px 10px;
-            }
-            nav div:first-child {
-                margin-bottom: 15px; /* 名字與選單之間的距離 */
-                font-size: 1.4em !important;
-            }
-            nav div:last-child {
-                display: flex;
-                flex-wrap: wrap; /* 允許空間不夠時自動換行 */
-                justify-content: center; /* 讓選單按鈕置中對齊 */
-                gap: 10px; /* 按鈕之間的上下左右間距 */
-            }
-            nav a {
-                margin: 0; 
-                font-size: 0.95em;
-                background-color: rgba(255, 255, 255, 0.15); /* 加上半透明背景，變成按鈕形狀 */
-                padding: 6px 12px; /* 增加手指點擊的範圍 */
-                border-radius: 8px; /* 按鈕圓角 */
-            }
-            nav a:hover {
-                background-color: rgba(255, 255, 255, 0.3);
-            }
-        }
-    </style>
+/* ─── SIDEBAR ─── */
+.sidebar {
+  padding: 40px 28px 40px 0;
+  border-right: 1px solid var(--border);
+  position: sticky; top: 56px; align-self: start; height: calc(100vh - 56px);
+  overflow-y: auto;
+}
+.sidebar-nav { list-style: none; }
+.sidebar-nav a {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none; color: var(--text-muted); font-size: 13px;
+  font-weight: 500; padding: 9px 12px; border-radius: 3px;
+  transition: all .2s; margin-bottom: 2px;
+}
+.sidebar-nav a:hover { color: var(--navy); background: var(--cream-dark); }
+.sidebar-nav a.active { color: var(--navy); background: rgba(13,37,69,.06); font-weight: 600; border-left: 3px solid var(--gold); padding-left: 9px; }
+.sidebar-nav .dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0; opacity: .5;
+}
+.sidebar-section { margin-top: 28px; }
+.sidebar-label {
+  font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--text-light); padding: 0 12px; margin-bottom: 8px;
+}
+.sidebar-info { padding: 0 12px; }
+.sidebar-info-item { margin-bottom: 10px; }
+.sidebar-info-item .lbl { font-size: 10.5px; font-weight: 700; color: var(--text-light); text-transform: uppercase; letter-spacing: .08em; }
+.sidebar-info-item .val { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; }
+.sidebar-info-item a { color: var(--navy-light); text-decoration: none; }
+.sidebar-info-item a:hover { color: var(--gold); }
+
+/* ─── CONTENT ─── */
+.content { padding: 48px 0 0 48px; }
+section { margin-bottom: 64px; scroll-margin-top: 72px; }
+.section-header {
+  display: flex; align-items: baseline; gap: 10px;
+  margin-bottom: 28px; padding-bottom: 12px;
+  border-bottom: 2px solid var(--navy);
+}
+.section-zh { font-family: 'Noto Serif TC', serif; font-size: 20px; font-weight: 700; color: var(--navy); }
+.section-en { font-size: 11.5px; font-weight: 700; color: var(--text-light); letter-spacing: .1em; text-transform: uppercase; }
+
+/* ─── ABOUT ─── */
+.about-text { font-size: 14.5px; line-height: 1.88; color: var(--text); }
+.about-text p { margin-bottom: 14px; }
+
+/* ─── RESEARCH ─── */
+.research-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.r-card {
+  background: var(--white); border: 1px solid var(--border); border-radius: 2px;
+  padding: 22px; position: relative; transition: box-shadow .2s;
+}
+.r-card:hover { box-shadow: 0 4px 18px rgba(13,37,69,.1); }
+.r-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--navy), var(--navy-light));
+}
+.r-num {
+  font-size: 11px; font-weight: 700; color: var(--gold); letter-spacing: .08em;
+  text-transform: uppercase; margin-bottom: 8px;
+}
+.r-title {
+  font-family: 'Noto Serif TC', serif; font-size: 14px; font-weight: 700;
+  color: var(--navy); margin-bottom: 8px; line-height: 1.4;
+}
+.r-desc { font-size: 12.5px; color: var(--text-muted); line-height: 1.7; }
+
+/* ─── PUBLICATIONS ─── */
+.pub-tabs { display: flex; gap: 6px; margin-bottom: 24px; }
+.pub-tab {
+  padding: 6px 16px; border-radius: 2px; font-size: 12px; font-weight: 600;
+  letter-spacing: .04em; cursor: pointer; border: 1px solid var(--border);
+  background: var(--white); color: var(--text-muted); transition: all .2s;
+}
+.pub-tab.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+.pub-tab:hover:not(.active) { border-color: var(--navy); color: var(--navy); }
+.pub-panel { display: none; }
+.pub-panel.active { display: block; }
+.pub-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.pub-item {
+  background: var(--white); border: 1px solid var(--border); border-radius: 2px;
+  padding: 14px 16px; font-size: 13px; line-height: 1.65; color: var(--text);
+  transition: border-color .2s;
+}
+.pub-item:hover { border-color: var(--navy-light); }
+.pub-item .authors { color: var(--text-muted); }
+.pub-item .title { font-weight: 600; color: var(--text); }
+.pub-item .journal { color: var(--text-light); font-style: italic; }
+.pub-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.badge {
+  font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 2px;
+  letter-spacing: .04em;
+}
+.badge-first { background: rgba(184,150,90,.15); color: #7a5c20; }
+.badge-corr { background: rgba(13,37,69,.08); color: var(--navy); }
+.badge-year { font-size: 11.5px; color: var(--text-light); font-weight: 600; }
+.pub-doi { font-size: 11.5px; }
+.pub-doi a { color: var(--navy-light); text-decoration: none; }
+.pub-doi a:hover { color: var(--gold); }
+.show-more-btn { margin-top: 14px; text-align: center; }
+.show-more-btn button {
+  background: none; border: 1px solid var(--navy); color: var(--navy);
+  font-size: 12px; font-weight: 600; padding: 7px 22px; border-radius: 2px;
+  cursor: pointer; letter-spacing: .06em; transition: all .2s;
+}
+.show-more-btn button:hover { background: var(--navy); color: #fff; }
+.pub-hidden { display: none; }
+
+/* ─── NEWS ─── */
+.news-list { display: flex; flex-direction: column; gap: 20px; }
+.news-item {
+  display: grid; grid-template-columns: 90px 1fr; gap: 20px;
+  background: var(--white); border: 1px solid var(--border); border-radius: 2px;
+  padding: 18px; transition: border-color .2s;
+}
+.news-item:hover { border-color: var(--navy-light); }
+.news-date {
+  font-size: 12px; color: var(--text-light); font-weight: 600; line-height: 1.4;
+  text-align: center; padding-top: 2px;
+  border-right: 1px solid var(--cream-dark);
+  padding-right: 20px;
+}
+.news-date .day { font-size: 28px; font-weight: 700; color: var(--navy); display: block; line-height: 1; }
+.news-date .mo { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
+.news-title { font-family: 'Noto Serif TC', serif; font-size: 14.5px; font-weight: 700; color: var(--navy); margin-bottom: 6px; line-height: 1.5; }
+.news-title a { text-decoration: none; color: inherit; }
+.news-title a:hover { color: var(--navy-light); }
+.news-desc { font-size: 13px; color: var(--text-muted); line-height: 1.7; }
+.news-link { margin-top: 8px; }
+.news-link a { font-size: 12px; color: var(--navy-light); text-decoration: none; font-weight: 600; }
+.news-link a:hover { color: var(--gold); }
+
+/* ==================== 手機版專屬排版 (RWD) ==================== */
+@media (max-width: 768px) {
+  .page { grid-template-columns: 1fr; padding: 0 15px 60px; }
+  .sidebar { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--border); padding: 20px 0; }
+  .content { padding: 30px 0 0 0; }
+  .hero-inner { grid-template-columns: 1fr; text-align: center; gap: 20px; }
+  .hero-avatar { margin: 0 auto; width: 120px; height: 120px; }
+  .hero-title { justify-content: center; text-align: center; }
+  .hero-tags, .hero-links { justify-content: center; }
+  .research-grid { grid-template-columns: 1fr; }
+  nav { flex-direction: column; height: auto; padding: 10px; }
+  nav div:first-child { margin-bottom: 10px; font-size: 1.4em !important; }
+  nav div:last-child { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 10px; }
+  nav a { margin: 0; background-color: rgba(255, 255, 255, 0.15); padding: 6px 12px; }
+  .hero { margin-top: 100px; padding: 30px 20px; }
+}
+</style>
 </head>
 <body>
 
-    <nav>
-        <div style="font-weight: bold; font-size: 1.2em;">Dr. Yu-Tung Chang</div>
-        <div>
-            <a href="#about">關於我</a>
-            <a href="#projects">研究與專案</a>
-            <a href="#publications">學術著作</a>
-            <a href="#news">媒體與動態</a>
-            <a href="en.html">🌐 English</a>
-        </div>
-    </nav>
+<nav>
+  <div class="nav-brand">張育通 <span class="sub">Yu-Tung Chang, Ph.D.</span></div>
+  <div class="nav-right">
+    <a href="#about" id="nav-about">關於 / About</a>
+    <a href="#research" id="nav-research">研究</a>
+    <a href="#publications" id="nav-pubs">著作</a>
+    <a href="#news" id="nav-news">動態</a>
+    <a href="#" class="lang-btn" onclick="toggleLang(event)" id="lang-btn">EN</a>
+  </div>
+</nav>
 
-    <div class="container">
-        
-        <section id="about" class="hero">
-            <img src="https://scontent.ftpe3-1.fna.fbcdn.net/v/t39.30808-6/515981802_10162982209155395_6260869752997366969_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=vny6cLwas_QQ7kNvwGYWkJp&_nc_oc=AdoY3UaCJCxG63eMuDmY3AxGtdhCjSmMkVg4gkbALNH7bHxQ7qx7N1ZdWE2z7M5cOldcJ9nYtBEZ_KTqDJ_NW7vH&_nc_zt=23&_nc_ht=scontent.ftpe3-1.fna&_nc_gid=4midzAZfEZDAO8Q03m4mXQ&_nc_ss=7a3a8&oh=00_Af1I5LbToruJePM6hy5_Z3rJM0Phqbd6zAcVQt8zOWUUWA&oe=69D4503F" alt="張育通博士照片" class="profile-img" onerror="this.src='https://via.placeholder.com/180x180?text=Photo'">
-            
-            <h1>張育通 (Yu-Tung Chang, Ph.D.)</h1>
-            <h2>國立臺北護理健康大學 健康科技學院 助理教授</h2>
-            <h2>台灣救護員學會 秘書長</h2>
-            
-            <div class="expertise-tags">
-                <span>緊急救護 (Paramedicine)</span>
-                <span>災難管理 (Crisis Management)</span>
-                <span>健康行為科學</span>
-                <span>生物統計</span>
-                <span>智慧醫療與 VR 應用</span>
-            </div>
-
-            <p class="hero-bio">
-                致力於結合行為科學、健康科技與生物統計，強化緊急醫療系統 (EMS) 與社區災難應變之韌性。具備豐富的到院前救護實務經驗（台灣與澳洲），並持續推動醫療救護人員專業發展、職業安全及創新數位學習模式。
-            </p>
-
-            <div class="contact-links">
-                <a href="mailto:yutung@ntunhs.edu.tw">✉️ Email 聯繫</a>
-                <a href="https://www.researchgate.net/profile/Yu-Tung-Chang" target="_blank">🔬 ResearchGate</a>
-                <a href="https://sndn.link/emtpjack" target="_blank">🎙️ Podcast 節目</a>
-            </div>
-        </section>
-
-        <section id="projects">
-            <h3 class="section-title">重點研究與專案 (Featured Projects)</h3>
-            <div class="card-grid">
-                <div class="card">
-                    <h4>Take Action 3.0 社區醫療韌性計畫</h4>
-                    <p>與美國在台協會 (AIT) 合作，推動建立醫療韌性推廣基地，強化民眾災難應變能力與社區防救災網絡。</p>
-                </div>
-                <div class="card">
-                    <h4>第一線人員心理健康研究</h4>
-                    <p>執行「Responding to the Call」專案，深入調查並建立緊急救護與消防人員的心理健康支持與同儕支持系統。</p>
-                </div>
-                <div class="card">
-                    <h4>PERIC 2026 國際研討會籌備</h4>
-                    <p>以「Resilience and Technology in EMS」為主題，籌辦 2026 醫療救護與緊急應變國際研討會，促進國際學術交流。</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="publications">
-            <h3 class="section-title">學術著作與發表 (Publications)</h3>
-            
-            <h4 style="color: var(--primary-blue);">期刊論文 (Journal Papers)</h4>
-            <ul class="item-list">
-                <li>
-                    Tzu-Fu Huang, Chung-Chia Chang, <span class="my-name">Yu-Tung Chang</span> (2025, Aug). Injury profiles and attitudes toward safety handling skills among emergency medical technicians: an integrated behavioral model analysis. <span class="publication-journal">BMC Public Health</span>, 25, 2986. <span class="author-role">通訊作者</span>
-                </li>
-                <li>
-                    Ko-Chin Hsu, Hsiao-Kuan Wu, Shih-Yen Weng, <span class="my-name">Yu-Tung Chang</span>, Chao-Yang Kuo (2025, Feb). Deep Learning-Based Image Recognition for Emergency Vehicle Classification: Evaluation and Validation with Public and Local Datasets. <span class="publication-journal">Journal of Paramedicine and Emergency Response</span>, (6), 8-13.
-                </li>
-                <li>
-                    劉宗原, 余沛琪, 卓怡瑄, <span class="my-name">張育通</span> (2025年02月). 虛擬實境工具在醫療救護領域的應用:系統性回顧分析. <span class="publication-journal">醫療救護與緊急應變</span>, (6), 14-22. <span class="author-role">通訊作者</span>
-                </li>
-                <li>
-                    <span class="my-name">張育通</span>, 周廷郁, 王韻嫻, 宋佳臻, 林天愛, 李佩玲, 吳亦軒, 陳昭文 (2025年02月). 利用空間分析方法初探外傷創傷登錄資料:以南部某醫院創傷性腦傷登錄資料為例. <span class="publication-journal">醫療救護與緊急應變</span>, 6(2025) 01-07. <span class="author-role">第一作者</span>
-                </li>
-                <li>
-                    Chen-Bin Chen, Ming-Fang Wang, Chen-June Seak... <span class="my-name">Yu-Tung Chang</span>, et al. (2024, Oct). Installation of Public Access Defibrillators for Out-of-Hospital Cardiac Arrests: Identifying Suitable Locations by Using a Geographic Information System. <span class="publication-journal">Journal of the American Heart Association</span>, 13:e034045.
-                </li>
-                <li>
-                    Chao-Yang Kuo, <span class="my-name">Yu-Tung Chang</span> (2023, Nov). Introduction of spatial analysis approaches for Emergency Medical Services data: Using the Kaggle dataset as an example. <span class="publication-journal">Journal of Paramedicine and Emergency Response</span>. <span class="author-role">通訊作者</span>
-                </li>
-                <li>
-                    <span class="my-name">張育通</span>, 李佩玲, 唐貞綾 (2023年10月). 醫療救護人員參與到院前創傷救命術訓練課程對於創傷照護知識、能力、態度的改變. <span class="publication-journal">醫療救護與緊急應變</span>, 4, 09-15. <span class="author-role">第一作者</span>
-                </li>
-                <li>
-                    <span class="my-name">Yu-Tung Chang</span>, Kun-Chia Wu, Hsiang-Wen Yang, Chung-Yi Lin, Tzu-Fu Huang, Yi-Chi Yu, Yih-Jin Hu (2023, Mar). Effects of different cardiopulmonary resuscitation education interventions among university students: A randomized controlled trial. <span class="publication-journal">PLOS ONE</span>, 18(3): e0283099. <span class="author-role">第一作者</span>
-                </li>
-                <li>
-                    <span class="my-name">Yu-Tung Chang</span>, Yih-Jin Hu (2022, Feb). Burnout and Health Issues among Prehospital Personnel in Taiwan Fire Departments during a Sudden Spike in Community COVID-19 Cases: A Cross-Sectional Study. <span class="publication-journal">International Journal of Environmental Research and Public Health</span>, 19:2257. <span class="author-role">第一作者</span> (Impact Factor: 4.614)
-                </li>
-                <li>
-                    陸家珩, 侯雅芬, <span class="my-name">張育通</span>, 蕭力愷 (2022年03月). 後疫情時代災害管理遠距學習模式-以美國FEMA線上課程為例. <span class="publication-journal">醫療救護與緊急應變</span>, 3(2022) 1-9.
-                </li>
-                <li>
-                    <span class="my-name">張育通</span>, 陳冠佑, 唐健清 (2021年05月). 到院前救護人員防疫期間勤務穿著個人防護裝備產生熱壓力的建議對策. <span class="publication-journal">醫療救護與緊急應變</span>, 2(2021) 6-12. <span class="author-role">第一作者</span>
-                </li>
-                <li>
-                    <span class="my-name">Chang YT</span>, Tsai KC, Williams B (2018). Development of New Core Competencies for Taiwanese EMTs. <span class="publication-journal">Advances in Medical Education and Practice</span>, 9: 147-158.
-                </li>
-                <li>
-                    <span class="my-name">Chang YT</span>, Tsai KC, Williams B (2017). What are the educational and curriculum needs for emergency medical technicians in Taiwan? A scoping review. <span class="publication-journal">Advances in Medical Education and Practice</span>, 8: 649-667.
-                </li>
-                <li>
-                    <span class="my-name">Chang YT</span>, Boyle M (2014). Anaphylaxis diagnostic criteria and management guidelines for the pre-hospital setting: A comparison. <span class="publication-journal">Australasia Journal of Paramedicine</span>, 11(5).
-                </li>
-                <li>
-                    <span class="my-name">張育通</span> (民101). 澳洲緊急救護技術員生命徵象評估流程整合概念介紹. <span class="publication-journal">消防月刊</span>, 58-63.
-                </li>
-            </ul>
-
-            <h4 style="color: var(--primary-blue);">研討會論文 (Conference Papers)</h4>
-            <ul class="item-list">
-                <li>
-                    Wei-Te Wang, Yi-Ming Weng, Ya-Wen Hsiau, <span class="my-name">Yu-Tung Chang</span>, Chung-Yi Lin and Yu-Han Liu (2025, May). The First Responder Training for Nurses under High-Risk Environment - a Non-Profit Organization Case Study. <span class="publication-journal">23rd Congress on Disaster and Emergency Medicine</span>. <br>
-                    <a href="https://doi.org/10.1017/S1049023X26108401" class="doi-link" target="_blank">🔗 DOI: 10.1017/S1049023X26108401</a>
-                </li>
-                <li>
-                    Wei-Te Wang, Ya-Wen Hsiau, Yi-Ming Weng, <span class="my-name">Yu-Tung Chang</span>, Chung-Yi Lin and Yu Han Liu (2025, May). Disaster Response Training for Enhancing Community Resilience: A Case Study in Taiwan. <span class="publication-journal">23rd Congress on Disaster and Emergency Medicine</span>. <br>
-                    <a href="https://doi.org/10.1017/S1049023X26102313" class="doi-link" target="_blank">🔗 DOI: 10.1017/S1049023X26102313</a>
-                </li>
-                <li>
-                    <span class="my-name">YU-TUNG CHANG</span>, LIANG-FU CHEN, CHUNG-CHIA CHANG, TZU-FU HUANG, WEI-TE WANG (2025, May). Study of the Adoption of Safety Manual Handling Skills Among Emergency Medical Technicians by Using the Integrated Behavioral Model. <span class="publication-journal">World Association for Disaster and Emergency Medicine Congress 2025</span>. <span class="author-role">第一作者</span> <br>
-                    <a href="https://doi.org/10.1017/S1049023X26105512" class="doi-link" target="_blank">🔗 DOI: 10.1017/S1049023X26105512</a>
-                </li>
-                <li>
-                    周廷郁, 宋佳臻, 林天愛, 王韻嫻, <span class="my-name">張育通</span> (2024年06月). 利用空間分析方法初探頭部外傷之相關因素-以南部某醫院創傷登錄資料為例. <span class="publication-journal">2024醫療救護與緊急應變國際研討會</span>. <span class="author-role">通訊作者</span>
-                </li>
-                <li>
-                    <span class="my-name">張育通</span>, 劉宗原, 余沛琪, 卓怡瑄 (2024年06月). 虛擬實境工具在醫療救護領域的應用:系統性回顧分析. <span class="publication-journal">2024醫療救護與緊急應變國際研討會</span>, 台北慈濟醫院. <span class="author-role">通訊作者</span>
-                </li>
-                <li>
-                    黃禹菲, 陳德瑜, 黃惠慈, 黃品玟, <span class="my-name">張育通</span> (2024年06月). 探討高雄市外傷登錄空間資料分析-以交通事故為例. <span class="publication-journal">2024醫療救護與緊急應變國際研討會</span>. <span class="author-role">通訊作者</span>
-                </li>
-                <li>
-                    Wei-Tong Lin, <span class="my-name">Yu-Tung Chang</span>, Lun-Ping Hung (2024, May). Development of a Serious Game-Based Mechanism for Sarcopenia Training - A Case Study on Limb-Specific Exercise. <span class="publication-journal">2024 International Conference on Information Technology, Data Science, and Optimization</span>.
-                </li>
-                <li>
-                    Wei-Te Wang, Chung-Yi Lin, <span class="my-name">Yu-Tung Chang</span>, Ya-Wen Hsiau (2023, Jul). The Enhanced Emergency Response Plan for Augmented Quarantine Hotels During the COVID-19 Pandemic. <span class="publication-journal">22nd Congress on Disaster and Emergency Medicine</span>.
-                </li>
-            </ul>
-
-            <h4 style="color: var(--primary-blue);">專書與專章 (Books & Chapters)</h4>
-            <ul class="item-list">
-                <li>
-                    洪玉珠, 邱思慈, 林安迪, 鄭鴻衛, 鄭芸, <span class="my-name">張育通</span>, 吳漢屏 (2025年11月). 安全教育與急救(二版) (ISBN: 978-626-381-152-2). 華格那出版有限公司.
-                </li>
-                <li>
-                    <span class="my-name">Yu-Tung Chang</span>. (2022). Introducing, Designing and Conducting Research for Paramedics (ISBN: 9780729544092). Chapter 31 Descriptive Statistics, Missing data and Testing Assumptions.
-                </li>
-                <li>
-                    <span class="my-name">張育通</span> (2020年). 到院前創傷救命術 (Prehospital Trauma Life Support 9ed). 台北市: 力大圖書. <span class="author-role">章節翻譯作者</span>
-                </li>
-                <li>
-                    Tsai KT, <span class="my-name">Chang YT</span>. Translation of Hospital Incident Command System. Elsevier.
-                </li>
-                <li>
-                    全民健保永續經營專案計畫團隊編輯 (民108). 珍惜急診資源教育推廣秘笈.
-                </li>
-            </ul>
-
-        </section>
-
-        <section id="news">
-            <h3 class="section-title">媒體報導與最新動態 (News & Updates)</h3>
-            <div class="card-grid">
-                <div class="card">
-                    <div style="color: var(--text-gray); font-size: 0.9em;">2026-03-14</div>
-                    <h4><a href="#" style="color: var(--secondary-blue); text-decoration: none;">北護大攜手AIT與台災醫療隊發展協會 為援手3.0醫療韌性發展邁出關鍵一步</a></h4>
-                    <p>為強化臺灣基層社區的災難應變能力，國立臺北護理健康大學健康科技學院於115年3月14日至15日攜手美國在台協會(AIT)與社團法人台灣災難醫療隊發展協會，成功舉辦「援手3.0：社區第一線醫療人員災難照護訓練計畫」全台首場活動。北護大吳淑芳校長特別親自到場開場致意，展現學校對此國家級計畫的高度重視。本次首發訓練共計吸引超過160位基層醫事人員熱烈參與，為臺灣社區醫療韌性發展邁出跨時代的關鍵一步。</p>
-                    <p><a href="https://secr.ntunhs.edu.tw/p/404-1008-81714.php?Lang=zh-tw" target="_blank">相關連結</a></p>
-                </div>
-                <div class="card">
-                    <div style="color: var(--text-gray); font-size: 0.9em;">2025-03-28</div>
-                    <h4><a href="#" style="color: var(--secondary-blue); text-decoration: none;">新北市舉辦天災應變訓練系統概念驗證討論會展示創新成果</a></h4>
-                    <p>帶領學生現場體驗「天然災害應變流程訓練系統」POC 展示模擬天然災害應變流程訓練系統，結合虛擬實境（Virtual Reality，VR）、災情查通報流程、EOC 協同應變模式，強化訓練沉浸感與應變真實性。</p>
-                    <p><a href="https://www.cna.com.tw/postwrite/chi/397801" target="_blank">相關連結</a></p>
-                </div>
-              
-            </div>
-        </section>
-
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-avatar">
+      <img src="Jack.jpg" alt="張育通博士照片" onerror="this.src='https://via.placeholder.com/160x160?text=Photo'">
     </div>
+    <div>
+      <div class="hero-name">
+        張育通
+        <em>Yu-Tung Chang, Ph.D.</em>
+      </div>
+      <div class="hero-titles">
+        <div class="hero-title" id="h-title1">國立臺北護理健康大學 健康科技學院 助理教授</div>
+        <div class="hero-title" id="h-title2">台灣醫療救護學會 秘書長</div>
+      </div>
+      <div class="hero-tags">
+        <span class="tag" data-zh="緊急救護" data-en="Paramedicine">緊急救護</span>
+        <span class="tag" data-zh="災難管理" data-en="Crisis Management">災難管理</span>
+        <span class="tag" data-zh="健康行為科學" data-en="Health Behavioral Science">健康行為科學</span>
+        <span class="tag" data-zh="生物統計" data-en="Biostatistics">生物統計</span>
+        <span class="tag" data-zh="智慧醫療與 VR 應用" data-en="Smart Healthcare & VR">智慧醫療與 VR 應用</span>
+      </div>
+      <div class="hero-links">
+        <a href="mailto:yutung@ntunhs.edu.tw" class="btn btn-gold">✉ Email</a>
+        <a href="https://www.researchgate.net/profile/Yu-Tung-Chang" target="_blank" class="btn btn-outline">ResearchGate</a>
+        <a href="https://sndn.link/emtpjack" target="_blank" class="btn btn-outline">🎙 Podcast</a>
+      </div>
+    </div>
+  </div>
+</div>
 
-    <footer>
-        <p>&copy; 2026 Yu-Tung Chang. All Rights Reserved.</p>
-    </footer>
+<div class="page">
+  <aside class="sidebar">
+    <ul class="sidebar-nav">
+      <li><a href="#about" class="active"><span class="dot"></span><span data-zh="關於我" data-en="About">關於我</span></a></li>
+      <li><a href="#research"><span class="dot"></span><span data-zh="研究與專案" data-en="Research">研究與專案</span></a></li>
+      <li><a href="#publications"><span class="dot"></span><span data-zh="學術著作" data-en="Publications">學術著作</span></a></li>
+      <li><a href="#news"><span class="dot"></span><span data-zh="媒體與動態" data-en="News">媒體與動態</span></a></li>
+    </ul>
 
+    <div class="sidebar-section">
+      <div class="sidebar-label" data-zh="聯繫方式" data-en="Contact">聯繫方式</div>
+      <div class="sidebar-info">
+        <div class="sidebar-info-item">
+          <div class="lbl" data-zh="電子郵件" data-en="Email">電子郵件</div>
+          <div class="val"><a href="mailto:yutung@ntunhs.edu.tw">yutung@ntunhs.edu.tw</a></div>
+        </div>
+        <div class="sidebar-info-item">
+          <div class="lbl" data-zh="服務單位" data-en="Affiliation">服務單位</div>
+          <div class="val" id="sb-affil">國立臺北護理健康大學</div>
+        </div>
+        <div class="sidebar-info-item">
+          <div class="lbl">ResearchGate</div>
+          <div class="val"><a href="https://www.researchgate.net/profile/Yu-Tung-Chang" target="_blank">Profile →</a></div>
+        </div>
+        <div class="sidebar-info-item">
+          <div class="lbl" data-zh="Podcast 節目" data-en="Podcast">Podcast</div>
+          <div class="val"><a href="https://sndn.link/emtpjack" target="_blank">EMT 急救說 →</a></div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="content">
+
+    <section id="about">
+      <div class="section-header">
+        <span class="section-zh" data-zh="關於我" data-en="About">關於我</span>
+        <span class="section-en">About</span>
+      </div>
+      <div class="about-text" id="about-text">
+        <p>張育通博士致力於結合行為科學、健康科技與生物統計，強化緊急醫療系統（EMS）與社區災難應變之韌性。具備豐富的到院前救護實務經驗，曾於台灣及澳洲從事緊急救護工作，深刻了解第一線人員的現場挑戰。</p>
+        <p>目前任職於國立臺北護理健康大學健康科技學院，擔任助理教授，並兼任台灣救護員學會秘書長。持續推動醫療救護人員專業發展、職業安全，以及創新數位學習模式的研究與實踐。</p>
+        <p>研究興趣涵蓋到院前救護、災難管理、緊急救護人員心理健康、空間分析應用於 EMS 資料，以及社區急救教育推廣。</p>
+      </div>
+    </section>
+
+    <section id="research">
+      <div class="section-header">
+        <span class="section-zh" data-zh="重點研究與專案" data-en="Research & Projects">重點研究與專案</span>
+        <span class="section-en">Featured Projects</span>
+      </div>
+      <div class="research-grid">
+        <div class="r-card">
+          <div class="r-num">Project 01</div>
+          <div class="r-title" data-zh="Take Action 3.0 社區醫療韌性計畫" data-en="Take Action 3.0 — Community Medical Resilience">Take Action 3.0 社區醫療韌性計畫</div>
+          <div class="r-desc" data-zh="與美國在台協會（AIT）合作，推動建立醫療韌性推廣基地，強化民眾災難應變能力與社區防救災網絡。" data-en="Partnering with the American Institute in Taiwan (AIT) to establish medical resilience training hubs, enhancing community-level disaster response capacity.">與美國在台協會（AIT）合作，推動建立醫療韌性推廣基地，強化民眾災難應變能力與社區防救災網絡。</div>
+        </div>
+        <div class="r-card">
+          <div class="r-num">Project 02</div>
+          <div class="r-title" data-zh="第一線人員心理健康研究" data-en="First Responder Mental Health Research">第一線人員心理健康研究</div>
+          <div class="r-desc" data-zh="執行「Responding to the Call」專案，深入調查並建立緊急救護與消防人員的心理健康支持與同儕支持系統。" data-en="Executing the 'Responding to the Call' project to investigate and build peer-support systems for EMS and firefighting personnel.">執行「Responding to the Call」專案，深入調查並建立緊急救護與消防人員的心理健康支持與同儕支持系統。</div>
+        </div>
+        <div class="r-card">
+          <div class="r-num">Project 03</div>
+          <div class="r-title" data-zh="PERIC 2026 國際研討會" data-en="PERIC 2026 International Conference">PERIC 2026 國際研討會</div>
+          <div class="r-desc" data-zh="以「Resilience and Technology in EMS」為主題，籌辦 2026 醫療救護與緊急應變國際研討會，促進國際學術交流。" data-en="Organizing the 2026 Paramedicine and Emergency Response International Conference (PERIC) themed 'Resilience and Technology in EMS'.">以「Resilience and Technology in EMS」為主題，籌辦 2026 醫療救護與緊急應變國際研討會，促進國際學術交流。</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="publications">
+      <div class="section-header">
+        <span class="section-zh" data-zh="學術著作" data-en="Publications">學術著作</span>
+        <span class="section-en">Publications</span>
+      </div>
+      <div class="pub-tabs">
+        <button class="pub-tab active" onclick="switchTab(event,'journals')" data-zh="期刊論文" data-en="Journal Papers">期刊論文</button>
+        <button class="pub-tab" onclick="switchTab(event,'conf')" data-zh="研討會論文" data-en="Conference Papers">研討會論文</button>
+        <button class="pub-tab" onclick="switchTab(event,'books')" data-zh="專書與專章" data-en="Books & Chapters">專書與專章</button>
+      </div>
+
+      <div id="tab-journals" class="pub-panel active">
+        <ul class="pub-list">
+          <li class="pub-item">
+            <div><span class="authors">Tzu-Fu Huang, Chung-Chia Chang, <strong>Yu-Tung Chang</strong></span> (2025, Aug). <span class="title">Injury profiles and attitudes toward safety handling skills among emergency medical technicians: an integrated behavioral model analysis.</span> <span class="journal">BMC Public Health</span>, 25, 2986.</div>
+            <div class="pub-meta"><span class="badge badge-corr" data-zh="通訊作者" data-en="Corresponding">通訊作者</span><span class="badge-year">2025</span></div>
+          </li>
+          <li class="pub-item">
+            <div><span class="authors">Ko-Chin Hsu, Hsiao-Kuan Wu, Shih-Yen Weng, <strong>Yu-Tung Chang</strong>, Chao-Yang Kuo</span> (2025, Feb). <span class="title">Deep Learning-Based Image Recognition for Emergency Vehicle Classification.</span> <span class="journal">Journal of Paramedicine and Emergency Response</span>, (6), 8–13.</div>
+            <div class="pub-meta"><span class="badge-year">2025</span></div>
+          </li>
+          <li class="pub-item">
+            <div><span class="authors">劉宗原, 余沛琪, 卓怡瑄, <strong>張育通</strong></span> (2025年02月). <span class="title">虛擬實境工具在醫療救護領域的應用：系統性回顧分析.</span> <span class="journal">醫療救護與緊急應變</span>, (6), 14–22.</div>
+            <div class="pub-meta"><span class="badge badge-corr" data-zh="通訊作者" data-en="Corresponding">通訊作者</span><span class="badge-year">2025</span></div>
+          </li>
+          <li class="pub-item">
+            <div><span class="authors"><strong>張育通</strong>, 周廷郁, 王韻嫻, 宋佳臻, 林天愛, 李佩玲, 吳亦軒, 陳昭文</span> (2025年02月). <span class="title">利用空間分析方法初探外傷創傷登錄資料：以南部某醫院創傷性腦傷登錄資料為例.</span> <span class="journal">醫療救護與緊急應變</span>, 6(2025) 01–07.</div>
+            <div class="pub-meta"><span class="badge badge-first" data-zh="第一作者" data-en="First Author">第一作者</span><span class="badge-year">2025</span></div>
+          </li>
+          <li class="pub-item">
+            <div><span class="authors">Chen-Bin Chen, Ming-Fang Wang, Chen-June Seak… <strong>Yu-Tung Chang</strong>, et al.</span> (2024, Oct). <span class="title">Installation of Public Access Defibrillators for Out-of-Hospital Cardiac Arrests: Identifying Suitable Locations by Using a Geographic Information System.</span> <span class="journal">Journal of the American Heart Association</span>, 13:e034045.</div>
+            <div class="pub-meta"><span class="badge-year">2024</span></div>
+          </li>
+          
+          <li class="pub-item pub-hidden" data-group="journals">
+            <div><span class="authors">Chao-Yang Kuo, <strong>Yu-Tung Chang</strong></span> (2023, Nov). <span class="title">Introduction of spatial analysis approaches for Emergency Medical Services data: Using the Kaggle dataset as an example.</span> <span class="journal">Journal of Paramedicine and Emergency Response</span>.</div>
+            <div class="pub-meta"><span class="badge badge-corr" data-zh="通訊作者" data-en="Corresponding">通訊作者</span><span class="badge-year">2023</span></div>
+          </li>
+          <li class="pub-item pub-hidden" data-group="journals">
+            <div><span class="authors"><strong>張育通</strong>, 李佩玲, 唐貞綾</span> (2023年10月). <span class="title">醫療救護人員參與到院前創傷救命術訓練課程對於創傷照護知識、能力、態度的改變.</span> <span class="journal">醫療救護與緊急應變</span>, 4, 09–15.</div>
+            <div class="pub-meta"><span class="badge badge-first" data-zh="第一作者" data-en="First Author">第一作者</span><span class="badge-year">2023</span></div>
+          </li>
+          <li class="pub-item pub-hidden" data-group="journals">
+            <div><span class="authors"><strong>Yu-Tung Chang</strong>, Kun-Chia Wu, Hsiang-Wen Yang, Chung-Yi Lin, Tzu-Fu Huang, Yi-Chi Yu, Yih-Jin Hu</span> (2023, Mar). <span class="title">Effects of different cardiopulmonary resuscitation education interventions among university students: A randomized controlled trial.</span> <span class="journal">PLOS ONE</span>, 18(3): e0283099.</div>
+            <div class="pub-meta"><span class="badge badge-first" data-zh="第一作者" data-en="First Author">第一作者</span><span class="badge-year">2023</span></div>
+          </li>
+          <li class="pub-item pub-hidden" data-group="journals">
+            <div><span class="authors"><strong>Yu-Tung Chang</strong>, Yih-Jin Hu</span> (2022, Feb). <span class="title">Burnout and Health Issues among Prehospital Personnel in Taiwan Fire Departments during a Sudden Spike in Community COVID-19 Cases.</span> <span class="journal">International Journal of Environmental Research and Public Health</span>, 19:2257.</div>
+            <div class="pub-meta"><span class="badge badge-first" data-zh="第一作者" data-en="First Author">第一作者</span><span class="badge-year">2022</span></div>
+          </li>
+          <li class="pub-item pub-hidden" data-group="journals">
+            <div><span class="authors">陸家珩, 侯雅芬, <strong>張育通</strong>, 蕭力愷</span> (2022年03月). <span class="title">後疫情時代災害管理遠距學習模式-以美國FEMA線上課程為例.</span> <span class="journal">醫療救護與緊急應變</span>, 3(2022) 1-9.</div>
+            <div class="pub-meta"><span class="badge-year">2022</span></div>
+          </li>
+          <li class="pub-item pub-hidden" data-group="journals">
+            <div><span class="authors"><strong>張育通</strong>, 陳冠佑, 唐健清</span> (2021年05月). <span class="title">到院前救護人員防疫期間勤務穿著個人防護裝備產生熱壓力的建議對策.</span> <span class="journal">醫療救護與緊急應變</span>, 2(2021) 6-12.</div>
+            <div class="pub-meta"><span class="badge badge-first" data-zh="第一作者" data-en="First Author">第一作者</span><span class="badge-year">2021</span></div>
+          </li>
+          <li class="pub-item pub-hidden" data-group="journals">
+            <div><span class="authors">Chang YT, Tsai KC, Williams B</span> (2018). <span class="title">Development of New Core Competencies for Taiwanese EMTs.</span> <span class="journal">Advances in Medical Education and Practice</span>, 9: 147–158.</div>
+            <div class="pub-meta"><span class="badge-year">2018</span></div>
+          </li>
+          <li class="pub-item pub-hidden" data-group="journals">
+            <div><span class="authors">Chang YT, Tsai KC, Williams B</span> (2017). <span class="title">What are the educational and curriculum needs for emergency medical technicians in Taiwan? A scoping review.</span> <span class="journal">Advances in Medical Education and Practice</span>, 8: 649–667.</div>
+            <div class="pub-meta"><span class="badge-year">2017</span></div>
+          </li>
+          <li class="pub-item pub-hidden" data-group="journals">
+            <div><span class="authors">Chang YT, Boyle M</span> (2014). <span class="title">Anaphylaxis diagnostic criteria and management guidelines for the pre-hospital setting: A comparison.</span> <span class="journal">Australasia Journal of Paramedicine</span>, 11(5).</div>
+            <div class="pub-meta"><span class="badge-year">2014</span></div>
+          </li>
+          <li class="pub-item pub-hidden" data-group="journals">
+            <div><span class="authors"><strong>張育通</strong></span> (民101). <span class="title">澳洲緊急救護技術員生命徵象評估流程整合概念介紹.</span> <span class="journal">消防月刊</span>, 58-63.</div>
+            <div class="pub-meta"><span class="badge-year">2012</span></div>
+          </li>
+        </ul>
+        <div class="show-more-btn"><button id="show-journals-btn" onclick="togglePubs('journals')">全部展開 / Show All</button></div>
+      </div>
+
+      <div id="tab-conf" class="pub-panel">
+        <ul class="pub-list">
+          <li class="pub-item">
+            <div><span class="authors">Wei-Te Wang, Yi-Ming Weng, Ya-Wen Hsiau, <strong>Yu-Tung Chang</strong>, Chung-Yi Lin and Yu-Han Liu</span> (2025, May). <span class="title">The First Responder Training for Nurses under High-Risk Environment.</span> <span class="journal">23rd Congress on Disaster and Emergency Medicine</span>.</div>
+            <div class="pub-meta pub-doi"><a href="https://doi.org/10.1017/S1049023X26108401" target="_blank">DOI: 10.1017/S1049023X26108401 →</a><span class="badge-year">2025</span></div>
+          </li>
+          <li class="pub-item">
+            <div><span class="authors">Wei-Te Wang, Ya-Wen Hsiau, Yi-Ming Weng, <strong>Yu-Tung Chang</strong>, Chung-Yi Lin and Yu Han Liu</span> (2025, May). <span class="title">Disaster Response Training for Enhancing Community Resilience: A Case Study in Taiwan.</span> <span class="journal">23rd Congress on Disaster and Emergency Medicine</span>.</div>
+            <div class="pub-meta pub-doi"><a href="https://doi.org/10.1017/S1049023X26102313" target="_blank">DOI →</a><span class="badge-year">2025</span></div>
+          </li>
+          <li class="pub-item">
+            <div><span class="authors"><strong>YU-TUNG CHANG</strong>, LIANG-FU CHEN, CHUNG-CHIA CHANG, TZU-FU HUANG, WEI-TE WANG</span> (2025, May). <span class="title">Study of the Adoption of Safety Manual Handling Skills Among Emergency Medical Technicians.</span> <span class="journal">WADEM Congress 2025</span>.</div>
+            <div class="pub-meta pub-doi"><span class="badge badge-first" data-zh="第一作者" data-en="First Author">第一作者</span> <a href="https://doi.org/10.1017/S1049023X26105512" target="_blank">DOI →</a><span class="badge-year">2025</span></div>
+          </li>
+          <li class="pub-item">
+            <div><span class="authors">周廷郁, 宋佳臻, 林天愛, 王韻嫻, <strong>張育通</strong></span> (2024年06月). <span class="title">利用空間分析方法初探頭部外傷之相關因素-以南部某醫院創傷登錄資料為例.</span> <span class="journal">2024醫療救護與緊急應變國際研討會</span>.</div>
+            <div class="pub-meta"><span class="badge badge-corr" data-zh="通訊作者" data-en="Corresponding">通訊作者</span><span class="badge-year">2024</span></div>
+          </li>
+          <li class="pub-item">
+            <div><span class="authors"><strong>張育通</strong>, 劉宗原, 余沛琪, 卓怡瑄</span> (2024年06月). <span class="title">虛擬實境工具在醫療救護領域的應用:系統性回顧分析.</span> <span class="journal">2024醫療救護與緊急應變國際研討會, 台北慈濟醫院</span>.</div>
+            <div class="pub-meta"><span class="badge badge-corr" data-zh="通訊作者" data-en="Corresponding">通訊作者</span><span class="badge-year">2024</span></div>
+          </li>
+          
+          <li class="pub-item pub-hidden" data-group="conf">
+            <div><span class="authors">黃禹菲, 陳德瑜, 黃惠慈, 黃品玟, <strong>張育通</strong></span> (2024年06月). <span class="title">探討高雄市外傷登錄空間資料分析-以交通事故為例.</span> <span class="journal">2024醫療救護與緊急應變國際研討會</span>.</div>
+            <div class="pub-meta"><span class="badge badge-corr" data-zh="通訊作者" data-en="Corresponding">通訊作者</span><span class="badge-year">2024</span></div>
+          </li>
+          <li class="pub-item pub-hidden" data-group="conf">
+            <div><span class="authors">Wei-Tong Lin, <strong>Yu-Tung Chang</strong>, Lun-Ping Hung</span> (2024, May). <span class="title">Development of a Serious Game-Based Mechanism for Sarcopenia Training.</span> <span class="journal">2024 International Conference on Information Technology, Data Science, and Optimization</span>.</div>
+            <div class="pub-meta"><span class="badge-year">2024</span></div>
+          </li>
+          <li class="pub-item pub-hidden" data-group="conf">
+            <div><span class="authors">Wei-Te Wang, Chung-Yi Lin, <strong>Yu-Tung Chang</strong>, Ya-Wen Hsiau</span> (2023, Jul). <span class="title">The Enhanced Emergency Response Plan for Augmented Quarantine Hotels During the COVID-19 Pandemic.</span> <span class="journal">22nd Congress on Disaster and Emergency Medicine</span>.</div>
+            <div class="pub-meta"><span class="badge-year">2023</span></div>
+          </li>
+        </ul>
+        <div class="show-more-btn"><button id="show-conf-btn" onclick="togglePubs('conf')">全部展開 / Show All</button></div>
+      </div>
+
+      <div id="tab-books" class="pub-panel">
+        <ul class="pub-list">
+          <li class="pub-item">
+            <div><span class="authors">洪玉珠, 邱思慈, 林安迪, 鄭鴻衛, 鄭芸, <strong>張育通</strong>, 吳漢屏</span> (2025年11月). <span class="title">安全教育與急救（二版）</span>. <span class="journal">華格那出版有限公司</span>. ISBN: 978-626-381-152-2.</div>
+            <div class="pub-meta"><span class="badge-year">2025</span></div>
+          </li>
+          <li class="pub-item">
+            <div><span class="authors"><strong>Yu-Tung Chang</strong></span> (2022). <span class="title">Introducing, Designing and Conducting Research for Paramedics — Chapter 31: Descriptive Statistics, Missing Data and Testing Assumptions.</span> <span class="journal">Elsevier</span>. ISBN: 9780729544092.</div>
+            <div class="pub-meta"><span class="badge-year">2022</span></div>
+          </li>
+          <li class="pub-item">
+            <div><span class="authors"><strong>張育通</strong></span> (2020年). <span class="title">到院前創傷救命術（Prehospital Trauma Life Support, 9ed）— 章節翻譯.</span> <span class="journal">力大圖書</span>.</div>
+            <div class="pub-meta"><span class="badge-year">2020</span></div>
+          </li>
+          <li class="pub-item">
+            <div><span class="authors">Tsai KT, <strong>Chang YT</strong></span>. <span class="title">Translation of Hospital Incident Command System.</span> <span class="journal">Elsevier</span>.</div>
+            <div class="pub-meta"></div>
+          </li>
+          <li class="pub-item">
+            <div><span class="authors">全民健保永續經營專案計畫團隊編輯</span> (民108). <span class="title">珍惜急診資源教育推廣秘笈.</span></div>
+            <div class="pub-meta"><span class="badge-year">2019</span></div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="news">
+      <div class="section-header">
+        <span class="section-zh" data-zh="媒體與動態" data-en="News & Updates">媒體與動態</span>
+        <span class="section-en">News & Updates</span>
+      </div>
+      <div class="news-list">
+        <div class="news-item">
+          <div class="news-date">
+            <span class="day">14</span>
+            <span class="mo">Mar 2026</span>
+          </div>
+          <div class="news-body">
+            <div class="news-title"><a href="https://secr.ntunhs.edu.tw/p/404-1008-81714.php?Lang=zh-tw" target="_blank">北護大攜手AIT與台災醫療隊發展協會 為援手3.0醫療韌性發展邁出關鍵一步</a></div>
+            <div class="news-desc">國立臺北護理健康大學健康科技學院攜手美國在台協會(AIT)與台灣災難醫療隊發展協會，成功舉辦「援手3.0」全台首場活動，吸引超過160位基層醫事人員熱烈參與。</div>
+            <div class="news-link"><a href="https://secr.ntunhs.edu.tw/p/404-1008-81714.php?Lang=zh-tw" target="_blank">閱讀全文 →</a></div>
+          </div>
+        </div>
+        <div class="news-item">
+          <div class="news-date">
+            <span class="day">28</span>
+            <span class="mo">Mar 2025</span>
+          </div>
+          <div class="news-body">
+            <div class="news-title"><a href="https://www.cna.com.tw/postwrite/chi/397801" target="_blank">新北市舉辦天災應變訓練系統概念驗證討論會展示創新成果</a></div>
+            <div class="news-desc">帶領學生現場體驗「天然災害應變流程訓練系統」POC 展示，結合 VR、災情查通報流程、EOC 協同應變模式，強化訓練沉浸感與應變真實性。</div>
+            <div class="news-link"><a href="https://www.cna.com.tw/postwrite/chi/397801" target="_blank">閱讀全文 →</a></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+let lang = 'zh';
+
+// Lang helpers
+const zhEn = {
+  'nav-about': ['關於 / About', 'About'],
+  'nav-research': ['研究', 'Research'],
+  'nav-pubs': ['著作', 'Publications'],
+  'nav-news': ['動態', 'News'],
+  'lang-btn': ['EN', 'ZH'],
+  'h-title1': ['國立臺北護理健康大學 健康科技學院 助理教授', 'Assistant Professor, College of Health Technology, NTUNHS'],
+  'h-title2': ['台灣救護員學會 秘書長', 'Secretary-General, Taiwan EMS Association'],
+  'sb-affil': ['國立臺北護理健康大學', 'National Taipei University of Nursing and Health Sciences'],
+  'about-text': [
+    `<p>張育通博士致力於結合行為科學、健康科技與生物統計，強化緊急醫療系統（EMS）與社區災難應變之韌性。具備豐富的到院前救護實務經驗，曾於台灣及澳洲從事緊急救護工作，深刻了解第一線人員的現場挑戰。</p>
+     <p>目前任職於國立臺北護理健康大學健康科技學院，擔任助理教授，並兼任台灣醫療救護學會秘書長。持續推動醫療救護人員專業發展、職業安全，以及創新數位學習模式（包括 VR 與嚴肅遊戲）的研究與實踐。</p>
+     <p>研究興趣涵蓋到院前救護、災難管理、緊急救護人員心理健康、空間分析應用於 EMS 資料，以及社區急救教育推廣。</p>`,
+    `<p>Dr. Yu-Tung Chang integrates behavioral science, health technology, and biostatistics to strengthen emergency medical services (EMS) and community disaster resilience. He brings extensive prehospital experience from Taiwan and Australia.</p>
+     <p>He serves as Assistant Professor at the College of Health Technology, National Taipei University of Nursing and Health Sciences, and as Secretary-General of the Taiwan EMS Association.</p>
+     <p>His research interests include prehospital care, crisis management, first-responder mental health, spatial analysis for EMS data, and community CPR education.</p>`
+  ]
+};
+
+function applyLang(l) {
+  lang = l;
+  // id-based elements
+  for (const [id, vals] of Object.entries(zhEn)) {
+    const el = document.getElementById(id);
+    if (!el) continue;
+    const val = l === 'zh' ? vals[0] : vals[1];
+    if (id === 'about-text') el.innerHTML = val;
+    else el.textContent = val;
+  }
+  // data-zh / data-en attributes
+  document.querySelectorAll('[data-zh]').forEach(el => {
+    el.textContent = l === 'zh' ? el.dataset.zh : (el.dataset.en || el.dataset.zh);
+  });
+  document.documentElement.lang = l === 'zh' ? 'zh-TW' : 'en';
+  
+  // 更新所有的按鈕文字
+  updateButtonText('journals');
+  updateButtonText('conf');
+}
+
+function toggleLang(e) {
+  e.preventDefault();
+  applyLang(lang === 'zh' ? 'en' : 'zh');
+}
+
+// Pub tabs
+function switchTab(e, id) {
+  document.querySelectorAll('.pub-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.pub-panel').forEach(p => p.classList.remove('active'));
+  e.target.classList.add('active');
+  document.getElementById('tab-'+id).classList.add('active');
+}
+
+// Show more logic (支援多個區塊獨立展開)
+let expandedState = { journals: false, conf: false };
+
+function togglePubs(group) {
+  expandedState[group] = !expandedState[group];
+  const hiddenElements = document.querySelectorAll('.pub-hidden[data-group="'+group+'"]');
+  hiddenElements.forEach(el => el.style.display = expandedState[group] ? 'block' : 'none');
+  updateButtonText(group);
+}
+
+function updateButtonText(group) {
+  const btn = document.getElementById('show-'+group+'-btn');
+  if (!btn) return;
+  btn.textContent = expandedState[group] 
+    ? (lang === 'zh' ? '收起 / Collapse' : 'Collapse') 
+    : (lang === 'zh' ? '全部展開 / Show All' : 'Show All');
+}
+
+// Sticky sidebar highlight
+const sections = ['about','research','publications','news'];
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+      const link = document.querySelector(`.sidebar-nav a[href="#${e.target.id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, { threshold: 0.2, rootMargin: '-56px 0px 0px 0px' });
+sections.forEach(id => { const el = document.getElementById(id); if(el) observer.observe(el); });
+
+// Init
+applyLang(lang);
+</script>
 </body>
 </html>
