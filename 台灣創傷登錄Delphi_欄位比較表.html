@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台灣創傷登錄 Delphi｜候選欄位國際比較表</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,'PingFang TC','Microsoft JhengHei',Arial,sans-serif;font-size:13px;color:#1a1f2e;background:#f8f9fc;line-height:1.4;}
+.cover{background:#1a3a5c;color:white;padding:32px 40px 28px;}
+.cover-eyebrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#93c5fd;margin-bottom:8px;}
+.cover-title{font-size:26px;font-weight:700;margin-bottom:4px;}
+.cover-sub{font-size:14px;color:#bfdbfe;margin-bottom:20px;}
+.cover-meta{font-size:11px;color:#94a3b8;border-top:1px solid rgba(255,255,255,.15);padding-top:14px;display:flex;gap:24px;flex-wrap:wrap;}
+.cover-meta span strong{color:#e2e8f0;}
+.section{padding:24px 40px 0;}
+.section-title{font-size:16px;font-weight:700;color:#1a3a5c;border-left:4px solid #2563eb;padding-left:12px;margin-bottom:16px;}
+.phase-table{width:100%;border-collapse:collapse;margin-bottom:24px;}
+.phase-table td{padding:10px 14px;border:1px solid #e2e8f0;vertical-align:top;}
+.phase-tag{white-space:nowrap;font-weight:700;font-size:12px;color:white;padding:4px 10px;border-radius:4px;display:inline-block;}
+.p0{background:#1a3a5c;}.p1{background:#2563eb;}.p2{background:#0d9488;}.pc{background:#059669;}
+.phase-title{font-weight:700;font-size:13px;color:#1a1f2e;margin-bottom:4px;}
+.phase-desc{font-size:12px;color:#475569;}
+.correction-box{background:#fef9c3;border:1px solid #fde68a;border-left:4px solid #f59e0b;border-radius:6px;padding:14px 18px;margin-bottom:20px;}
+.correction-box h3{font-size:13px;font-weight:700;color:#92400e;margin-bottom:8px;}
+.correction-box ul{padding-left:18px;}
+.correction-box li{font-size:12px;color:#78350f;margin-bottom:4px;}
+.source-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px;padding:12px 18px;margin-bottom:20px;font-size:11px;color:#1e40af;}
+.source-box strong{color:#1e3a8a;}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;}
+.stat-card{background:white;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center;}
+.stat-num{font-size:30px;font-weight:700;line-height:1;margin-bottom:4px;}
+.stat-label{font-size:11px;color:#6b7280;}
+.c-green{color:#059669;}.c-amber{color:#d97706;}.c-red{color:#dc2626;}.c-blue{color:#2563eb;}.c-purple{color:#7c3aed;}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:14px;padding:10px 14px;background:white;border:1px solid #e2e8f0;border-radius:6px;font-size:11px;align-items:center;}
+.legend-item{display:flex;align-items:center;gap:5px;}
+.ld{width:14px;height:14px;border-radius:3px;flex-shrink:0;}
+.ld-all3{background:#d1fae5;border:1px solid #6ee7b7;}
+.ld-two{background:#fef3c7;border:1px solid #fcd34d;}
+.ld-one{background:#fee2e2;border:1px solid #fca5a5;}
+.ld-tw{background:#f3e8ff;border:1px solid #d8b4fe;}
+.comp-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:28px;}
+.comp-table th{background:#1a3a5c;color:white;padding:8px 9px;text-align:center;font-weight:600;font-size:11px;border:1px solid #1e3a5f;}
+.comp-table th.left{text-align:left;}
+.comp-table td{padding:7px 9px;border:1px solid #e2e8f0;vertical-align:top;}
+.cat-row td{background:#1a3a5c;color:white;font-weight:700;font-size:12px;padding:7px 12px;letter-spacing:.04em;}
+.row-all3{background:#d1fae5;}.row-two{background:#fef9c3;}.row-one{background:#fee2e2;}.row-tw{background:#faf5ff;}
+.tick{text-align:center;}
+.t-yes{color:#059669;font-weight:700;font-size:14px;}
+.t-no{color:#d1d5db;font-size:13px;}
+.t-part{color:#d97706;font-weight:700;font-size:13px;}
+.cnt3{color:#059669;font-weight:700;text-align:center;}
+.cnt2{color:#d97706;font-weight:700;text-align:center;}
+.cnt1{color:#dc2626;font-weight:700;text-align:center;}
+.cntT{color:#7c3aed;font-weight:700;text-align:center;font-size:10px;}
+.star{text-align:center;color:#2563eb;font-weight:700;font-size:16px;}
+.fid{font-weight:700;color:#374151;white-space:nowrap;}
+.fname{font-weight:600;color:#111827;}
+.bnew{display:inline-block;background:#fee2e2;color:#b91c1c;font-size:9px;padding:1px 5px;border-radius:3px;font-weight:700;vertical-align:middle;margin-left:4px;}
+.bfix{display:inline-block;background:#fef3c7;color:#92400e;font-size:9px;padding:1px 5px;border-radius:3px;font-weight:700;vertical-align:middle;margin-left:4px;}
+.q-table{width:100%;border-collapse:collapse;margin-bottom:24px;}
+.q-table td{padding:10px 14px;border:1px solid #e2e8f0;vertical-align:top;font-size:12px;}
+.qid{background:#1a3a5c;color:white;font-weight:700;text-align:center;white-space:nowrap;width:55px;font-size:12px;}
+.qtitle{font-weight:700;color:#111827;margin-bottom:4px;}
+.qbody{color:#374151;}
+footer{background:#f1f5f9;border-top:1px solid #e2e8f0;padding:14px 40px;font-size:10px;color:#94a3b8;display:flex;justify-content:space-between;}
+
+  /* ── FHIR columns ── */
+  .fhir-yes     { background:#bbf7d0; color:#14532d; font-weight:700; text-align:center; font-size:11px; }
+  .fhir-part    { background:#fef3c7; color:#92400e; font-weight:600; text-align:center; font-size:11px; }
+  .fhir-plan    { background:#dbeafe; color:#1e40af; font-weight:600; text-align:center; font-size:11px; }
+  .fhir-suggest { background:#f3e8ff; color:#6b21a8; font-weight:600; text-align:center; font-size:11px; }
+  .fhir-no      { background:#f9fafb; color:#9ca3af; text-align:center; font-size:13px; }
+  .fhir-res     { font-size:10px; color:#4b5563; font-style:italic; }
+  .fhir-note    { font-size:10px; color:#6b7280; line-height:1.35; }
+  .fhir-section { background:#0f172a; }
+  .fhir-header  { background:#0f172a; color:#7dd3fc; font-size:10px; }
+
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-eyebrow">Delphi 共識研究｜第零階段文件</div>
+  <div class="cover-title">台灣創傷登錄標準化<br>候選欄位國際比較表</div>
+  <div class="cover-sub">Taiwan Trauma Registry Standardization — Delphi Field Comparison Matrix</div>
+  <div class="cover-meta">
+    <span><strong>美國</strong> NTDS 2026 Admissions（Released July 2025, ACS/TQP）</span>
+    <span><strong>日本</strong> JTDB 2023 Report + 同儕審查文獻交叉核實</span>
+    <span><strong>澳洲</strong> VSTR Annual Report 2022–23（VSTORM, Monash Univ.）</span>
+    <span><strong>日期</strong> 2026年6月</span>
+    <span><strong>欄位總數</strong> 76個（前版68個，增加8個）</span>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">一、Delphi 研究階段說明</div>
+  <table class="phase-table">
+    <tr>
+      <td width="110"><span class="phase-tag p0">第零階段</span></td>
+      <td><div class="phase-title">候選欄位確認（本文件）</div>
+      <div class="phase-desc">核心研究團隊（PI + 高醫合作團隊）審閱本比較表，確認候選欄位合理性、移除不適用欄位、補充台灣特有欄位。完成後作為 Delphi 第一輪問卷基礎並提交 IRB。</div></td>
+    </tr>
+    <tr>
+      <td><span class="phase-tag p1">第一輪 Delphi</span></td>
+      <td><div class="phase-title">15–20 位專家線上問卷</div>
+      <div class="phase-desc">每個欄位評分重要性（1–9）與可行性（1–9），加開放意見。共識標準：中位數≥7 且 70% 評 7–9 → 核心；中位數≤3 且 70% 評 1–3 → 排除；其餘 → 第二輪。</div></td>
+    </tr>
+    <tr>
+      <td><span class="phase-tag p2">第二輪 Delphi</span></td>
+      <td><div class="phase-title">針對爭議欄位重新評分</div>
+      <div class="phase-desc">僅第一輪未達共識的欄位進入，提供第一輪分布作為回饋。預估 5–15 個欄位。</div></td>
+    </tr>
+    <tr>
+      <td><span class="phase-tag pc">共識會議</span></td>
+      <td><div class="phase-title">線上混合式討論（90–120 分鐘）</div>
+      <div class="phase-desc">處理仍有爭議欄位；確定三層分層（L1 核心 / L2 建議 / L3 研究）；決定年報公開的 10 項關鍵指標。</div></td>
+    </tr>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-title">二、資料來源說明與前版修正</div>
+  <div class="source-box">
+    <strong>【美國 NTDS 2026版（最新）】</strong> Released July 2025，ACS/TQP。從目錄可確認欄位：人口學8項、傷傷資訊9項、院前資訊7項（含 EMS PCR UUID、Prehospital Cardiac Arrest、Intubation Prior to Arrival）、急診室資訊30項（含體溫、SpO₂、Supplemental O₂、GCS-40版本）、既有疾病30項、院內事件24項（CAUTI/CLABSI/VAP/Sepsis/DVT/PE等）、結果4項、TQIP品質指標17項（含 Packed RBC/Whole Blood/Plasma/Platelets/Cryoprecipitate/Angiography/Surgery for Hemorrhage Control/Withdrawal of Life Support）。<br>
+    <strong>【日本 JTDB 2023版】</strong> 無公開欄位字典，依以下交叉核實：(1) Scientific Reports 2025論文確認「92欄位含：demographics、injury date/cause、prehospital information、mechanism、suicide attempts、vital signs、AIS、ISS、TRISS Ps、discharge status、ED and OR treatments」；(2) Nakao et al. 2023 Acute Medicine & Surgery：「age, sex, mechanism, ISS, comorbidity, mortality, mode of transport, prehospital management, AIS code, emergency procedures, angiography, operations, complications」；(3) JTDB vs NTDB比較研究確認：age, sex, SBP, ISS, GCS, injury type/mechanism/intent, AIS by body region；(4) JTDB 2023年報附註確認 CPAOA 欄位。<br>
+    <strong>【澳洲 VSTR 2022-23年報】</strong> 直接閱讀原文，所有標 ✓ 欄位均有數據佐證。<br><strong>【FHIR 串接資料來源】</strong> 美國: US Core v9.0 (FHIR R4); HL7 CDA R2 Trauma Registry IG (2019); ONC 2024 Draft Federal FHIR Action Plan; Bikkanuri et al. 2024 (FHIR coverage ~60-80% for registries)；院前段: NEMSIS 3.5.0（XML，非 FHIR，廣泛使用中）。日本: 厚生労働省 2022年 FHIR 標準化; JP Core v1.2.0 (Dec 2024, FHIR R4); JTDB 本身為網頁手動錄入，無 FHIR API。澳洲: Australian Digital Health Agency + CSIRO Sparked 計畫 2023-2025（$1500萬澳幣）; AU Core FHIR R4 IG 建置中; VSTR 本身人工收集，FHIR 化規劃中。台灣: 衛福部「次世代醫療資訊平台」2022起; TW Core IG v1.0 (FHIR R4，TWCDIv1.0，109 項核心）; 2025年林口長庚/中山/馬偕跨院 FHIR 資料中台上線; 高醫列入下一階段; FHIR 納入醫院評鑑。
+  </div>
+  <div class="correction-box">
+    <h3>⚠️ 前版比較表修正說明（根據原始文獻嚴謹核對後修正）</h3>
+    <ul>
+      <li><strong>AU 欄修正（原標 ✗，應為 ✓）：</strong> A07 安全防護設備（VSTR p.28 有 protective devices）、B08 院前呼吸速率（Appendix 7 CRG filter 含 RR 標準）</li>
+      <li><strong>JTDB 欄修正（原標 ✓，應為 —）：</strong> B13 止血帶使用（無文獻佐證為標準欄位）、B10 SpO₂（92欄位中無確認記錄）</li>
+      <li><strong>新增欄位（前版漏列）：</strong> A08 傷害意圖（三國均有）、B16 院前心跳停止（NTDS+JTDB）、D10 到院體溫（NTDS）、D12 燒傷面積（NTDS+VSTR）、E02 創傷外科醫師到達時間、E11 撤除生命維持（NTDS+VSTR）、F07 KOSCHI兒科功能預後（VSTR）、F09 EQ-5D-5L（VSTR）、G07–G10 台灣特有欄位</li>
+    </ul>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">三、欄位分析摘要</div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-num" style="color:#1a3a5c">76</div><div class="stat-label">總候選欄位數</div></div>
+    <div class="stat-card"><div class="stat-num c-green">29</div><div class="stat-label">三國均有</div></div>
+    <div class="stat-card"><div class="stat-num c-amber">18</div><div class="stat-label">兩國有</div></div>
+    <div class="stat-card"><div class="stat-num c-red">12</div><div class="stat-label">僅一國有</div></div>
+    <div class="stat-card"><div class="stat-num c-purple">17</div><div class="stat-label">台灣特有建議</div></div>
+    <div class="stat-card"><div class="stat-num c-blue">18</div><div class="stat-label">★ 第零階段直接納入建議</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:#374151">16</div><div class="stat-label">高醫目前已收集</div></div>
+    <div class="stat-card"><div class="stat-num c-red">8</div><div class="stat-label">前版修正欄位數</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">四、候選欄位國際比較表（76個欄位）</div>
+  <div class="legend">
+    <div class="legend-item"><div class="ld ld-all3"></div>三國均有（綠色）</div>
+    <div class="legend-item"><div class="ld ld-two"></div>兩國有（黃色）</div>
+    <div class="legend-item"><div class="ld ld-one"></div>一國有（紅色）</div>
+    <div class="legend-item"><div class="ld ld-tw"></div>台灣特有（紫色）</div>
+    <div class="legend-item"><span style="color:#2563eb;font-weight:700;font-size:16px">★</span>第零階段建議直接納入</div>
+    <div class="legend-item"><span style="color:#b91c1c;font-size:11px;font-weight:700">🆕</span>新增欄位</div>
+    <div class="legend-item"><span style="color:#92400e;font-size:11px;font-weight:700">🔧</span>修正欄位</div>
+    <div class="legend-item">✓確認&nbsp; △部分&nbsp; —未有/無記錄</div>
+  
+    <div style="width:100%; border-top:1px solid #e2e8f0; margin:8px 0 4px; padding-top:8px; font-size:11px; font-weight:700; color:#0f172a;">FHIR 串接狀況圖例（美/日/澳/台灣）：</div>
+    <div class="legend-item"><div style="width:14px;height:14px;border-radius:3px;background:#bbf7d0;border:1px solid #6ee7b7;"></div>✓ R4 已實作（FHIR R4）</div>
+    <div class="legend-item"><div style="width:14px;height:14px;border-radius:3px;background:#fef3c7;border:1px solid #fcd34d;"></div>部分（可透過 EHR FHIR API 取得，登錄未直接串接）</div>
+    <div class="legend-item"><div style="width:14px;height:14px;border-radius:3px;background:#dbeafe;border:1px solid #93c5fd;"></div>規劃（官方計畫但尚未實作）</div>
+    <div class="legend-item"><div style="width:14px;height:14px;border-radius:3px;background:#f3e8ff;border:1px solid #d8b4fe;"></div>建議（台灣 TW Trauma IG 建議新增）</div>
+    <div class="legend-item"><div style="width:14px;height:14px;border-radius:3px;background:#f9fafb;border:1px solid #e5e7eb;"></div>—（無 FHIR 串接）</div>
+  </div>
+
+  <table class="comp-table">
+    <thead>
+      <tr>
+        <th style="width:46px">編號</th>
+        <th class="left" style="min-width:145px">欄位名稱</th>
+        <th style="width:44px">美國<br>NTDS</th>
+        <th style="width:44px">日本<br>JTDB</th>
+        <th style="width:44px">澳洲<br>VSTR</th>
+        <th style="width:46px">高醫<br>現有</th>
+        <th style="width:32px">計</th>
+        <th style="width:28px">★</th>
+        <th class="left" style="min-width:180px">說明與文獻佐證</th>
+        <th colspan="3" style="width:120px; background:#0f172a; color:#7dd3fc; font-size:10px; border-bottom:2px solid #38bdf8;">FHIR 各國串接狀況</th>
+        <th style="width:42px; background:#0f172a; color:#7dd3fc; font-size:10px;" class="fhir-header">台灣<br>TW Core</th>
+        <th class="left" style="min-width:100px; background:#0f172a; color:#7dd3fc; font-size:10px;" class="fhir-header">FHIR Resource<br>&amp; 說明</th>
+      </tr>
+      <tr>
+        <th colspan="9" style="background:#f8f9fc; border:none;"></th>
+        <th style="width:40px; background:#0f172a; color:#93c5fd; font-size:10px;">美 NTDS</th>
+        <th style="width:40px; background:#0f172a; color:#93c5fd; font-size:10px;">日 JTDB</th>
+        <th style="width:40px; background:#0f172a; color:#93c5fd; font-size:10px;">澳 VSTR</th>
+        <th colspan="2" style="background:#0f172a;"></th>
+      </tr>
+    </thead>
+    <tbody>
+
+<!-- A -->
+<tr class="cat-row"><td colspan="13">A　事故資訊（Event Information）</td></tr>
+<tr class="row-all3"><td class="fid">A01</td><td><span class="fname">事故發生日期與時間</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="cnt3">3</td><td class="star">★</td><td>NTDS: Injury Incident Date/Time。JTDB: 92欄位確認。VSTR: Appendix 3 date/time sequence 驗證。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-plan">規劃</td><td class="fhir-plan">規劃</td><td><span class="fhir-res">Encounter</span><br><span class="fhir-note">US: US Core R4 Encounter；院前段尚用 NEMSIS 3.5（XML，非 FHIR）。AU: Sparked 計畫中。TW: TW Core Encounter（109 項核心）</span></td></tr>
+<tr class="row-two"><td class="fid">A02</td><td><span class="fname">事故地點 GPS 座標</span></td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt2">2</td><td class="star"></td><td>NTDS: Incident Location ZIP/Postal Code（無精確 GPS）。JTDB: 無地理空間欄位（確認修正）。VSTR: 有郵遞區號。GIS 分析關鍵，台灣 ePCR 可行性需確認。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-plan">規劃</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Location</span><br><span class="fhir-note">US: Incident ZIP via US Core Location；無精確 GPS profile。AU: Sparked AU Core Location。TW: 建議擴充 TW Core Location.position</span></td></tr>
+<tr class="row-all3"><td class="fid">A03</td><td><span class="fname">事故地點行政區</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="cnt3">3</td><td class="star">★</td><td>NTDS: Incident State/County/City 三層。VSTR: Table 1a/1b 五大區精確統計。JTDB: 有地區分類。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-plan">規劃</td><td class="fhir-plan">規劃</td><td><span class="fhir-res">Location</span><br><span class="fhir-note">US: US Core Location address。AU: AU Core Address。TW: TW Core Location（已在 109 項核心中）</span></td></tr>
+<tr class="row-all3"><td class="fid">A04</td><td><span class="fname">事故發生場所類型</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt3">3</td><td class="star"></td><td>NTDS: ICD-10 Place of Occurrence External Cause Code。VSTR: 圖5a 13類（home/road/residential等）。JTDB: 有場所分類。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-plan">規劃</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Encounter</span><br><span class="fhir-note">US: ICD-10 Place of Occurrence 可透過 Encounter.extension；無 Trauma 專用 FHIR IG。TW: 建議 TW Trauma IG</span></td></tr>
+<tr class="row-all3"><td class="fid">A05</td><td><span class="fname">傷害機制（ICD-10 外因碼）</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="cnt3">3</td><td class="star">★</td><td>NTDS: ICD-10 Primary + Additional External Cause Code。JTDB: 有機制分類。VSTR: 圖4 13種詳細機制。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-plan">規劃</td><td class="fhir-plan">規劃</td><td><span class="fhir-res">Condition</span><br><span class="fhir-note">US: US Core Condition (ICD-10-CM 外因碼)。AU: AU Core Condition。TW: TW Core Condition（核心 109 項）</span></td></tr>
+<tr class="row-all3"><td class="fid">A06</td><td><span class="fname">交通事故傷患身份</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt3">3</td><td class="star"></td><td>NTDS: ICD-10 外因碼涵蓋。JTDB: 有 motorcycle/pedestrian/cyclist 分類。VSTR: 圖4 motor vehicle/motorcycle/cyclist/pedestrian 各自統計。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-plan">規劃</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Condition</span><br><span class="fhir-note">US: ICD-10 external cause 在 Condition.code；無交通傷患專屬 FHIR profile。TW: 建議 TW Trauma IG</span></td></tr>
+<tr class="row-two"><td class="fid">A07</td><td><span class="fname">安全防護設備使用 <span class="bfix">🔧修正</span></span></td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt2">2</td><td class="star"></td><td>NTDS 2026: Protective Devices + Child Specific Restraint + Airbag Deployment 三個獨立欄位。VSTR: p.28 protective devices 記錄。JTDB: 無確認。前版 AU 標 ✗ 已修正。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Observation</span><br><span class="fhir-note">US: 可透過 US Core Observation；無標準 Trauma FHIR profile。JP/AU: 無。TW: 建議 TW Trauma IG extension</span></td></tr>
+<tr class="row-all3"><td class="fid">A08</td><td><span class="fname">傷害意圖（Injury Intent） <span class="bnew">🆕新增</span></span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt3">3</td><td class="star">★</td><td>三國均有，前版漏列。NTDS: 含在 ICD-10。JTDB: 有「suicide attempt」獨立欄位（92欄位確認）。VSTR: p.23 unintentional 90%/assault 5.7%/self-harm 3.8%。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-plan">規劃</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Condition</span><br><span class="fhir-note">US: Condition.code ICD-10 intent。AU: Sparked 規劃。TW: 建議 TW Trauma IG（結合 JTDB 自殺嘗試欄位）</span></td></tr>
+<tr class="row-one"><td class="fid">A09</td><td><span class="fname">是否為職業傷害</span></td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="cnt1">1</td><td class="star"></td><td>NTDS 2026: Work-Related + Occupational Industry + Occupation 三個欄位。JTDB/VSTR: 無確認。台灣勞保資料可串聯。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Condition</span><br><span class="fhir-note">US: US Core Condition (work-related extension)。JP/AU: 無對應。TW: 建議 TW Trauma IG</span></td></tr>
+
+<!-- B -->
+<tr class="cat-row"><td colspan="13">B　院前資訊（Prehospital Information）</td></tr>
+<tr class="row-two"><td class="fid">B01</td><td><span class="fname">民眾報案時間（119接獲）</span></td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt2">2</td><td class="star"></td><td>NTDS: 有 EMS PCR UUID（串聯院前記錄）。VSTR: Table 5a response time 從 call 計算，確認有此欄位。JTDB: 無確認。</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Encounter</span><br><span class="fhir-note">三國登錄均用非 FHIR 格式：US/AU 用 CAD 系統、日本用 EMD；NEMSIS 3.5（XML）為美國院前標準。TW: 建議 TW Trauma IG Encounter.extension[callReceivedTime]</span></td></tr>
+<tr class="row-two"><td class="fid">B02</td><td><span class="fname">EMS 派遣時間</span></td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt2">2</td><td class="star"></td><td>NTDS: 透過 EMS PCR 串聯。VSTR: 有 dispatch interval。JTDB: 無確認。</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Encounter</span><br><span class="fhir-note">同 B01；NEMSIS↔FHIR 轉換研究中。TW: 建議 TW Trauma IG</span></td></tr>
+<tr class="row-all3"><td class="fid">B03</td><td><span class="fname">EMS 到達現場時間</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt3">3</td><td class="star"></td><td>三國均有。NTDS: 院前資訊段落。JTDB: prehospital information。VSTR: Table 5a median response time 17分鐘。</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Encounter</span><br><span class="fhir-note">US: NEMSIS 3.5.0 eResponse.10（scene arrival，XML 非 FHIR）。AU: AV 系統尚未 FHIR 化。TW: 建議 TW Trauma IG</span></td></tr>
+<tr class="row-two"><td class="fid">B04</td><td><span class="fname">EMS 離開現場時間</span></td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt2">2</td><td class="star"></td><td>NTDS: 院前資訊。VSTR: Table 5b scene time（arrival to depart）median 32分鐘。JTDB: 無確認。</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Encounter</span><br><span class="fhir-note">同 B03。TW: 建議 TW Trauma IG Encounter.extension[departSceneTime]</span></td></tr>
+<tr class="row-all3"><td class="fid">B05</td><td><span class="fname">到達急診時間</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="cnt3">3</td><td class="star">★</td><td>NTDS: ED/Hospital Arrival Date/Time 獨立欄位。JTDB: 有到院時間。VSTR: Appendix 3 時間序列驗證確認此欄位。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-plan">規劃</td><td class="fhir-plan">規劃</td><td><span class="fhir-res">Encounter</span><br><span class="fhir-note">US: US Core Encounter.period.start（ED arrival）。AU: Sparked 計畫中。TW: TW Core Encounter（已含到院時間）</span></td></tr>
+<tr class="row-all3"><td class="fid">B06</td><td><span class="fname">院前 GCS（E/V/M）</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt3">3</td><td class="star"></td><td>NTDS: Initial Field GCS（含GCS-40新版）。JTDB: vital signs 含 GCS。VSTR: 圖8 定義院前 GCS &lt;9。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-plan">規劃</td><td class="fhir-plan">規劃</td><td><span class="fhir-res">Observation</span><br><span class="fhir-note">US: US Core Observation (LOINC 9269-2 GCS total + E/V/M component)。AU: AU Core Vital Signs。TW: TW Core Observation（含 LOINC 標準）</span></td></tr>
+<tr class="row-all3"><td class="fid">B07</td><td><span class="fname">院前收縮壓（SBP）</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt3">3</td><td class="star"></td><td>三國均有。NTDS: Initial ED/Hospital SBP。JTDB: vital signs（論文確認）。VSTR: Appendix 7 SBP &lt;90 mmHg。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-plan">規劃</td><td class="fhir-plan">規劃</td><td><span class="fhir-res">Observation</span><br><span class="fhir-note">US: US Core Vital Signs (LOINC 8480-6 SBP)。AU: AU Core Vital Signs。TW: TW Core Vital Signs（109 項核心）</span></td></tr>
+<tr class="row-all3"><td class="fid">B08</td><td><span class="fname">院前呼吸速率 <span class="bfix">🔧修正</span></span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt3">3</td><td class="star"></td><td>三國均有。NTDS: Respiratory Rate。JTDB: 多篇論文確認 RR 為標準變數。VSTR: Appendix 7 CRG filter 含 RR 標準。前版 AU 標 ✗ 已修正為 ✓。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-plan">規劃</td><td class="fhir-plan">規劃</td><td><span class="fhir-res">Observation</span><br><span class="fhir-note">US: US Core Vital Signs (LOINC 9279-1 RR)。AU: AU Core。TW: TW Core Vital Signs</span></td></tr>
+<tr class="row-all3"><td class="fid">B09</td><td><span class="fname">院前心跳速率</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt3">3</td><td class="star"></td><td>NTDS: Pulse Rate。JTDB: vital signs。VSTR: Appendix 7 pulse rate criteria。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-plan">規劃</td><td class="fhir-plan">規劃</td><td><span class="fhir-res">Observation</span><br><span class="fhir-note">US: US Core Vital Signs (LOINC 8867-4 HR)。AU: AU Core。TW: TW Core Vital Signs</span></td></tr>
+<tr class="row-two"><td class="fid">B10</td><td><span class="fname">院前 SpO₂ <span class="bfix">🔧修正</span></span></td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt2">2</td><td class="star"></td><td>NTDS 2026: Oxygen Saturation + Supplemental Oxygen 兩個欄位。VSTR: Appendix 7 O₂ sat &lt;97%。JTDB: 92欄位中無確認記錄（前版 JTDB 標 ✓ 修正為 —）。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-plan">規劃</td><td class="fhir-plan">規劃</td><td><span class="fhir-res">Observation</span><br><span class="fhir-note">US: US Core Vital Signs (LOINC 2708-6 SpO₂ + Supplemental O₂)。AU: AU Core。TW: TW Core Vital Signs</span></td></tr>
+<tr class="row-all3"><td class="fid">B11</td><td><span class="fname">院前插管（Prehospital Intubation）</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt3">3</td><td class="star"></td><td>NTDS: Intubation Prior to Arrival + Intubation Location。JTDB: prehospital management（文獻確認）。VSTR: 院前處置記錄。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Procedure</span><br><span class="fhir-note">US: US Core Procedure (SNOMED 52765003)；院前 Procedure 無標準化 FHIR IG。TW: 建議 TW Trauma IG Procedure</span></td></tr>
+<tr class="row-two"><td class="fid">B12</td><td><span class="fname">院前靜脈輸液</span></td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt2">2</td><td class="star"></td><td>NTDS/VSTR: 有記錄。JTDB: 有相關研究（Nagasawa 2021）但非標準欄位，保守標 —。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Procedure + MedicationAdministration</span><br><span class="fhir-note">US: US Core Procedure；MedicationAdministration for fluid；院前段無標準 IG。TW: 建議 TW Trauma IG</span></td></tr>
+<tr class="row-one"><td class="fid">B13</td><td><span class="fname">止血帶使用 <span class="bfix">🔧修正</span></span></td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="cnt1">1</td><td class="star"></td><td>NTDS: 院前處置記錄。JTDB: 無確認（前版標 ✓ 修正為 —）。VSTR: 無確認。STOP THE BLEED 推廣後重要性提升，目前僅美國標準。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Procedure</span><br><span class="fhir-note">US: US Core Procedure；院前 tourniquet 無標準 FHIR profile。TW: 建議 TW Trauma IG</span></td></tr>
+<tr class="row-all3"><td class="fid">B14</td><td><span class="fname">救護運送方式（Transport Mode）</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt3">3</td><td class="star"></td><td>NTDS: Transport Mode + Other Transport Mode。JTDB: mode of transport（Nakao 2023確認）。VSTR: Table 3/6 分路面/直升機/固定翼/ARV/PIPER。</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Encounter</span><br><span class="fhir-note">三國登錄均用非 FHIR：NEMSIS（美）、CAD 系統（日澳）；Encounter.extension 可擴充。TW: 建議 TW Trauma IG</span></td></tr>
+<tr class="row-all3"><td class="fid">B15</td><td><span class="fname">是否為直升機救護（HEMS）</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt3">3</td><td class="star"></td><td>三國均有。NTDS: Transport Mode。JTDB: doctor helicopter 記錄（文獻確認）。VSTR: Table 3 詳細記錄 413次直升機轉送（20.3%）。</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Encounter</span><br><span class="fhir-note">三國直升機資料透過 CAD/ARV 系統記錄，均非 FHIR。TW: 建議 TW Trauma IG Encounter.extension[hems]</span></td></tr>
+<tr class="row-two"><td class="fid">B16</td><td><span class="fname">院前心跳停止 <span class="bnew">🆕新增</span></span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="cnt2">2</td><td class="star"></td><td>NTDS 2026: Pre-Hospital Cardiac Arrest 獨立欄位。JTDB: CPAOA 欄位（2023年報附註確認）。VSTR: 透過 VACAR 資料庫補充，非登錄直接欄位。OHCA 研究重要。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Condition</span><br><span class="fhir-note">US: US Core Condition (SNOMED 410429000)；院前 OHCA 無標準 FHIR IG。TW: 建議 TW Trauma IG</span></td></tr>
+<tr class="row-one"><td class="fid">B17</td><td><span class="fname">第一線救護員層級</span></td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="cnt1">1</td><td class="star"></td><td>NTDS: 含在 Transport Mode。JTDB/VSTR: 無獨立欄位。台灣 EMT-1/EMT-2/EMT-P 三級制度特有重要性，強烈建議作為台灣特有欄位。</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Practitioner</span><br><span class="fhir-note">三國無標準 FHIR profile 記錄救護員執照層級。TW: 建議 TW Trauma IG Practitioner.qualification.code</span></td></tr>
+<tr class="row-one"><td class="fid">B18</td><td><span class="fname">EMS 目的地合規性 <span class="bnew">🆕新增</span></span></td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt1">1</td><td class="star"></td><td>VSTR: Table 5e Destination compliance 94.7%（2022-23），是重要系統績效指標。NTDS/JTDB: 以事後 audit 處理。台灣創傷分流指引尚在建立，重要。</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Encounter</span><br><span class="fhir-note">三國無 FHIR；屬系統稽核欄位。TW: 建議 AuditEvent 或 ClinicalImpression resource</span></td></tr>
+
+<!-- C -->
+<tr class="cat-row"><td colspan="13">C　病人基本資料（Patient Demographics）</td></tr>
+<tr class="row-all3"><td class="fid">C01</td><td><span class="fname">年齡</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="cnt3">3</td><td class="star">★</td><td>NTDS: Date of Birth + Age + Age Units 三個欄位。VSTR: 六個年齡層精細統計（圖3a/3b）。JTDB: 有年齡（年報圖示）。</td><td class="fhir-yes">✓ R4</td><td class="fhir-yes">✓ R4</td><td class="fhir-yes">✓ R4</td><td class="fhir-yes">✓ R4</td><td><span class="fhir-res">Patient</span><br><span class="fhir-note">三國均已實作。US: US Core v9 Patient.birthDate；JP: JP Core v1.2 Patient；AU: AU Core Patient；TW: TW Core Patient（109 項核心）</span></td></tr>
+<tr class="row-all3"><td class="fid">C02</td><td><span class="fname">性別（出生時生理性別）</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="cnt3">3</td><td class="star">★</td><td>NTDS 2026: Sex Assigned at Birth + Gender Identity + Gender-Affirming Hormone Therapy 三個獨立欄位。JTDB/VSTR: 有生理性別。台灣建議先收生理性別。</td><td class="fhir-yes">✓ R4</td><td class="fhir-yes">✓ R4</td><td class="fhir-yes">✓ R4</td><td class="fhir-yes">✓ R4</td><td><span class="fhir-res">Patient</span><br><span class="fhir-note">三國均已實作。US: US Core Patient.gender + birthSex extension；JP: JP Core；AU: AU Core；TW: TW Core Patient</span></td></tr>
+<tr class="row-two"><td class="fid">C03</td><td><span class="fname">族群身份（原住民族） <span class="bnew">🆕新增</span></span></td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="tick t-part">△</td><td class="tick t-no">—</td><td class="cnt2">2</td><td class="star">★</td><td>NTDS: Race + Ethnicity。VSTR: 有 socioeconomic factors 含種族（p.51）。台灣應記錄原住民族身份（16族），健康不平等研究關鍵。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-plan">規劃</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Patient</span><br><span class="fhir-note">US: US Core Race/Ethnicity extension；AU: Sparked AU Core indigenous status extension（計畫中）；TW: 建議 TW Core 原住民族 Patient.extension</span></td></tr>
+<tr class="row-all3"><td class="fid">C04</td><td><span class="fname">居住地（縣市）</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt3">3</td><td class="star"></td><td>NTDS: Patient Home ZIP/State/City。JTDB: 有地區。VSTR: Table 1a 分析居住地vs事故地（21%區域外居民）。</td><td class="fhir-yes">✓ R4</td><td class="fhir-yes">✓ R4</td><td class="fhir-plan">規劃</td><td class="fhir-yes">✓ R4</td><td><span class="fhir-res">Patient</span><br><span class="fhir-note">US: US Core Patient.address；JP: JP Core Patient.address；AU: Sparked；TW: TW Core Patient.address（核心 109 項）</span></td></tr>
+<tr class="row-one"><td class="fid">C05</td><td><span class="fname">保險狀態/健保類別</span></td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="cnt1">1</td><td class="star"></td><td>NTDS: Primary Method of Payment（財務段落）。台灣全民健保特有，作為社經地位代理指標，政策研究價值高。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-plan">規劃</td><td><span class="fhir-res">Coverage</span><br><span class="fhir-note">US: US Core Coverage；JP/AU: 無健保類別對應；TW: TW Core Coverage（健保類別規劃中）</span></td></tr>
+<tr class="row-all3"><td class="fid">C06</td><td><span class="fname">主要共病（Pre-existing Conditions）</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="cnt3">3</td><td class="star">★</td><td>NTDS 2026: 30個獨立共病欄位（糖尿病/高血壓/COPD/抗凝血/心衰等）。JTDB: comorbidity（Nakao 2023確認）。VSTR: 有共病狀態。</td><td class="fhir-part">部分</td><td class="fhir-yes">✓ R4</td><td class="fhir-plan">規劃</td><td class="fhir-plan">規劃</td><td><span class="fhir-res">Condition</span><br><span class="fhir-note">US: US Core Condition（problem list）；JP: JP Core Condition；AU: AU Core；TW: TW Core Condition（共病清單）</span></td></tr>
+
+<!-- D -->
+<tr class="cat-row"><td colspan="13">D　傷傷資訊（Injury Assessment）</td></tr>
+<tr class="row-all3"><td class="fid">D01</td><td><span class="fname">AIS 各部位分數（8部位）</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="cnt3">3</td><td class="star">★</td><td>NTDS: AIS Code + AIS Version。JTDB: AIS scores（92欄位確認，8個部位）。VSTR: 使用 AIS 2008（Appendix 1）。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Observation</span><br><span class="fhir-note">三國均無標準化 AIS FHIR profile。US: 研究性 Observation (LOINC 74200-7)；無正式 Trauma FHIR IG。TW: 建議 TW Trauma IG AIS profile</span></td></tr>
+<tr class="row-all3"><td class="fid">D02</td><td><span class="fname">ISS（傷害嚴重度分數）</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="cnt3">3</td><td class="star">★</td><td>三國核心欄位。VSTR major trauma 定義：ISS>12（Box 3）。JTDB 收案：ISS≥9 或 AIS≥3。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Observation</span><br><span class="fhir-note">同 D01；ISS 為計算值。US 研究用 LOINC 74203-1；無正式 FHIR IG。TW: 建議 TW Trauma IG</span></td></tr>
+<tr class="row-one"><td class="fid">D03</td><td><span class="fname">NISS（新損傷嚴重度分數）</span></td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt1">1</td><td class="star"></td><td>VSTR: 有計算 NISS。NTDS/JTDB: 由 AIS 另行計算，無獨立欄位。穿透傷預測力優於 ISS。</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Observation</span><br><span class="fhir-note">三國均無 NISS FHIR profile；需完全自訂 Observation。TW: 建議 TW Trauma IG</span></td></tr>
+<tr class="row-all3"><td class="fid">D04</td><td><span class="fname">ICD-10 傷傷診斷碼</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="cnt3">3</td><td class="star">★</td><td>NTDS: ICD-10 Injury Diagnoses（可複數）。JTDB: 有ICD碼。VSTR: 透過 VAED ICD-10-AM 識別。台灣健保申報已有。</td><td class="fhir-yes">✓ R4</td><td class="fhir-yes">✓ R4</td><td class="fhir-plan">規劃</td><td class="fhir-yes">✓ R4</td><td><span class="fhir-res">Condition</span><br><span class="fhir-note">US: US Core Condition (ICD-10-CM)；JP: JP Core Condition；AU: Sparked；TW: TW Core Condition（核心 109 項）</span></td></tr>
+<tr class="row-all3"><td class="fid">D05</td><td><span class="fname">傷傷類型（鈍傷/穿透/燒傷）</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="cnt3">3</td><td class="star">★</td><td>NTDS: ICD-10。JTDB: blunt/penetrating（JTDB vs NTDB比較論文）。VSTR: blunt 94.1%/penetrating 3.4%/burns 1.3%（p.16/23）。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-plan">規劃</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Condition</span><br><span class="fhir-note">US: Condition.code 含傷害類型；無 Trauma 專屬 FHIR IG。TW: 建議 TW Trauma IG blunt/penetrating/burn extension</span></td></tr>
+<tr class="row-all3"><td class="fid">D06</td><td><span class="fname">到院時 GCS（E/V/M）</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="cnt3">3</td><td class="star">★</td><td>NTDS: Initial ED/Hospital GCS三分項+Total+GCS-40新版。JTDB/VSTR: 均有到院GCS。</td><td class="fhir-yes">✓ R4</td><td class="fhir-yes">✓ R4</td><td class="fhir-plan">規劃</td><td class="fhir-yes">✓ R4</td><td><span class="fhir-res">Observation</span><br><span class="fhir-note">US: US Core Observation (LOINC 9269-2 GCS)；JP: JP Core Observation；AU: Sparked；TW: TW Core Observation（含 LOINC）</span></td></tr>
+<tr class="row-all3"><td class="fid">D07</td><td><span class="fname">到院時收縮壓</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="cnt3">3</td><td class="star">★</td><td>三國核心欄位。VSTR Appendix 7 SBP &lt;90mmHg。JTDB vs NTDB論文確認。</td><td class="fhir-yes">✓ R4</td><td class="fhir-yes">✓ R4</td><td class="fhir-yes">✓ R4</td><td class="fhir-yes">✓ R4</td><td><span class="fhir-res">Observation</span><br><span class="fhir-note">四國均已實作。LOINC 8480-6 SBP 為國際通用 Vital Signs profile。US Core / JP Core / AU Core / TW Core 均含。</span></td></tr>
+<tr class="row-all3"><td class="fid">D08</td><td><span class="fname">到院時呼吸速率</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="cnt3">3</td><td class="star"></td><td>NTDS: Respiratory Rate。JTDB: RR 多篇論文確認。VSTR: Appendix 7 RR &lt;10 or &gt;30。</td><td class="fhir-yes">✓ R4</td><td class="fhir-yes">✓ R4</td><td class="fhir-yes">✓ R4</td><td class="fhir-yes">✓ R4</td><td><span class="fhir-res">Observation</span><br><span class="fhir-note">同 D07。LOINC 9279-1 RR。四國均已實作 Vital Signs profile。</span></td></tr>
+<tr class="row-all3"><td class="fid">D09</td><td><span class="fname">到院時心跳速率</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="cnt3">3</td><td class="star"></td><td>NTDS: Pulse Rate。JTDB: vital signs。VSTR: Appendix 7 pulse rate criteria。</td><td class="fhir-yes">✓ R4</td><td class="fhir-yes">✓ R4</td><td class="fhir-yes">✓ R4</td><td class="fhir-yes">✓ R4</td><td><span class="fhir-res">Observation</span><br><span class="fhir-note">同 D07。LOINC 8867-4 HR。四國均已實作。</span></td></tr>
+<tr class="row-one"><td class="fid">D10</td><td><span class="fname">到院時體溫 <span class="bnew">🆕新增</span></span></td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="cnt1">1</td><td class="star"></td><td>NTDS 2026: Initial ED/Hospital Temperature 獨立欄位（新增）。JTDB: JNTDB 論文提及 body temperature 但 JTDB 標準欄位無確認。VSTR: 無。低體溫是創傷致死三聯症之一。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-plan">規劃</td><td><span class="fhir-res">Observation</span><br><span class="fhir-note">US: US Core Vital Signs (LOINC 8310-5 體溫)；JP/AU: 尚未標準化至登錄；TW: TW Core Vital Signs（體溫已含）</span></td></tr>
+<tr class="row-all3"><td class="fid">D11</td><td><span class="fname">創傷活化層級（Trauma Activation）</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt3">3</td><td class="star"></td><td>NTDS: Highest Activation（全/部分/未啟動）。JTDB: 有急診處置記錄。VSTR: Table 7a MTS trauma team activation rate 88.4%。各院標準不一，標準化重要。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Encounter</span><br><span class="fhir-note">US: Encounter.extension（trauma activation）；無標準 FHIR IG。TW: 建議 TW Trauma IG 定義啟動層級 ValueSet</span></td></tr>
+<tr class="row-two"><td class="fid">D12</td><td><span class="fname">燒傷面積（%TBSA） <span class="bnew">🆕新增</span></span></td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt2">2</td><td class="star"></td><td>NTDS: 含在 ICD-10 診斷。VSTR: 納入標準 ≥20% TBSA（Box 1），有燒傷研究（1.3%）。JTDB: 無確認。前版漏列。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Observation</span><br><span class="fhir-note">US: Observation (LOINC 58459-3 %TBSA)；無創傷專屬 FHIR IG。TW: 建議 TW Trauma IG</span></td></tr>
+
+<!-- E -->
+<tr class="cat-row"><td colspan="13">E　院內照護（In-hospital Care）</td></tr>
+<tr class="row-all3"><td class="fid">E01</td><td><span class="fname">到院後手術（ICD-10 術式碼）</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="cnt3">3</td><td class="star">★</td><td>NTDS: ICD-10 Hospital Procedures + Start Date/Time。JTDB: emergency procedures + operations（Nakao 2023）。VSTR: Appendix 1。</td><td class="fhir-yes">✓ R4</td><td class="fhir-yes">✓ R4</td><td class="fhir-plan">規劃</td><td class="fhir-plan">規劃</td><td><span class="fhir-res">Procedure</span><br><span class="fhir-note">US: US Core Procedure (ICD-10-PCS / SNOMED)；JP: JP Core Procedure；AU: Sparked；TW: TW Core Procedure（109 項核心）</span></td></tr>
+<tr class="row-two"><td class="fid">E02</td><td><span class="fname">創傷外科醫師到達時間 <span class="bnew">🆕新增</span></span></td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt2">2</td><td class="star"></td><td>NTDS 2026: Trauma Surgeon Arrival Date + Time 兩個獨立欄位。VSTR: 有 trauma team activation time（Table 7a）。JTDB: 無確認。重要品質指標。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Encounter</span><br><span class="fhir-note">US: Encounter.participant + performedDateTime；無標準 surgeon arrival profile。TW: 建議 TW Trauma IG</span></td></tr>
+<tr class="row-all3"><td class="fid">E03</td><td><span class="fname">ICU 入住（是否/天數）</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="cnt3">3</td><td class="star">★</td><td>NTDS: Total ICU LOS。JTDB: 有。VSTR: Table 7c ICU LOS median 4天，30.1% 入住 ICU。</td><td class="fhir-yes">✓ R4</td><td class="fhir-yes">✓ R4</td><td class="fhir-plan">規劃</td><td class="fhir-plan">規劃</td><td><span class="fhir-res">Encounter</span><br><span class="fhir-note">US: US Core Encounter (ICU sub-encounter)；JP: JP Core Encounter；AU: Sparked；TW: TW Core Encounter</span></td></tr>
+<tr class="row-all3"><td class="fid">E04</td><td><span class="fname">機械通氣使用天數</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt3">3</td><td class="star"></td><td>NTDS: Total Ventilator Days。JTDB: 有。VSTR: Table 7d ICU mechanical ventilation hours median 22hr。</td><td class="fhir-yes">✓ R4</td><td class="fhir-part">部分</td><td class="fhir-plan">規劃</td><td class="fhir-plan">規劃</td><td><span class="fhir-res">Procedure</span><br><span class="fhir-note">US: US Core Procedure (SNOMED 182996000)；JP: JP Core 部分；AU: Sparked；TW: TW Core Procedure</span></td></tr>
+<tr class="row-two"><td class="fid">E05</td><td><span class="fname">輸血（PRBC/全血/FFP/血小板/冷沉澱）</span></td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="tick t-part">△</td><td class="tick t-yes">✓</td><td class="cnt2">2</td><td class="star"></td><td>NTDS 2026（TQIP）: PRBC+Whole Blood+Plasma+Platelets+Cryoprecipitate 各自獨立欄位。VSTR: 有輸血記錄但非年報主要指標。JTDB: 無確認。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">MedicationAdministration</span><br><span class="fhir-note">US: US Core MedicationAdministration（各血品為獨立 resource）；JP/AU: 無標準化。TW: 建議 TW Trauma IG</span></td></tr>
+<tr class="row-two"><td class="fid">E06</td><td><span class="fname">血管攝影（Angiography/Embolization）</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="cnt2">2</td><td class="star"></td><td>NTDS 2026（TQIP）: Angiography + Embolization Site + Date/Time。JTDB: angiography（Nakao 2023確認）。VSTR: 無獨立欄位。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Procedure</span><br><span class="fhir-note">US: US Core Procedure (SNOMED angiography + embolization)；JP/AU: 無 FHIR 串接。TW: 建議 TW Trauma IG</span></td></tr>
+<tr class="row-one"><td class="fid">E07</td><td><span class="fname">到院凝血功能（PT/INR）</span></td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="cnt1">1</td><td class="star"></td><td>NTDS: 含在院內事件。JTDB/VSTR: 無確認。創傷凝血病（trauma-induced coagulopathy）重要指標。</td><td class="fhir-yes">✓ R4</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-plan">規劃</td><td><span class="fhir-res">Observation</span><br><span class="fhir-note">US: US Core Lab Observation (LOINC 5902-2 PT / 6301-6 INR)；JP: JP Core Observation；AU: 無標準。TW: TW Core Lab Observation</span></td></tr>
+<tr class="row-all3"><td class="fid">E08</td><td><span class="fname">院內感染與重大併發症</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt3">3</td><td class="star"></td><td>NTDS 2026: 24種院內事件（CAUTI/CLABSI/VAP/Sepsis/DVT/PE/AKI/ARDS等）。JTDB: complications（Nakao 2023）。VSTR: 有記錄。</td><td class="fhir-yes">✓ R4</td><td class="fhir-part">部分</td><td class="fhir-plan">規劃</td><td class="fhir-plan">規劃</td><td><span class="fhir-res">Condition</span><br><span class="fhir-note">US: US Core Condition (院內感染 ICD-10)；JP: JP Core；AU: Sparked；TW: TW Core Condition</span></td></tr>
+<tr class="row-two"><td class="fid">E09</td><td><span class="fname">壓力性傷口（壓瘡）</span></td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt2">2</td><td class="star"></td><td>NTDS: Pressure Ulcer（院內事件段落）。VSTR: 有記錄（護理品質指標）。JTDB: 無確認。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Condition</span><br><span class="fhir-note">US: US Core Condition (SNOMED pressure ulcer + NPUAP stage)；JP/AU: 無標準化。TW: 建議 TW Trauma IG</span></td></tr>
+<tr class="row-all3"><td class="fid">E10</td><td><span class="fname">是否轉院（及轉院時間）</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt3">3</td><td class="star"></td><td>NTDS: Inter-facility Transfer 獨立欄位。JTDB: 有（Yamazaki 2010論文）。VSTR: Table 6a median 轉院時間 10.0小時。台灣轉院率高，關鍵欄位。</td><td class="fhir-yes">✓ R4</td><td class="fhir-part">部分</td><td class="fhir-plan">規劃</td><td class="fhir-plan">規劃</td><td><span class="fhir-res">Encounter</span><br><span class="fhir-note">US: US Core Encounter (admitSource/dischargeDisposition)；JP: JP Core；AU: Sparked；TW: TW Core Encounter</span></td></tr>
+<tr class="row-two"><td class="fid">E11</td><td><span class="fname">撤除生命維持（Withdrawal of Life Support） <span class="bnew">🆕新增</span></span></td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt2">2</td><td class="star"></td><td>NTDS 2026（TQIP）: Withdrawal of Life Supporting Treatment + Date/Time。VSTR: 有記錄（與可預防死亡審查相關，p.15）。JTDB: 無確認。末期照護決策研究相關。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Consent</span><br><span class="fhir-note">US: FHIR Consent resource (WLST)；JP/AU: 無標準化。TW: 建議 TW Trauma IG Consent + CarePlan</span></td></tr>
+
+<!-- F -->
+<tr class="cat-row"><td colspan="13">F　結果指標（Outcomes）</td></tr>
+<tr class="row-all3"><td class="fid">F01</td><td><span class="fname">院內死亡</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="cnt3">3</td><td class="star">★</td><td>三國核心欄位。NTDS: Hospital Discharge Disposition（含死亡）。JTDB: in-hospital mortality（文獻確認）。VSTR: Table 9a 513例（12.1%）。</td><td class="fhir-yes">✓ R4</td><td class="fhir-yes">✓ R4</td><td class="fhir-plan">規劃</td><td class="fhir-yes">✓ R4</td><td><span class="fhir-res">Encounter</span><br><span class="fhir-note">US: US Core Encounter.dischargeDisposition；JP: JP Core；AU: Sparked；TW: TW Core Encounter（核心 109 項）</span></td></tr>
+<tr class="row-one"><td class="fid">F02</td><td><span class="fname">30天死亡率</span></td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt1">1</td><td class="star"></td><td>VSTR: 串聯 NCIS 估算全死亡 2190例（Table 9a），含院外死亡。NTDS/JTDB: 以院內死亡為主。台灣需串聯健保死亡登記。</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-plan">規劃</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Observation</span><br><span class="fhir-note">三國登錄均無 FHIR 30天追蹤；需串聯死亡登記。AU: Sparked 探索。TW: 建議與健保 FHIR API 串接</span></td></tr>
+<tr class="row-all3"><td class="fid">F03</td><td><span class="fname">預期存活率（TRISS/Ps）</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt3">3</td><td class="star"></td><td>三國均計算。NTDS: TQIP段落。JTDB: TRISS Ps（92欄位明確列出）。VSTR: 有predicted probability of survival（圖13）。O/E分析關鍵。</td><td class="fhir-part">部分</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">RiskAssessment</span><br><span class="fhir-note">US: FHIR RiskAssessment resource（TRISS）；無正式 Trauma FHIR IG。TW: 建議 TW Trauma IG RiskAssessment.method=TRISS</span></td></tr>
+<tr class="row-all3"><td class="fid">F04</td><td><span class="fname">住院天數（總住院/ICU）</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="cnt3">3</td><td class="star">★</td><td>三國均有。VSTR: Table 7b median 6.8天；Table 7c ICU median 4天。JTDB: 年報有住院天數分析。</td><td class="fhir-yes">✓ R4</td><td class="fhir-yes">✓ R4</td><td class="fhir-plan">規劃</td><td class="fhir-yes">✓ R4</td><td><span class="fhir-res">Encounter</span><br><span class="fhir-note">US: Encounter.length / Encounter.period；JP: JP Core；AU: Sparked；TW: TW Core Encounter（LOS 計算）</span></td></tr>
+<tr class="row-all3"><td class="fid">F05</td><td><span class="fname">出院去向</span></td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="cnt3">3</td><td class="star">★</td><td>NTDS: Hospital Discharge Disposition。JTDB: discharge status（文獻確認）。VSTR: Table 8 home 61.3%/rehab 23%/aged care 4.1%/hospital 7%。</td><td class="fhir-yes">✓ R4</td><td class="fhir-yes">✓ R4</td><td class="fhir-plan">規劃</td><td class="fhir-yes">✓ R4</td><td><span class="fhir-res">Encounter</span><br><span class="fhir-note">US: US Core Encounter.hospitalization.dischargeDisposition；JP: JP Core；AU: Sparked；TW: TW Core Encounter</span></td></tr>
+<tr class="row-two"><td class="fid">F06</td><td><span class="fname">出院功能狀態（GOS-E）</span></td><td class="tick t-no">—</td><td class="tick t-yes">✓</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt2">2</td><td class="star"></td><td>JTDB: 有GOS（TBI結果評估）。VSTR: GOS-E 8分量表，6/12/24個月追蹤（圖13）。NTDS: 無獨立GOS欄位。頭部外傷必要。</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-plan">規劃</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Observation</span><br><span class="fhir-note">三國無標準 GOS-E FHIR profile。AU: Sparked 探索中。TW: 建議 TW Trauma IG Observation (LOINC 72105-4 GOS-E)</span></td></tr>
+<tr class="row-one"><td class="fid">F07</td><td><span class="fname">兒科功能預後（KOSCHI） <span class="bnew">🆕新增</span></span></td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt1">1</td><td class="star"></td><td>VSTR: King's Outcome Scale for Closed Head Injury，用於&lt;16歲（圖14）。NTDS/JTDB: 無此欄位。台灣登錄若含兒科患者，建議 Level 3 研究欄位。</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Observation</span><br><span class="fhir-note">無任何國家有 KOSCHI FHIR profile；需完全自訂。TW: 建議 TW Trauma IG Observation extension</span></td></tr>
+<tr class="row-two"><td class="fid">F08</td><td><span class="fname">可預防死亡審查</span></td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt2">2</td><td class="star"></td><td>NTDS: TQIP績效改善程序。VSTR: Case Review Group（p.15），識別 561例（14%）需審查（Appendix 7）。JTDB: 無標準化欄位。台灣最重要的系統品質指標。</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">ClinicalImpression</span><br><span class="fhir-note">三國均無標準 Preventable Death FHIR profile。TW: 建議 TW Trauma IG ClinicalImpression + AuditEvent</span></td></tr>
+<tr class="row-one"><td class="fid">F09</td><td><span class="fname">6/12/24個月功能預後（EQ-5D-5L） <span class="bnew">🆕新增</span></span></td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="tick t-yes">✓</td><td class="tick t-no">—</td><td class="cnt1">1</td><td class="star"></td><td>VSTR: EQ-5D-5L（成人）+ EQ-5D-Y-5L（兒科）電話隨訪，82%成功追蹤（p.50）。NTDS/JTDB: 無長期追蹤機制。台灣執行難度高，建議 Level 3 研究欄位。</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-plan">規劃</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Observation</span><br><span class="fhir-note">AU: Sparked 計畫中（EQ-5D FHIR IG）；US/JP: 無。TW: 建議 TW Trauma IG (LOINC 89243-0 EQ-5D-5L; 3個時間點)</span></td></tr>
+
+<!-- G -->
+<tr class="cat-row"><td colspan="13">G　台灣特有建議欄位（Taiwan-Specific Proposed Fields）</td></tr>
+<tr class="row-tw"><td class="fid">G01</td><td><span class="fname">原住民族身份（16族）</span></td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="tick t-part">△</td><td class="tick t-no">—</td><td class="cntT">台灣</td><td class="star">★</td><td>VSTR: 有澳洲原住民欄位。台灣特有：16族+平地/山地，健保可串聯，健康不平等研究關鍵。</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-part">部分</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Patient</span><br><span class="fhir-note">AU: Sparked AU Core indigenous status extension；US: US Core Race extension；TW: 建議 TW Core 原住民族身份 Patient.extension（16族 ValueSet）</span></td></tr>
+<tr class="row-tw"><td class="fid">G02</td><td><span class="fname">健保投保類別</span></td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="cntT">台灣</td><td class="star"></td><td>台灣全民健保特有。社會經濟地位代理指標。可串聯健保資料庫進行 30天死亡/再就醫分析。</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-plan">規劃</td><td><span class="fhir-res">Coverage</span><br><span class="fhir-note">台灣特有。TW: TW Core Coverage（健保投保類別）規劃中；FHIR Coverage.type</span></td></tr>
+<tr class="row-tw"><td class="fid">G03</td><td><span class="fname">救護員執照層級（EMT-1/2/P）</span></td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="cntT">台灣</td><td class="star">★</td><td>台灣三級制度特有。研究救護員技術層級對照護結果的影響，EMS 品質改善與培訓政策重要參考。</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Practitioner</span><br><span class="fhir-note">無國際先例。TW: 建議 TW Trauma IG Practitioner.qualification.code（EMT-1/2/P ValueSet）</span></td></tr>
+<tr class="row-tw"><td class="fid">G04</td><td><span class="fname">119派遣類別</span></td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="cntT">台灣</td><td class="star"></td><td>台灣消防署 CAD 分類特有。研究派遣決策對資源配置影響。</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">ServiceRequest</span><br><span class="fhir-note">無國際先例。TW: 建議 TW Trauma IG ServiceRequest.priority extension（派遣類別 ValueSet）</span></td></tr>
+<tr class="row-tw"><td class="fid">G05</td><td><span class="fname">轉院來源醫院層級</span></td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="tick t-part">△</td><td class="tick t-no">—</td><td class="cntT">台灣</td><td class="star">★</td><td>VSTR: 有醫院分級串聯（Table 6/圖9）。台灣轉院率高，記錄轉出醫院層級分析直送創傷中心效益重要。</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Encounter</span><br><span class="fhir-note">建議 TW Trauma IG Encounter.hospitalization.admitSource（台灣醫院層級 coding system）</span></td></tr>
+<tr class="row-tw"><td class="fid">G06</td><td><span class="fname">目擊者 CPR</span></td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="cntT">台灣</td><td class="star"></td><td>台灣 OHCA 研究重要。配合 Utstein 格式。EMS 記錄有但未系統性進入院內登錄。</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Observation</span><br><span class="fhir-note">建議 TW Trauma IG Observation (LOINC 67499-3 bystander CPR；布爾值 + 品質）</span></td></tr>
+<tr class="row-tw"><td class="fid">G07</td><td><span class="fname">急診壅塞指數</span></td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="cntT">台灣</td><td class="star"></td><td>台灣急診壅塞情況嚴重，探討壅塞對創傷照護結果影響，台灣特有研究價值。Level 3。</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Observation</span><br><span class="fhir-note">無國際 FHIR 標準。建議 TW Trauma IG custom Observation（NEDOCS/EDWIN 分數）</span></td></tr>
+<tr class="row-tw"><td class="fid">G08</td><td><span class="fname">縣市別行政區（22縣市）</span></td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="cntT">台灣</td><td class="star">★</td><td>台灣特有22縣市+鄉鎮市區，GIS空間分析及資源配置研究不可或缺。</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-plan">規劃</td><td><span class="fhir-res">Location</span><br><span class="fhir-note">TW Core Location 已含 address；建議擴充鄉鎮市區行政代碼（MOI 5碼）</span></td></tr>
+<tr class="row-tw"><td class="fid">G09</td><td><span class="fname">是否為離島（金馬澎）</span></td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="cntT">台灣</td><td class="star">★</td><td>台灣獨特地理結構。離島的 EMS 時間、轉院決策、空運啟動完全不同，重要研究次群體。</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Location</span><br><span class="fhir-note">建議 TW Trauma IG Location.extension[offshoreIsland]（布爾值）+ 島別 ValueSet</span></td></tr>
+<tr class="row-tw"><td class="fid">G10</td><td><span class="fname">電動車輛事故標記（e-bike/e-scooter）</span></td><td class="tick t-no">—</td><td class="tick t-no">—</td><td class="tick t-part">△</td><td class="tick t-no">—</td><td class="cntT">台灣</td><td class="star"></td><td>VSTR: 有記錄，2022-23年 103例（2.4%），5年成長4倍。台灣電動車快速普及，需提前建立分類。</td><td class="fhir-no">—</td><td class="fhir-no">—</td><td class="fhir-part">部分</td><td class="fhir-suggest">建議</td><td><span class="fhir-res">Condition</span><br><span class="fhir-note">AU: Sparked 討論 e-scooter ICD-10 機制 coding；建議 TW Trauma IG ICD-10 外因碼 extension（電動車輛）</span></td></tr>
+
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-title">五、第零階段核心團隊討論題目</div>
+  <table class="q-table">
+    <tr>
+      <td class="qid">Q1<br>納入標準</td>
+      <td><div class="qtitle">Major Trauma 定義</div>
+      <div class="qbody">本登錄定義「重大創傷」還是「所有創傷」？建議參考 VSTR（ISS>12 或 ICU>24hr+機械通氣 或 緊急手術 或 死亡，Box 3）。JTDB 較寬鬆（ISS≥9 或 AIS≥3）。不同標準直接影響收案量與國際可比較性。</div></td>
+    </tr>
+    <tr>
+      <td class="qid">Q2<br>特有欄位</td>
+      <td><div class="qtitle">台灣特有欄位（G01–G10）優先排序</div>
+      <div class="qbody">建議至少納入第一輪 Delphi 的台灣特有欄位：G01 原住民族、G03 救護員層級（★建議直接納入）、G05 轉院來源層級、G08 縣市行政區、G09 離島標記。其餘視專家意見決定。</div></td>
+    </tr>
+    <tr>
+      <td class="qid">Q3<br>院前串聯</td>
+      <td><div class="qtitle">B 類院前欄位的資料串聯可行性</div>
+      <div class="qbody">B01–B18 需要與消防署 ePCR 串聯。高醫現有合作協議是否涵蓋院前資料？A02 GPS 座標在台灣 ePCR 現況實際可行性？B13 止血帶使用需先調查各縣市 ePCR 是否有此欄位。【FHIR 角度】院前段目前三國均非 FHIR（美國 NEMSIS 3.5 XML、日澳 CAD）；台灣 ePCR FHIR 化需列為 TW Trauma IG 的優先規劃項目，B03–B05 時間戳記為 Data Lake 關鍵時間軸。</div></td>
+    </tr>
+    <tr>
+      <td class="qid">Q4<br>NTDS新欄</td>
+      <td><div class="qtitle">NTDS 2026 新增欄位的取捨</div>
+      <div class="qbody">2026版新增 Gender Identity、GCS-40、Whole Blood 等。GCS-40 在台灣臨床推廣度低，建議第一階段保留傳統 GCS；Gender Identity 符合衛福部趨勢但需 IRB 確認；Whole Blood 為台灣未來輸血趨勢，建議列 Level 3。</div></td>
+    </tr>
+    <tr>
+      <td class="qid">Q5<br>長期追蹤</td>
+      <td><div class="qtitle">F06–F09 功能預後追蹤機制</div>
+      <div class="qbody">EQ-5D-5L 6/12/24個月追蹤（F09）執行難度高。VSTR 靠 Monash 大學專職人員（82%追蹤率）。台灣可考慮替代方案：健保資料串聯追蹤再就醫、身心障礙認定紀錄。建議 Level 3，有能力的醫院選填。</div></td>
+    </tr>
+    <tr>
+      <td class="qid">Q6<br>欄位精簡</td>
+      <td><div class="qtitle">Delphi 問卷負擔控制</div>
+      <div class="qbody">76個候選欄位預估填寫 40–55 分鐘，偏長。建議策略：★標記的 18個欄位設為「第零階段建議直接納入 Level 1」（不進 Delphi 評分，節省時間）；其餘 58個進第一輪評分，預估 30–35 分鐘。</div></td>
+    </tr>
+    <tr>
+      <td class="qid">Q7<br>FHIR 策略</td>
+      <td><div class="qtitle">FHIR 串接策略與 Data Lake 架構討論</div>
+      <div class="qbody">
+        <strong>【Delphi 問卷加入的 FHIR 問題】</strong> 建議在 Delphi 問卷的「可行性」評分後，加入第三維度：「此欄位是否應優先支援 FHIR API 串接？」（1–9分）。<br><br>
+        <strong>【Data Lake 建置優先順序】</strong> 依 FHIR 實作成熟度分三層：<br>
+        (1) 立即可串接（三國均有 R4 實作）：C01/C02/C04/D07/D08/D09 生命徵象、D04/D06 診斷與 GCS、E01 手術、F01/F04/F05 出院。<br>
+        (2) 透過 TW Core 可取得（台灣 2025 已上線）：C06 共病、E03 ICU、E07 檢驗值、E08/E10 併發症與轉院。<br>
+        (3) 需要 TW Trauma IG 自訂（建議與衛福部合作訂定）：AIS/ISS（D01/D02）、傷害意圖（A08）、院前時間軸（B01–B05）、TRISS（F03）。<br><br>
+        <strong>【TW Trauma IG 建議優先欄位】</strong> AIS 各部位 profile、創傷活化層級 ValueSet、院前時間戳記 extension、EMT 執照層級 Practitioner profile、TRISS RiskAssessment profile。
+      </div></td>
+    </tr>
+  </table>
+</div>
+
+<footer>
+  <span>台灣創傷登錄標準化 Delphi 研究｜第零階段文件｜2026年6月</span>
+  <span>資料來源：NTDS 2026（ACS/TQP）、JTDB 2023（JTCR）、VSTR 2022-23（VSTORM/Monash University）</span>
+</footer>
+
+</body>
+</html>

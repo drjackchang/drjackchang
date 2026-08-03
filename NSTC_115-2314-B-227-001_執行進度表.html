@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NSTC 115-2314-B-227-001｜執行進度與工作清單</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'PingFang TC', 'Microsoft JhengHei', -apple-system, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #1a1a2e;
+  background: #f5f5f0;
+}
+
+/* ── Cover ── */
+.cover {
+  background: #1a1a2e;
+  color: #fff;
+  padding: 48px 48px 36px;
+  position: relative;
+  overflow: hidden;
+}
+.cover::after {
+  content: '';
+  position: absolute;
+  right: -60px; top: -60px;
+  width: 320px; height: 320px;
+  border-radius: 50%;
+  border: 40px solid rgba(255,255,255,.04);
+  pointer-events: none;
+}
+.cover-eyebrow {
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #a0aec0;
+  margin-bottom: 12px;
+}
+.cover-title {
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.35;
+  margin-bottom: 6px;
+  max-width: 600px;
+}
+.cover-sub {
+  font-size: 13px;
+  color: #718096;
+  margin-bottom: 28px;
+  max-width: 560px;
+}
+.cover-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,.1);
+  font-size: 12px;
+  color: #a0aec0;
+}
+.cover-meta span strong { color: #e2e8f0; display: block; margin-bottom: 2px; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
+
+/* ── Notice bar ── */
+.notice {
+  background: #2d3748;
+  color: #fbd38d;
+  font-size: 12px;
+  padding: 10px 48px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.notice-icon { font-size: 14px; }
+
+/* ── Main layout ── */
+.main { max-width: 960px; margin: 0 auto; padding: 32px 24px 64px; }
+
+/* ── Section titles ── */
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 40px 0 16px;
+}
+.section-num {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  color: #718096;
+  min-width: 28px;
+}
+.section-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+.section-desc {
+  font-size: 13px;
+  color: #4a5568;
+  margin: -8px 0 20px 40px;
+  max-width: 640px;
+}
+
+/* ── Milestone table ── */
+.ms-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+.ms-table thead th {
+  background: #1a1a2e;
+  color: #e2e8f0;
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  text-align: left;
+  border: none;
+}
+.ms-table thead th:first-child { border-radius: 8px 0 0 0; }
+.ms-table thead th:last-child { border-radius: 0 8px 0 0; }
+.ms-table tbody tr { border-bottom: 1px solid #e8e8e4; }
+.ms-table tbody tr:last-child { border-bottom: none; }
+.ms-table tbody tr:hover { background: #fafaf8; }
+.ms-table td { padding: 11px 14px; vertical-align: top; }
+.ms-table tbody { background: #fff; border: 1px solid #e8e8e4; border-top: none; border-radius: 0 0 8px 8px; overflow: hidden; }
+
+/* Row types */
+.row-key td:first-child { border-left: 3px solid #2b6cb0; }
+.row-normal td:first-child { border-left: 3px solid transparent; }
+
+.ms-id {
+  font-weight: 600;
+  color: #2b6cb0;
+  white-space: nowrap;
+  font-size: 12px;
+}
+.ms-key .ms-id { color: #1a365d; }
+
+.ms-label { font-weight: 500; color: #1a1a2e; }
+.ms-sublabel { font-size: 12px; color: #718096; margin-top: 2px; }
+.ms-date { white-space: nowrap; font-size: 12px; color: #4a5568; font-weight: 500; }
+.ms-deliver { font-size: 12px; color: #2d3748; }
+.ms-deliver ul { padding-left: 16px; margin-top: 4px; }
+.ms-deliver li { margin-bottom: 2px; }
+
+/* Key milestone row */
+.row-key { background: #ebf4ff !important; }
+.row-key .ms-label { color: #1a365d; }
+.row-key .ms-date { color: #1a365d; font-weight: 600; }
+
+/* Phase divider rows */
+.phase-row td {
+  background: #2d3748;
+  color: #a0aec0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+}
+
+/* ── Task cards ── */
+.task-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.task-card {
+  background: #fff;
+  border: 1px solid #e8e8e4;
+  border-radius: 8px;
+  padding: 16px;
+  position: relative;
+}
+.task-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+.task-tag {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+.tag-y1 { background: #ebf4ff; color: #1a365d; }
+.tag-y2 { background: #e6fffa; color: #1d4044; }
+.tag-both { background: #fffbeb; color: #5f370e; }
+.tag-survey { background: #f0fff4; color: #1c4532; }
+
+.task-date-badge {
+  font-size: 11px;
+  color: #718096;
+  text-align: right;
+}
+.task-title { font-size: 14px; font-weight: 600; color: #1a1a2e; margin-bottom: 6px; line-height: 1.4; }
+.task-body { font-size: 12px; color: #4a5568; line-height: 1.55; }
+.task-body ul { padding-left: 16px; margin-top: 6px; }
+.task-body li { margin-bottom: 3px; }
+.task-note {
+  margin-top: 10px;
+  padding: 8px 10px;
+  background: #fffbeb;
+  border-left: 2px solid #f6ad55;
+  border-radius: 0 4px 4px 0;
+  font-size: 11px;
+  color: #744210;
+}
+
+/* ── Delphi section ── */
+.delphi-wrap { background: #fff; border: 1px solid #e8e8e4; border-radius: 8px; overflow: hidden; margin-bottom: 8px; }
+.delphi-header { background: #1a1a2e; color: #e2e8f0; padding: 14px 20px; font-size: 13px; font-weight: 600; }
+.delphi-block { border-bottom: 1px solid #e8e8e4; }
+.delphi-block:last-child { border-bottom: none; }
+.delphi-block-header {
+  padding: 12px 20px;
+  background: #f7f7f5;
+  font-size: 12px;
+  font-weight: 600;
+  color: #2d3748;
+  letter-spacing: .04em;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e8e8e4;
+}
+.delphi-block-header:hover { background: #f0f0ec; }
+.delphi-block-content { padding: 0 20px 16px; }
+.q-list { list-style: none; padding: 0; margin-top: 12px; }
+.q-item {
+  display: flex;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0ec;
+  align-items: flex-start;
+}
+.q-item:last-child { border-bottom: none; }
+.q-num {
+  min-width: 28px;
+  height: 22px;
+  background: #ebf4ff;
+  color: #1a365d;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+  flex-shrink: 0;
+}
+.q-text { font-size: 13px; color: #2d3748; line-height: 1.5; }
+.q-note { font-size: 11px; color: #718096; margin-top: 2px; }
+
+/* ── Survey plan ── */
+.survey-steps { counter-reset: step; }
+.survey-step {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+  align-items: flex-start;
+}
+.survey-step-num {
+  counter-increment: step;
+  min-width: 32px;
+  height: 32px;
+  background: #1a1a2e;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.survey-step-body { flex: 1; }
+.survey-step-title { font-size: 14px; font-weight: 600; color: #1a1a2e; margin-bottom: 4px; }
+.survey-step-desc { font-size: 13px; color: #4a5568; line-height: 1.55; }
+.survey-step-date { font-size: 11px; color: #718096; margin-top: 4px; font-weight: 500; }
+
+/* ── Data lake box ── */
+.lake-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.lake-card {
+  background: #fff;
+  border: 1px solid #e8e8e4;
+  border-radius: 8px;
+  padding: 16px;
+}
+.lake-level {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #718096;
+  margin-bottom: 8px;
+}
+.lake-title { font-size: 14px; font-weight: 600; color: #1a1a2e; margin-bottom: 6px; }
+.lake-scope { font-size: 12px; color: #4a5568; margin-bottom: 8px; line-height: 1.5; }
+.lake-tech { font-size: 11px; color: #718096; }
+.lake-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.badge-this { background: #c6f6d5; color: #1c4532; }
+.badge-next { background: #bee3f8; color: #1a365d; }
+.badge-future { background: #e9d8fd; color: #44337a; }
+
+/* ── Progress checklist ── */
+.checklist { background: #fff; border: 1px solid #e8e8e4; border-radius: 8px; padding: 20px; }
+.check-item {
+  display: flex;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0ec;
+  align-items: flex-start;
+}
+.check-item:last-child { border-bottom: none; }
+.check-box {
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid #cbd5e0;
+  border-radius: 4px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all .15s;
+}
+.check-box:hover { border-color: #2b6cb0; background: #ebf4ff; }
+.check-box.done { background: #2b6cb0; border-color: #2b6cb0; }
+.check-box.done::after { content: '✓'; font-size: 11px; color: #fff; font-weight: 700; }
+.check-label { font-size: 13px; color: #2d3748; line-height: 1.5; }
+.check-label.done-text { text-decoration: line-through; color: #a0aec0; }
+.check-sub { font-size: 11px; color: #718096; margin-top: 2px; }
+
+/* ── Footer ── */
+.doc-footer {
+  background: #1a1a2e;
+  color: #4a5568;
+  font-size: 11px;
+  padding: 16px 48px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.doc-footer span { color: #718096; }
+
+@media print {
+  body { background: #fff; }
+  .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .ms-table thead { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .phase-row { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+</style>
+</head>
+<body>
+
+<!-- Cover -->
+<div class="cover">
+  <div class="cover-eyebrow">NSTC 115-2314-B-227-001 &nbsp;｜&nbsp; 研究助理工作手冊</div>
+  <div class="cover-title">創傷登錄年報標準化與AI輔助報表產製<br>執行進度表與工作任務清單</div>
+  <div class="cover-sub">Standardizing Taiwan's Trauma Registry Annual Report and AI-Assisted Report Generation</div>
+  <div class="cover-meta">
+    <span><strong>計畫主持人</strong>張育通 助理教授（北護）</span>
+    <span><strong>共同主持人</strong>陳昭文 副教授（高醫）</span>
+    <span><strong>執行期間</strong>115/08/01 – 117/07/31（24個月）</span>
+    <span><strong>核定總經費</strong>810,000 NTD</span>
+    <span><strong>IRB 狀態</strong>高醫 KMUHIRB-E(II)-20250403 ✓ 已通過</span>
+    <span><strong>文件更新</strong>115年7月</span>
+  </div>
+</div>
+
+<!-- Notice -->
+<div class="notice">
+  <span class="notice-icon">📌</span>
+  本文件供研究助理日常工作參考。里程碑以計畫啟動日 115/08/01 為 M+0 起算。藍底列為關鍵交付里程碑，請特別注意。
+</div>
+
+<div class="main">
+
+  <!-- ══ 1. 里程碑總表 ══ -->
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <span class="section-title">里程碑總表</span>
+  </div>
+  <p class="section-desc">IRB（高醫）已通過，計畫自 115/08/01 啟動。下表依時序列出所有關鍵節點，藍底為主要交付里程碑。</p>
+
+  <table class="ms-table">
+    <thead>
+      <tr>
+        <th style="width:60px">里程碑</th>
+        <th>工作項目</th>
+        <th style="width:110px">目標完成日</th>
+        <th>交付物 / 驗收標準</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <!-- 前置 -->
+      <tr class="phase-row"><td colspan="4">前置準備期（115/08）</td></tr>
+
+      <tr class="row-normal">
+        <td class="ms-id">P-1</td>
+        <td>
+          <div class="ms-label">北護 IRB 送審</div>
+          <div class="ms-sublabel">與高醫 IRB 平行進行，取得雙邊授權</div>
+        </td>
+        <td class="ms-date">115/08/15</td>
+        <td class="ms-deliver">送審確認函 + IRB 系統案號</td>
+      </tr>
+
+      <tr class="row-normal">
+        <td class="ms-id">P-2</td>
+        <td>
+          <div class="ms-label">研究助理招募到位</div>
+          <div class="ms-sublabel">確認工作項目分配與保密切結書簽署</div>
+        </td>
+        <td class="ms-date">115/09/15</td>
+        <td class="ms-deliver">切結書 + 工作說明書（Job Description）</td>
+      </tr>
+
+      <tr class="row-normal">
+        <td class="ms-id">P-3</td>
+        <td>
+          <div class="ms-label">資料使用協議（DUA）簽訂</div>
+          <div class="ms-sublabel">北護 × 高醫 × EMOC（高雄市緊急醫療資訊整合中心）</div>
+        </td>
+        <td class="ms-date">115/09/30</td>
+        <td class="ms-deliver">DUA 正式合約掃描檔</td>
+      </tr>
+
+      <!-- Phase 1 -->
+      <tr class="phase-row"><td colspan="4">第一年 Phase 1｜建立共識 — 整備資料（115/08 – 116/07）</td></tr>
+
+      <tr class="row-normal">
+        <td class="ms-id">M1</td>
+        <td>
+          <div class="ms-label">國內外標竿年報蒐集分析</div>
+          <div class="ms-sublabel">NTDB 2026、JTDB 2023、VSTR 2022-23、TARN（英國）</div>
+        </td>
+        <td class="ms-date">115/10/31</td>
+        <td class="ms-deliver">
+          <ul>
+            <li>年報結構比較分析表（中文）</li>
+            <li>VSTR 章節架構映射至台灣適用性評估</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr class="row-normal">
+        <td class="ms-id">M2</td>
+        <td>
+          <div class="ms-label">國內醫學中心創傷登錄現況調查</div>
+          <div class="ms-sublabel">目標 10–15 家急救責任醫院，對象為資料管理員 / 登錄護理師</div>
+        </td>
+        <td class="ms-date">115/11/30</td>
+        <td class="ms-deliver">
+          <ul>
+            <li>調查問卷定稿（線上表單）</li>
+            <li>回收摘要表（含欄位現況、資料延遲、合作意願）</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr class="row-normal">
+        <td class="ms-id">M3</td>
+        <td>
+          <div class="ms-label">Delphi 候選指標清單定稿</div>
+          <div class="ms-sublabel">整合標竿分析 + 現況調查結果，進入 Delphi 前的基準版本</div>
+        </td>
+        <td class="ms-date">115/12/15</td>
+        <td class="ms-deliver">候選指標清單 v0.1（中英對照，含指標定義初稿）</td>
+      </tr>
+
+      <tr class="row-normal">
+        <td class="ms-id">M4</td>
+        <td>
+          <div class="ms-label">Delphi 共識問卷工具定稿</div>
+          <div class="ms-sublabel">含四構面評分（重要性/可行性/可比性/政策價值），7點 Likert</div>
+        </td>
+        <td class="ms-date">115/12/31</td>
+        <td class="ms-deliver">
+          <ul>
+            <li>Delphi 問卷 v1（線上系統或 Google Forms）</li>
+            <li>專家名單確認（20–25 名，各領域代表）</li>
+            <li>邀請函草稿</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr class="row-normal">
+        <td class="ms-id">M5</td>
+        <td>
+          <div class="ms-label">Delphi Round 1 執行完成</div>
+          <div class="ms-sublabel">匿名問卷寄發 → 回收 → 統計分析</div>
+        </td>
+        <td class="ms-date">116/01/31</td>
+        <td class="ms-deliver">R1 統計回饋報告（中位數、IQR、各指標分布圖）</td>
+      </tr>
+
+      <tr class="row-normal">
+        <td class="ms-id">M6</td>
+        <td>
+          <div class="ms-label">Delphi Round 2 執行完成</div>
+          <div class="ms-sublabel">提供 R1 分布作為回饋，針對爭議指標重新評分</div>
+        </td>
+        <td class="ms-date">116/02/28</td>
+        <td class="ms-deliver">R2 統計回饋報告 + 預計進入 NGT 之指標清單</td>
+      </tr>
+
+      <tr class="row-normal">
+        <td class="ms-id">M7</td>
+        <td>
+          <div class="ms-label">Delphi Round 3 + NGT 共識會議</div>
+          <div class="ms-sublabel">線上混合式，90–120 分鐘，處理仍有爭議之指標</div>
+        </td>
+        <td class="ms-date">116/03/31</td>
+        <td class="ms-deliver">
+          <ul>
+            <li>NGT 會議錄音 + 逐字稿</li>
+            <li>共識結果報告（達標 / 排除 / 保留討論）</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr class="row-key">
+        <td class="ms-id">▶ M8</td>
+        <td>
+          <div class="ms-label">核心指標集定稿（資料字典 v1.0）</div>
+          <div class="ms-sublabel">本計畫最重要的基礎文件，ETL / AI 模組設計的依據</div>
+        </td>
+        <td class="ms-date">116/04/15</td>
+        <td class="ms-deliver">
+          <ul>
+            <li>指標集技術報告（含定義表、計算式、資料來源、缺漏規則）</li>
+            <li>章節架構草稿（對標 VSTR 五大區塊）</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr class="row-normal">
+        <td class="ms-id">M9</td>
+        <td>
+          <div class="ms-label">跨院 ETL 流程建置完成</div>
+          <div class="ms-sublabel">PostgreSQL + PostGIS + Python，3–5 家醫院資料接入</div>
+        </td>
+        <td class="ms-date">116/04/30</td>
+        <td class="ms-deliver">
+          <ul>
+            <li>欄位映射表（含各院口徑差異紀錄）</li>
+            <li>品質監測儀表板（完整性 ≥95%、及時性中位數 ≤30 天）</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr class="row-normal">
+        <td class="ms-id">M10</td>
+        <td>
+          <div class="ms-label">首次描述性統計與初步空間分析</div>
+          <div class="ms-sublabel">KDE 核密度估計 + Moran's I + Getis-Ord Gi*</div>
+        </td>
+        <td class="ms-date">116/05/31</td>
+        <td class="ms-deliver">熱點分析初稿（交通 / 跌倒 / 暴力傷害分機制呈現）</td>
+      </tr>
+
+      <tr class="row-normal">
+        <td class="ms-id">M11</td>
+        <td>
+          <div class="ms-label">區域風險簡報卡試行版</div>
+          <div class="ms-sublabel">建議選高雄市 + 台北市，城鄉差異對比最顯著</div>
+        </td>
+        <td class="ms-date">116/06/15</td>
+        <td class="ms-deliver">區域風險簡報卡 ≥2 份（PDF，可供衛生局使用）</td>
+      </tr>
+
+      <tr class="row-key">
+        <td class="ms-id">▶ M12</td>
+        <td>
+          <div class="ms-label">第一年全部成果交付</div>
+          <div class="ms-sublabel">技術報告 + 自動化管線 v1 + 研討會論文投稿</div>
+        </td>
+        <td class="ms-date">116/07/15</td>
+        <td class="ms-deliver">
+          <ul>
+            <li>技術報告（指標集 SOP + ETL 文件）</li>
+            <li>自動化年報管線 v1（GitHub / Zenodo 公開）</li>
+            <li>去識別化範例專案（示範 ETL + 圖表）</li>
+            <li>方法論研討會論文投稿收件證明</li>
+          </ul>
+        </td>
+      </tr>
+
+      <!-- Phase 2 -->
+      <tr class="phase-row"><td colspan="4">第二年 Phase 2｜外部驗證 — 制度化落地（116/08 – 117/07）</td></tr>
+
+      <tr class="row-normal">
+        <td class="ms-id">M13</td>
+        <td>
+          <div class="ms-label">外部驗證院所接入</div>
+          <div class="ms-sublabel">≥5 家未參與第一年之院所，簽訂簡化資料使用協議</div>
+        </td>
+        <td class="ms-date">116/10/31</td>
+        <td class="ms-deliver">驗證資料集 + 接入確認文件</td>
+      </tr>
+
+      <tr class="row-normal">
+        <td class="ms-id">M14</td>
+        <td>
+          <div class="ms-label">AI 年報產製模組 v2 完成</div>
+          <div class="ms-sublabel">自然語言指令 → GIS 分析 → 表格 / 圖表 / 政策摘要自動生成</div>
+        </td>
+        <td class="ms-date">116/12/31</td>
+        <td class="ms-deliver">
+          <ul>
+            <li>AI Agent 模組（單區產出時間 ≤6 小時）</li>
+            <li>系統可用度測試報告（目標 ≥99%）</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr class="row-normal">
+        <td class="ms-id">M15</td>
+        <td>
+          <div class="ms-label">可及性指標分析完成</div>
+          <div class="ms-sublabel">等時圈（isochrone）+ 行車時間模型評估各區創傷醫療可近性</div>
+        </td>
+        <td class="ms-date">117/01/31</td>
+        <td class="ms-deliver">可及性分析報告 + GIS 圖層</td>
+      </tr>
+
+      <tr class="row-normal">
+        <td class="ms-id">M16</td>
+        <td>
+          <div class="ms-label">外部驗證報告完成</div>
+          <div class="ms-sublabel">分層分析：性別 / 年齡 / 城鄉 / 社經地位</div>
+        </td>
+        <td class="ms-date">117/02/28</td>
+        <td class="ms-deliver">外部驗證技術報告（跨院 ICC ≥0.8、跨年誤差 ≤±5%）</td>
+      </tr>
+
+      <tr class="row-normal">
+        <td class="ms-id">M17</td>
+        <td>
+          <div class="ms-label">SOP v2.0 + 使用者訓練工作坊</div>
+          <div class="ms-sublabel">≥2 場次，含教材與錄影</div>
+        </td>
+        <td class="ms-date">117/04/30</td>
+        <td class="ms-deliver">
+          <ul>
+            <li>年報產製 SOP v2.0、資料規格書 v2.0</li>
+            <li>訓練教材 + 參與紀錄（回收率 ≥80%）</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr class="row-key">
+        <td class="ms-id">▶ M18</td>
+        <td>
+          <div class="ms-label">正式版《台灣創傷登錄年報》完成</div>
+          <div class="ms-sublabel">含中英文摘要、區域附錄、政策建議章</div>
+        </td>
+        <td class="ms-date">117/05/31</td>
+        <td class="ms-deliver">
+          <ul>
+            <li>年報正式版 PDF（中英雙語）</li>
+            <li>提交衛福部 / 健保署 / 消防署</li>
+          </ul>
+        </td>
+      </tr>
+
+      <tr class="row-normal">
+        <td class="ms-id">M19</td>
+        <td>
+          <div class="ms-label">期刊論文投稿</div>
+          <div class="ms-sublabel">主題：外部驗證結果 / 可及性指標 / AI 制度化經驗</div>
+        </td>
+        <td class="ms-date">117/06/30</td>
+        <td class="ms-deliver">投稿收件確認信（目標 ESCI 或 SCOPUS 收錄期刊）</td>
+      </tr>
+
+      <tr class="row-key">
+        <td class="ms-id">▶ M20</td>
+        <td>
+          <div class="ms-label">開放資料模組釋出</div>
+          <div class="ms-sublabel">ETL 模組 + 品質稽核腳本 + 圖表模板</div>
+        </td>
+        <td class="ms-date">117/07/15</td>
+        <td class="ms-deliver">
+          <ul>
+            <li>GitHub / Zenodo 公開發布（設有 DOI 與版本號）</li>
+            <li>≥3 模組（ETL、品質稽核、圖表模板）</li>
+          </ul>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <!-- ══ 2. 近期工作清單 ══ -->
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <span class="section-title">近期工作清單（115/08–115/11）</span>
+  </div>
+  <p class="section-desc">計畫啟動後前三個月的具體待辦事項，請助理逐項確認完成狀態。</p>
+
+  <div class="checklist">
+
+    <div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#718096;padding:8px 0 12px;border-bottom:1px solid #e8e8e4;margin-bottom:4px">行政與法規</div>
+
+    <div class="check-item">
+      <div class="check-box" onclick="this.classList.toggle('done');this.nextElementSibling.classList.toggle('done-text')"></div>
+      <div>
+        <div class="check-label">北護 IRB 送審（觀察性研究，免除知情同意）</div>
+        <div class="check-sub">參考高醫 IRB 已核准文件（KMUHIRB-E(II)-20250403）撰寫申請書，理由套用去識別化資料庫研究標準說法</div>
+      </div>
+    </div>
+
+    <div class="check-item">
+      <div class="check-box" onclick="this.classList.toggle('done');this.nextElementSibling.classList.toggle('done-text')"></div>
+      <div>
+        <div class="check-label">確認學習型碩士生薪資上限（向北護人事室查詢）</div>
+        <div class="check-sub">確認每月 12,000 NTD 是否符合校內規定，取得書面確認</div>
+      </div>
+    </div>
+
+    <div class="check-item">
+      <div class="check-box" onclick="this.classList.toggle('done');this.nextElementSibling.classList.toggle('done-text')"></div>
+      <div>
+        <div class="check-label">Delphi 專家謝禮報稅事宜確認（向北護會計室查詢）</div>
+        <div class="check-sub">確認每筆 >1,000 NTD 的專家出席費或問卷謝禮的所得申報程序</div>
+      </div>
+    </div>
+
+    <div class="check-item">
+      <div class="check-box" onclick="this.classList.toggle('done');this.nextElementSibling.classList.toggle('done-text')"></div>
+      <div>
+        <div class="check-label">DUA 草稿準備（北護 × 高醫 EMOC 資料）</div>
+        <div class="check-sub">聯絡高醫陳昭文老師端確認 EMOC 資料授權範圍，請法規室協助撰寫</div>
+      </div>
+    </div>
+
+    <div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#718096;padding:16px 0 12px;border-bottom:1px solid #e8e8e4;margin-bottom:4px">標竿分析（M1）</div>
+
+    <div class="check-item">
+      <div class="check-box" onclick="this.classList.toggle('done');this.nextElementSibling.classList.toggle('done-text')"></div>
+      <div>
+        <div class="check-label">下載並閱讀 VSTR 2022-23 完整年報</div>
+        <div class="check-sub">網址：https://www.monash.edu/__data/assets/pdf_file/0010/3845197/VSTR-Annual-Report-2022-23-v3.pdf</div>
+      </div>
+    </div>
+
+    <div class="check-item">
+      <div class="check-box" onclick="this.classList.toggle('done');this.nextElementSibling.classList.toggle('done-text')"></div>
+      <div>
+        <div class="check-label">建立 VSTR 章節架構映射表（Excel）</div>
+        <div class="check-sub">欄位：VSTR 章節名稱 / 主要指標 / 台灣資料可及性（高/中/低）/ 備注</div>
+      </div>
+    </div>
+
+    <div class="check-item">
+      <div class="check-box" onclick="this.classList.toggle('done');this.nextElementSibling.classList.toggle('done-text')"></div>
+      <div>
+        <div class="check-label">蒐集 NTDB 2026、JTDB 2023 年報（或主要文獻）</div>
+        <div class="check-sub">NTDB 可至 ACS/TQP 網站申請；JTDB 以同儕審查文獻（Nakao 2023、Scientific Reports 2025）補充</div>
+      </div>
+    </div>
+
+    <div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#718096;padding:16px 0 12px;border-bottom:1px solid #e8e8e4;margin-bottom:4px">醫學中心現況調查（M2）</div>
+
+    <div class="check-item">
+      <div class="check-box" onclick="this.classList.toggle('done');this.nextElementSibling.classList.toggle('done-text')"></div>
+      <div>
+        <div class="check-label">擬定目標醫院名單（10–15 家）</div>
+        <div class="check-sub">包含：高醫、林口長庚、台大、三總、振興、台中榮總、成大、嘉基、花慈、台北慈濟、新竹馬偕等；優先選有外傷科或外傷登錄的院所</div>
+      </div>
+    </div>
+
+    <div class="check-item">
+      <div class="check-box" onclick="this.classList.toggle('done');this.nextElementSibling.classList.toggle('done-text')"></div>
+      <div>
+        <div class="check-label">設計現況調查問卷（Google Forms 或 Qualtrics）</div>
+        <div class="check-sub">對象為資料管理員 / 登錄護理師，不是臨床醫師。問卷重點：欄位現況、資料延遲、年報格式、合作意願</div>
+      </div>
+    </div>
+
+    <div class="check-item">
+      <div class="check-box" onclick="this.classList.toggle('done');this.nextElementSibling.classList.toggle('done-text')"></div>
+      <div>
+        <div class="check-label">寄發邀請函與問卷連結</div>
+        <div class="check-sub">請陳昭文老師協助提供各院外傷科聯絡人名單；邀請函需說明計畫性質與保密承諾</div>
+      </div>
+    </div>
+
+    <div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#718096;padding:16px 0 12px;border-bottom:1px solid #e8e8e4;margin-bottom:4px">技術環境建置</div>
+
+    <div class="check-item">
+      <div class="check-box" onclick="this.classList.toggle('done');this.nextElementSibling.classList.toggle('done-text')"></div>
+      <div>
+        <div class="check-label">建立 GitHub 專案庫（私有，計畫啟動後轉公開）</div>
+        <div class="check-sub">資料夾結構：/data（去識別化範例）/ etl / analysis / reports / docs</div>
+      </div>
+    </div>
+
+    <div class="check-item">
+      <div class="check-box" onclick="this.classList.toggle('done');this.nextElementSibling.classList.toggle('done-text')"></div>
+      <div>
+        <div class="check-label">安裝並設定 PostgreSQL + PostGIS（本機或機構伺服器）</div>
+        <div class="check-sub">確認北護 IT 是否可提供伺服器空間；若否以 Google Cloud 免費額度替代</div>
+      </div>
+    </div>
+
+    <div class="check-item">
+      <div class="check-box" onclick="this.classList.toggle('done');this.nextElementSibling.classList.toggle('done-text')"></div>
+      <div>
+        <div class="check-label">設定 Google Workspace 共用雲端硬碟（付費版）</div>
+        <div class="check-sub">設定存取權限：PI + 共同主持人 + 助理；啟用版本紀錄與稽核日誌</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══ 3. 醫學中心現況調查設計 ══ -->
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <span class="section-title">醫學中心創傷登錄現況調查（M2）</span>
+  </div>
+  <p class="section-desc">此調查與 Delphi 共識問卷是兩件不同的事。調查對象是各院資料管理員 / 登錄護理師，目的是掌握現行資料庫的欄位現況，作為 Delphi 問卷設計的背景資料。</p>
+
+  <div class="survey-steps">
+    <div class="survey-step">
+      <div class="survey-step-num">1</div>
+      <div class="survey-step-body">
+        <div class="survey-step-title">準備目標院所名單與聯絡人</div>
+        <div class="survey-step-desc">鎖定全台急救責任醫院中設有外傷科或外傷登錄系統的院所，請陳昭文老師協助提供高醫系統聯絡人，其他院所由研究助理電話確認。</div>
+        <div class="survey-step-date">→ 目標完成：115/08/31</div>
+      </div>
+    </div>
+    <div class="survey-step">
+      <div class="survey-step-num">2</div>
+      <div class="survey-step-body">
+        <div class="survey-step-title">設計問卷（資料管理員版，約 20–25 題）</div>
+        <div class="survey-step-desc">問卷重點：①現行登錄欄位數量與來源系統②是否計算 ISS/AIS③年報產製頻率與格式④資料延遲天數⑤是否有意願參與跨院標準化。<strong>不詢問個別欄位細節</strong>，只問系統層級的現況。</div>
+        <div class="survey-step-date">→ 目標完成：115/09/15</div>
+      </div>
+    </div>
+    <div class="survey-step">
+      <div class="survey-step-num">3</div>
+      <div class="survey-step-body">
+        <div class="survey-step-title">寄發問卷與追蹤回收</div>
+        <div class="survey-step-desc">以電子郵件 + 電話雙管道寄發，設定兩週回收期，兩週後電話追蹤未回覆者一次。目標回收率 ≥70%（7–10 家）。</div>
+        <div class="survey-step-date">→ 寄發：115/09/20 / 截止：115/10/15</div>
+      </div>
+    </div>
+    <div class="survey-step">
+      <div class="survey-step-num">4</div>
+      <div class="survey-step-body">
+        <div class="survey-step-title">彙整分析並撰寫調查摘要報告</div>
+        <div class="survey-step-desc">以表格呈現各院現況比較，特別標注欄位差異最大的地方（這些差異就是 Delphi 需要處理的）。</div>
+        <div class="survey-step-date">→ 目標完成：115/11/30（M2 交付）</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 4. Delphi 共識問卷題項 ══ -->
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <span class="section-title">Delphi 共識問卷——主要題項（M4）</span>
+  </div>
+  <p class="section-desc">以下為向 20–25 名臨床與公衛專家施測的 Delphi 問卷題項草稿。每題以四個構面評分（1–7 Likert）：<strong>重要性、可行性、可比性（跨院）、政策應用價值</strong>。題項設計以「年報應呈現什麼」為核心，對標 VSTR 五大區塊。</p>
+
+  <div class="delphi-wrap">
+
+    <div class="delphi-header">一、基本人口輪廓指標（Trauma Profile）｜對應 VSTR「Demographic profile」</div>
+    <div class="delphi-block">
+      <div class="delphi-block-content">
+        <ul class="q-list">
+          <li class="q-item"><span class="q-num">Q1</span><div><div class="q-text">每年住院重大創傷人數（含年齡別標準化發生率，per 100,000 人口）</div></div></li>
+          <li class="q-item"><span class="q-num">Q2</span><div><div class="q-text">年齡分布（依六個年齡層報告：&lt;5、5–17、18–44、45–64、65–74、≥75）</div></div></li>
+          <li class="q-item"><span class="q-num">Q3</span><div><div class="q-text">性別分布（生理性別；男 / 女 / 其他）</div></div></li>
+          <li class="q-item"><span class="q-num">Q4</span><div><div class="q-text">受傷機制分類（交通事故、跌倒、暴力傷害、運動傷害、其他，分別報告）</div></div></li>
+          <li class="q-item"><span class="q-num">Q5</span><div><div class="q-text">跌倒細分（低處跌倒 ≤1 公尺 vs 高處跌倒 &gt;1 公尺）應獨立呈現</div><div class="q-note">VSTR 近五年數據顯示低處跌倒超越交通事故，成為台灣最主要的機制，高齡化趨勢下此指標將快速升溫</div></div></li>
+          <li class="q-item"><span class="q-num">Q6</span><div><div class="q-text">受傷地點分類（住家、道路、工作場所、休閒場所、其他）</div></div></li>
+          <li class="q-item"><span class="q-num">Q7</span><div><div class="q-text">受傷時間分布（4小時時段、星期幾）</div></div></li>
+          <li class="q-item"><span class="q-num">Q8</span><div><div class="q-text">事故發生地之城鄉分類（都市 / 非都市 / 偏遠），含各類別發生率</div></div></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="delphi-header" style="background:#2d3748">二、傷害嚴重度與類型（Injury Severity & Type）｜對應 VSTR「Injuries sustained」</div>
+    <div class="delphi-block">
+      <div class="delphi-block-content">
+        <ul class="q-list">
+          <li class="q-item"><span class="q-num">Q9</span><div><div class="q-text">創傷嚴重度評分（ISS）分布，以 ISS ≥16 作為「重大創傷」報告門檻</div></div></li>
+          <li class="q-item"><span class="q-num">Q10</span><div><div class="q-text">頭部傷害嚴重度應獨立呈現（AIS head score + 到院 GCS，按機制分類）</div></div></li>
+          <li class="q-item"><span class="q-num">Q11</span><div><div class="q-text">主要傷害解剖位置分類（頭頸部、胸腹部、四肢、多重創傷）</div></div></li>
+          <li class="q-item"><span class="q-num">Q12</span><div><div class="q-text">脊髓損傷案例應在年報中獨立呈現</div></div></li>
+          <li class="q-item"><span class="q-num">Q13</span><div><div class="q-text">燒傷案例（TBSA ≥20%）應在年報中獨立呈現</div></div></li>
+          <li class="q-item"><span class="q-num">Q14</span><div><div class="q-text">傷害意圖應列入年報（非蓄意 / 蓄意自傷 / 他傷或暴力）</div><div class="q-note">此欄位影響政策方向：自傷案例需心理衛生資源，暴力傷害需治安政策，不宜合併呈現</div></div></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="delphi-header" style="background:#2d3748">三、就醫流程指標（Patient Flow & Triage）｜對應 VSTR「First hospital and definitive care」</div>
+    <div class="delphi-block">
+      <div class="delphi-block-content">
+        <ul class="q-list">
+          <li class="q-item"><span class="q-num">Q15</span><div><div class="q-text">第一接收醫院層級分布（急救責任醫院各等級）</div></div></li>
+          <li class="q-item"><span class="q-num">Q16</span><div><div class="q-text">最終照護醫院層級（定性照護是否達適當等級，按台灣分級報告）</div></div></li>
+          <li class="q-item"><span class="q-num">Q17</span><div><div class="q-text">由事故現場直接轉送至創傷中心的比率（direct admission rate）</div></div></li>
+          <li class="q-item"><span class="q-num">Q18</span><div><div class="q-text">跨院轉診比率（inter-hospital transfer rate）</div></div></li>
+          <li class="q-item"><span class="q-num">Q19</span><div><div class="q-text">轉診目的地合規率（是否符合創傷分流指引，destination compliance rate）</div><div class="q-note">VSTR 2022-23 為 94.7%；台灣目前尚無統一指引，此指標可作為指引建立後的基線</div></div></li>
+          <li class="q-item"><span class="q-num">Q20</span><div><div class="q-text">直升機（HEMS）救護使用率應在年報中呈現</div></div></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="delphi-header" style="background:#2d3748">四、院前救護與系統時間指標（Pre-hospital & System Time Indicators）｜對應 VSTR「Trauma system indicators」</div>
+    <div class="delphi-block">
+      <div class="delphi-block-content">
+        <ul class="q-list">
+          <li class="q-item"><span class="q-num">Q21</span><div><div class="q-text">緊急救護到達現場時間（response time，中位數 + 第90百分位）</div></div></li>
+          <li class="q-item"><span class="q-num">Q22</span><div><div class="q-text">現場處置時間（scene time，從到場至離開）</div></div></li>
+          <li class="q-item"><span class="q-num">Q23</span><div><div class="q-text">到達最終照護醫院的總時間（含跨院轉診時間）</div></div></li>
+          <li class="q-item"><span class="q-num">Q24</span><div><div class="q-text">跨院轉診等待時間（inter-hospital transfer time，中位數）</div></div></li>
+          <li class="q-item"><span class="q-num">Q25</span><div><div class="q-text">外傷小組啟動率（trauma team activation rate）</div></div></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="delphi-header" style="background:#2d3748">五、住院結局指標（In-hospital Outcomes）｜對應 VSTR「Hospital outcomes」</div>
+    <div class="delphi-block">
+      <div class="delphi-block-content">
+        <ul class="q-list">
+          <li class="q-item"><span class="q-num">Q26</span><div><div class="q-text">院內死亡率（全體 + 依傷害機制分類）</div></div></li>
+          <li class="q-item"><span class="q-num">Q27</span><div><div class="q-text">院內死亡時序分析（&lt;24小時 / 1–7天 / &gt;7天）</div></div></li>
+          <li class="q-item"><span class="q-num">Q28</span><div><div class="q-text">年齡別死亡率（65歲以上應獨立呈現）</div></div></li>
+          <li class="q-item"><span class="q-num">Q29</span><div><div class="q-text">住院天數（中位數，按傷害機制分類）</div></div></li>
+          <li class="q-item"><span class="q-num">Q30</span><div><div class="q-text">加護病房（ICU）入住率與住 ICU 天數（中位數）</div></div></li>
+          <li class="q-item"><span class="q-num">Q31</span><div><div class="q-text">機械通氣使用率（含使用時數中位數）</div></div></li>
+          <li class="q-item"><span class="q-num">Q32</span><div><div class="q-text">出院狀態分布（返家 / 轉復健 / 轉長照機構 / 自動出院 / 死亡）</div></div></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="delphi-header" style="background:#2d3748">六、死亡率指標（Mortality Indicators）｜對應 VSTR「All trauma deaths」</div>
+    <div class="delphi-block">
+      <div class="delphi-block-content">
+        <ul class="q-list">
+          <li class="q-item"><span class="q-num">Q33</span><div><div class="q-text">院內創傷死亡人數與粗死亡率（需按年齡標準化）</div></div></li>
+          <li class="q-item"><span class="q-num">Q34</span><div><div class="q-text">各傷害機制別死亡率應分別呈現（交通、跌倒、暴力等）</div></div></li>
+          <li class="q-item"><span class="q-num">Q35</span><div><div class="q-text">65歲以上老年族群死亡率應獨立呈現並進行五年趨勢分析</div></div></li>
+          <li class="q-item"><span class="q-num">Q36</span><div><div class="q-text">年報中應納入到院前死亡估算值（需與衛福部死因統計連結）</div><div class="q-note">VSTR 透過 NCIS（法醫資料庫）取得，台灣可行性視衛福部資料連結協商進度，R1 讓專家先評估意願</div></div></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="delphi-header" style="background:#2d3748">七、資料治理可行性（本土化維度）</div>
+    <div class="delphi-block">
+      <div class="delphi-block-content">
+        <ul class="q-list">
+          <li class="q-item"><span class="q-num">Q37</span><div><div class="q-text">各院現行登錄系統是否具備支撐上述指標所需欄位</div></div></li>
+          <li class="q-item"><span class="q-num">Q38</span><div><div class="q-text">年報資料應達到的最低時效性要求（季報 / 半年報 / 年報）</div></div></li>
+          <li class="q-item"><span class="q-num">Q39</span><div><div class="q-text">跨院欄位口徑統一的可行性（是否有意願配合標準化）</div></div></li>
+          <li class="q-item"><span class="q-num">Q40</span><div><div class="q-text">受傷地點地理資訊（行政區或座標）目前在各院的可及性</div></div></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="delphi-header" style="background:#2d3748">開放式題項（每輪各一題）</div>
+    <div class="delphi-block">
+      <div class="delphi-block-content">
+        <ul class="q-list">
+          <li class="q-item"><span class="q-num">開1</span><div><div class="q-text">您認為台灣創傷登錄年報中，最迫切需要建立但目前最難執行的指標是什麼？請說明理由。</div></div></li>
+          <li class="q-item"><span class="q-num">開2</span><div><div class="q-text">針對主要政策使用者（衛福部、健保署、消防署），您認為年報中哪一個章節的優先度最高？</div></div></li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══ 5. Data Lake 架構說明 ══ -->
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <span class="section-title">Data Lake 架構定位</span>
+  </div>
+  <p class="section-desc">本計畫的 Data Lake 分四個層次。本計畫預算與範疇對應 Level 1（做扎實）+ Level 2（做示範）+ Level 3（寫藍圖）。Level 4 屬部會級計畫，不在現階段範疇。</p>
+
+  <div class="lake-grid">
+
+    <div class="lake-card" style="border-color:#2b6cb0">
+      <div class="lake-badge badge-this">本計畫執行</div>
+      <div class="lake-level">Level 1</div>
+      <div class="lake-title">研究用概念驗證</div>
+      <div class="lake-scope">結構化資料治理框架，跑在免費雲端或本機工作站。產出「架構文件 + 可重現 ETL 腳本 + 示範資料集」。</div>
+      <div class="lake-tech">技術：Python · DuckDB / Pandas · Google Cloud Storage · 資料字典 v1.0（metadata schema）</div>
+    </div>
+
+    <div class="lake-card" style="border-color:#276749">
+      <div class="lake-badge badge-this">本計畫示範</div>
+      <div class="lake-level">Level 2</div>
+      <div class="lake-title">機構級輕量部署</div>
+      <div class="lake-scope">需北護或高醫 IT 配合。不需額外預算，但需行政協調開放伺服器資源。Phase 1 結束後部署。</div>
+      <div class="lake-tech">技術：PostgreSQL · PostGIS · Apache Airflow / cron · Metabase（BI）</div>
+    </div>
+
+    <div class="lake-card">
+      <div class="lake-badge badge-next">下一期計畫</div>
+      <div class="lake-level">Level 3</div>
+      <div class="lake-title">跨院資料交換層</div>
+      <div class="lake-scope">FHIR 標準介面 + API Gateway，需各院 IT 正式介接，需衛福部資料治理授權。預算規模 &gt;1,000 萬。</div>
+      <div class="lake-tech">本計畫交付物（指標集 + 欄位標準 + ETL 規格書）= Level 3 的前置規格文件</div>
+    </div>
+
+    <div class="lake-card">
+      <div class="lake-badge badge-future">部會級計畫</div>
+      <div class="lake-level">Level 4</div>
+      <div class="lake-title">國家級創傷資料平台</div>
+      <div class="lake-scope">衛福部 / NHIA 主導，參考 VSTR 的三方長期合作模式（衛生廳 + TAC + Monash）。</div>
+      <div class="lake-tech">本計畫的《Data Lake 架構白皮書》是爭取部會委辦計畫的核心籌碼</div>
+    </div>
+
+  </div>
+
+  <div style="background:#fffbeb;border:1px solid #f6e05e;border-left:3px solid #d69e2e;border-radius:6px;padding:14px 18px;margin-top:4px;font-size:13px;color:#744210;">
+    <strong>Phase 2 交付建議：</strong>在 M17 SOP 文件中附上一份《台灣創傷資料平台架構白皮書》，說明從 Level 1 到 Level 3 的路徑圖、技術規格、治理框架與授權結構。這份文件對衛福部的說服力遠超過一篇期刊論文，也是申請下一期計畫或部會委辦案的核心籌碼。
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="doc-footer">
+  <span>NSTC 115-2314-B-227-001 · 創傷登錄年報標準化研究 · 研究助理工作手冊</span>
+  <span>115年7月製作 · 執行期間 115/08/01–117/07/31</span>
+</div>
+
+<script>
+document.querySelectorAll('.delphi-block-header').forEach(h => {
+  h.addEventListener('click', () => {
+    const content = h.nextElementSibling;
+    const isOpen = content.style.display !== 'none';
+    content.style.display = isOpen ? 'none' : 'block';
+    h.querySelector('.toggle-icon').textContent = isOpen ? '▸' : '▾';
+  });
+});
+</script>
+
+</body>
+</html>
