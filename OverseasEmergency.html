@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>緊急事件應對及簡易醫療處理</title>
+<style>
+:root{
+  --navy:#163a5c;--blue:#2f6f9f;--sky:#e9f4fb;--ink:#1c2733;--muted:#64748b;
+  --line:#d8e3ee;--paper:#fff;--bg:#f6f9fc;--green:#277454;--greenbg:#eef8f3;
+  --amber:#b7791f;--amberbg:#fff7e8;--red:#b42318;--redbg:#fff1f1;--purple:#6941c6;--purplebg:#f4f0ff;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;font-family:"Microsoft JhengHei","Noto Sans TC",Arial,sans-serif;background:#dce7f1;color:var(--ink)}
+body{display:flex;align-items:center;justify-content:center;overflow:hidden}
+#deck{width:1600px;height:900px;flex:none;background:var(--bg);position:relative;overflow:hidden;border-radius:18px;box-shadow:0 24px 60px rgba(15,39,70,.22);transform-origin:center center}
+@media screen and (max-width:1600px),screen and (max-height:900px){#deck{transform:scale(.86)}}
+@media screen and (max-width:1300px),screen and (max-height:730px){#deck{transform:scale(.72)}}
+@media screen and (max-width:1050px),screen and (max-height:590px){#deck{transform:scale(.58)}}
+@media screen and (max-width:800px),screen and (max-height:450px){#deck{transform:scale(.44)}}
+@media screen and (max-width:560px),screen and (max-height:315px){#deck{transform:scale(.3)}}
+@media screen and (max-width:400px),screen and (max-height:225px){#deck{transform:scale(.22)}}
+.slide{position:absolute;inset:0;padding:42px 56px 52px;display:none;flex-direction:column;background:linear-gradient(180deg,#fbfdff 0%,#f2f7fb 100%)}
+.slide.active{display:flex}.slide{justify-content:center}.top{font-size:18px;color:var(--blue);font-weight:800;letter-spacing:.04em;margin-bottom:8px}.title{font-size:40px;line-height:1.12;color:var(--navy);font-weight:900;margin:0 0 18px}.bigtitle{font-size:58px;line-height:1.1;color:var(--navy);font-weight:900;margin:0 0 20px}.subtitle{font-size:27px;line-height:1.35;color:#3e5c75;margin:0 0 22px}.foot{position:absolute;left:56px;right:56px;bottom:18px;display:flex;justify-content:space-between;color:#718096;font-size:14px}.nav{position:absolute;top:12px;right:18px;font-size:12px;color:#7a8a9b}.layout2{display:grid;grid-template-columns:1.05fr .95fr;gap:24px;align-items:stretch}.layout3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.layout6{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:22px 24px;box-shadow:0 10px 22px rgba(24,52,78,.06)}.card h3{font-size:25px;color:var(--navy);margin:0 0 10px}.card p,.card li{font-size:21px;line-height:1.38}.card ul{margin:8px 0 0 24px;padding:0}.note,.good,.warn,.danger{border-radius:18px;padding:16px 20px;font-size:21px;line-height:1.42}.note{background:var(--sky);border-left:7px solid var(--blue)}.good{background:var(--greenbg);border-left:7px solid var(--green)}.warn{background:var(--amberbg);border-left:7px solid var(--amber)}.danger{background:var(--redbg);border-left:7px solid var(--red)}.pill{display:inline-block;padding:7px 12px;border-radius:999px;background:#e8f1f8;color:var(--navy);font-size:19px;font-weight:800;margin:0 8px 8px 0}.hero{height:100%;display:grid;grid-template-columns:1.12fr .88fr;gap:34px;align-items:center}.hero .card{padding:28px}.agenda{display:grid;grid-template-columns:1fr 1fr;gap:12px}.agenda div{background:#f1f7fc;border:1px solid var(--line);border-radius:16px;padding:14px 16px;font-size:21px;font-weight:800;color:var(--navy)}
+.smart{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:2px}.smart .item{background:#fff;border:1px solid var(--line);border-radius:24px;padding:24px 14px 22px;min-height:350px;text-align:center;box-shadow:0 8px 20px rgba(30,50,80,.05);display:flex;flex-direction:column;align-items:center;justify-content:flex-start}.smart .letter{font-size:76px;font-weight:900;color:var(--blue);line-height:1}.smart .eng{font-size:20px;color:var(--navy);font-weight:800;margin:8px 0 16px;min-height:48px;display:flex;align-items:center;justify-content:center}.smart .cht{font-size:25px;line-height:1.42;color:#111827}.callout-row{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px}.phone-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.phone{background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px 20px}.phone h3{font-size:24px;color:var(--navy);margin:0 0 12px}.nums{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}.num{background:#f4f8fc;border-radius:12px;padding:10px;text-align:center}.num b{display:block;font-size:27px;color:var(--blue);line-height:1.1}.num span{font-size:15px;color:#526270}.phone p{font-size:18px;line-height:1.3;margin:12px 0 0;color:#4a5b6d}.risk-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:20px 22px;min-height:245px}.risk-card h3{font-size:30px;color:var(--navy);margin:0 0 12px}.tag{display:inline-block;background:#edf4fa;color:#164365;border-radius:999px;padding:6px 10px;font-size:19px;font-weight:800;margin:0 6px 8px 0}.risk-card p{font-size:22px;line-height:1.38;margin:8px 0 0}.disease{display:grid;grid-template-columns:1fr 1fr;gap:24px}.route{display:grid;grid-template-columns:104px 1fr;gap:22px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:22px;padding:28px}.icon{width:104px;height:104px;border-radius:26px;background:var(--sky);display:flex;align-items:center;justify-content:center;font-size:50px}.route h3{font-size:28px;margin:0 0 8px;color:var(--navy)}.route p{font-size:22px;line-height:1.45;margin:0}.country-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.country{background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px 26px;min-height:230px;display:flex;flex-direction:column;justify-content:center}.country h3{font-size:27px;color:var(--navy);margin:0 0 12px}.country p{font-size:21px;line-height:1.55;margin:0}.activity{display:grid;grid-template-columns:.8fr 1.2fr;gap:22px}.timer{background:var(--navy);color:#fff;border-radius:28px;padding:30px;text-align:center;display:flex;flex-direction:column;justify-content:center}.timer b{font-size:84px;line-height:1}.timer span{font-size:26px;font-weight:800}.formcard{background:#fff;border:2px dashed #b8cadd;border-radius:22px;padding:18px 20px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fffdf5;min-height:44px}.field b{font-size:16px;color:#53657a;display:block}.field span{font-size:20px;color:#9aa7b5}.lang2{display:grid;grid-template-columns:1fr 1fr;gap:18px}.phrase{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px}.phrase h3{font-size:25px;color:var(--navy);margin:0 0 12px}.phrase-row{display:grid;grid-template-columns:.65fr 1fr;gap:12px;padding:9px 0;border-bottom:1px solid #edf2f7}.phrase-row:last-child{border-bottom:0}.phrase-row b{font-size:18px}.phrase-row span{font-size:19px;line-height:1.25}.medkit{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.kit{background:#fff;border:1px solid var(--line);border-radius:22px;padding:28px 22px;min-height:250px;display:flex;flex-direction:column;justify-content:center}.kit .kicon{font-size:48px}.kit h3{font-size:26px;color:var(--navy);margin:10px 0}.kit p{font-size:20px;line-height:1.5;margin:0}.steps2{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.smallstep{background:#fff;border:1px solid var(--line);border-radius:22px;padding:30px 22px;text-align:center;min-height:230px;display:flex;flex-direction:column;justify-content:center}.smallstep b{font-size:56px;color:var(--blue);display:block}.smallstep p{font-size:23px;line-height:1.5;margin:10px 0 0}.redflags{display:grid;grid-template-columns:1fr 1fr;gap:22px}.redflags .danger,.redflags .warn{height:100%;padding:28px 24px}.redflags h3{font-size:29px;margin:0 0 14px;color:var(--navy)}.redflags li{font-size:22px;line-height:1.7;margin:6px 0}.cpr{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:6px}.cpr .box{background:#fff;border:1px solid var(--line);border-radius:26px;padding:28px 18px;text-align:center;min-height:315px;display:flex;flex-direction:column;justify-content:center}.cpr .big{font-size:76px;font-weight:900;color:var(--blue);line-height:1}.cpr .sub{font-size:25px;font-weight:900;color:var(--navy);margin:12px 0}.cpr .desc{font-size:23px;line-height:1.35}.check{display:grid;grid-template-columns:1fr 1fr;gap:18px}.check .card{padding:24px}.check-row{display:flex;gap:12px;align-items:flex-start;margin:12px 0;font-size:22px;line-height:1.3}.boxcheck{width:26px;height:26px;border:2px solid var(--blue);border-radius:7px;flex:0 0 26px;background:#fff}.refs li{font-size:19px;line-height:1.65;margin:14px 0}.controls{position:absolute;right:16px;bottom:12px;display:flex;gap:8px;z-index:9}.controls button{border:none;background:#23486e;color:#fff;padding:10px 14px;border-radius:11px;cursor:pointer;font-size:15px}.kbd{display:inline-block;border:1px solid #c6d3df;border-bottom-width:3px;background:#fff;padding:1px 6px;border-radius:6px}
+@media print{body{display:block;background:#fff}#deck{width:100%;height:auto;aspect-ratio:auto;transform:none!important;box-shadow:none;border-radius:0}.slide{position:relative;display:flex;page-break-after:always;min-height:900px}.controls,.nav{display:none}}
+</style>
+</head>
+<body>
+<div id="deck">
+<div class="nav">方向鍵切換：<span class="kbd">←</span> <span class="kbd">→</span></div>
+
+<section class="slide active">
+  <div class="hero">
+    <div>
+      <div class="top">青年海外圓夢基金計畫｜行前訓練</div>
+      <h1 class="bigtitle">緊急事件應對及簡易醫療處理</h1>
+      <p class="subtitle">不是要大家變成醫護人員，而是讓你在海外遇到狀況時，知道怎麼穩住現場、保護自己、啟動求援。</p>
+      <div class="note"><b>今天的目標：</b>把最常見、最實用、最容易忘記的事情先整理好。</div>
+    </div>
+    <div class="card">
+      <h3>這一小時會完成</h3>
+      <div class="agenda">
+        <div>各國風險</div><div>SMART 應變</div><div>緊急電話</div><div>醫療卡</div><div>個人藥箱</div><div>止血與 CPR</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>緊急事件應對及簡易醫療處理</span><span>1</span></div>
+</section>
+
+<section class="slide">
+  <div class="top">核心架構</div>
+  <h2 class="title">SMART 應變步驟</h2>
+  <div class="smart">
+    <div class="item"><div class="letter">S</div><div class="eng">Surrounding</div><div class="cht">評估環境安全，確認無危險後再救助。</div></div>
+    <div class="item"><div class="letter">M</div><div class="eng">Move to safe place</div><div class="cht">移動至安全處所，協助傷者遠離危險。</div></div>
+    <div class="item"><div class="letter">A</div><div class="eng">Alert</div><div class="cht">立即通報警消或尋求專業救災協助。</div></div>
+    <div class="item"><div class="letter">R</div><div class="eng">Resource</div><div class="cht">尋找並善用現場可用人力與急救資源。</div></div>
+    <div class="item"><div class="letter">T</div><div class="eng">Triage & Treatment</div><div class="cht">檢傷分類，確認意識、生命徵象並初步止血。</div></div>
+  </div>
+  <div class="callout-row">
+    <div class="good"><b>講法：</b>先保護自己，再把人移出危險，接著啟動求援、找資源，最後做初步檢傷與處置。</div>
+    <div class="warn"><b>海外特別重要：</b>先確認交通、電力、火源、治安與撤離路線，不要急著衝上去。</div>
+  </div>
+  <div class="foot"><span>SMART 比死背急救流程更貼近海外現場</span><span>2</span></div>
+</section>
+
+<section class="slide">
+  <div class="top">當地緊急服務系統</div>
+  <h2 class="title">抵達第一天，先把電話存起來</h2>
+  <div class="phone-grid">
+    <div class="phone"><h3>智利 Chile</h3><div class="nums"><div class="num"><b>131</b><span>救護</span></div><div class="num"><b>133</b><span>警察</span></div><div class="num"><b>132</b><span>消防</span></div></div><p>偏遠、山區或大型集會時，移動路線要先確認。</p></div>
+    <div class="phone"><h3>巴拉圭 Paraguay</h3><div class="nums"><div class="num"><b>141</b><span>SEME</span></div><div class="num"><b>911</b><span>警察</span></div><div class="num"><b>132</b><span>消防</span></div></div><p>高溫、長距離移動與戶外／溫室工作要特別注意。</p></div>
+    <div class="phone"><h3>瓜地馬拉 Guatemala</h3><div class="nums"><div class="num"><b>122</b><span>救護</span></div><div class="num"><b>110</b><span>警察</span></div><div class="num"><b>123</b><span>消防</span></div></div><p>122／123皆為消防系統兼辦救護，跨區或戶外行程先存住宿地址與接待窗口。</p></div>
+    <div class="phone"><h3>貝里斯 Belize</h3><div class="nums"><div class="num"><b>911</b><span>救護</span></div><div class="num"><b>911</b><span>警察</span></div><div class="num"><b>90</b><span>消防</span></div></div><p>消防／救護分區號碼各地不同，不確定時一律先撥911由總機轉接；城際夜間移動與道路辨識是重點風險。</p></div>
+    <div class="phone"><h3>史瓦帝尼 Eswatini</h3><div class="nums"><div class="num"><b>977</b><span>救護</span></div><div class="num"><b>999</b><span>警察</span></div><div class="num"><b>933</b><span>消防</span></div></div><p>偏區活動前，先確認撤離與陪同就醫方式。</p></div>
+    <div class="phone"><h3>聖露西亞 Saint Lucia</h3><div class="nums"><div class="num"><b>911</b><span>救護</span></div><div class="num"><b>999</b><span>警察</span></div><div class="num"><b>911</b><span>消防</span></div></div><p>左側通行，夜間照明較差，過馬路先看右側。</p></div>
+  </div>
+  <div class="foot"><span>求救時先講：位置、事件、人數、病況、回撥電話</span><span>3</span></div>
+</section>
+
+<section class="slide">
+  <div class="top">風險概覽</div>
+  <h2 class="title">常見意外：先抓住最可能發生的事</h2>
+  <div class="layout6">
+    <div class="risk-card"><h3>智利</h3><span class="tag">交通</span><span class="tag">山區</span><span class="tag">集會</span><p>跨城或上山前，先確認道路、油料、訊號與替代路線。</p></div>
+    <div class="risk-card"><h3>巴拉圭</h3><span class="tag">高溫</span><span class="tag">脫水</span><span class="tag">割傷</span><p>喝水、遮陽與休息安排，比想像中重要。</p></div>
+    <div class="risk-card"><h3>瓜地馬拉</h3><span class="tag">轉場</span><span class="tag">小巴</span><span class="tag">扭傷</span><p>很多問題發生在「轉場」，不是正式活動本身。</p></div>
+    <div class="risk-card"><h3>貝里斯</h3><span class="tag">夜間移動</span><span class="tag">道路</span><span class="tag">水域</span><p>不建議城際夜間自駕；水域活動一定要穿救生裝備。</p></div>
+    <div class="risk-card"><h3>史瓦帝尼</h3><span class="tag">交通</span><span class="tag">治安</span><span class="tag">偏區</span><p>除了醫療，也要提前想好撤離、叫車與陪同就醫。</p></div>
+    <div class="risk-card"><h3>聖露西亞</h3><span class="tag">左側通行</span><span class="tag">夜間</span><span class="tag">路況</span><p>過馬路先看右邊，不要用台灣直覺判斷車流方向。</p></div>
+  </div>
+  <div class="foot"><span>常見意外是從海外移動與實習情境整理</span><span>4</span></div>
+</section>
+
+<section class="slide">
+  <div class="top">傳染病概覽</div>
+  <h2 class="title">不要背一堆病名，先記傳播途徑</h2>
+  <div class="disease">
+    <div class="route"><div class="icon">🦟</div><div><h3>蚊媒疾病</h3><p>登革熱、屈公病、茲卡；中南美與加勒比海要優先防蚊。</p></div></div>
+    <div class="route"><div class="icon">💧</div><div><h3>飲食與飲水</h3><p>A型肝炎、傷寒與腸胃感染；水、冰塊、生食要保守。</p></div></div>
+    <div class="route"><div class="icon">🌊</div><div><h3>淡水／泥水暴露</h3><p>鉤端螺旋體病；戶外、雨後、河流湖泊與傷口要小心。</p></div></div>
+    <div class="route"><div class="icon">🫁</div><div><h3>空氣或環境暴露</h3><p>史瓦帝尼留意 TB；智利部分情境留意 Hantavirus / Andes virus。</p></div></div>
+  </div>
+  <div class="warn" style="margin-top:18px"><b>簡化記法：</b>中南美與加勒比海＝防蚊＋飲食衛生；史瓦帝尼再加上部分地區瘧疾與 TB 意識。</div>
+  <div class="foot"><span>先抓傳播途徑，比背病名更好記</span><span>5</span></div>
+</section>
+
+<section class="slide">
+  <div class="top">各國健康提醒</div>
+  <h2 class="title">重要傳染病：每個國家抓 2–3 個重點</h2>
+  <div class="country-grid">
+    <div class="country"><h3>智利</h3><p>A型肝炎、麻疹；部分區域或特定環境留意 Hantavirus / Andes virus。</p></div>
+    <div class="country"><h3>巴拉圭</h3><p>登革熱、屈公病、鉤端螺旋體病；另留意A型肝炎與傷寒。</p></div>
+    <div class="country"><h3>瓜地馬拉</h3><p>登革熱、屈公病、茲卡；部分地區有瘧疾風險。</p></div>
+    <div class="country"><h3>貝里斯</h3><p>登革熱、屈公病；部分地區瘧疾，水域與傷口照護要留意。</p></div>
+    <div class="country"><h3>史瓦帝尼</h3><p>部分地區瘧疾；另留意 TB、A型肝炎與一般飲食衛生。</p></div>
+    <div class="country"><h3>聖露西亞</h3><p>登革熱、屈公病、茲卡；另留意鉤端螺旋體病與A型肝炎。</p></div>
+  </div>
+  <div class="foot"><span>行前提醒的目的，是讓學生知道怎麼預防</span><span>6</span></div>
+</section>
+
+<section class="slide">
+  <div class="top">小互動 1</div>
+  <h2 class="title">個人醫療卡：現在就整理</h2>
+  <div class="activity">
+    <div class="timer"><b>3</b><span>分鐘</span><p style="font-size:22px;line-height:1.4">能填的先填，填不出來的，就是出國前要補齊的。</p></div>
+    <div class="formcard">
+      <div class="formgrid">
+        <div class="field"><b>英文姓名／護照姓名</b><span>________________</span></div>
+        <div class="field"><b>出生年月日</b><span>________________</span></div>
+        <div class="field"><b>血型</b><span>________________</span></div>
+        <div class="field"><b>藥物／食物過敏</b><span>________________</span></div>
+        <div class="field"><b>慢性病／重要病史</b><span>________________</span></div>
+        <div class="field"><b>固定用藥（學名）</b><span>________________</span></div>
+        <div class="field"><b>台灣緊急聯絡人</b><span>________________</span></div>
+        <div class="field"><b>當地窗口／業師</b><span>________________</span></div>
+        <div class="field"><b>保險與急難救助</b><span>________________</span></div>
+        <div class="field"><b>住宿地址／最近醫院</b><span>________________</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>實體版放皮夾，手機版做離線截圖</span><span>7</span></div>
+</section>
+
+<section class="slide">
+  <div class="top">個人醫療卡｜語言對照</div>
+  <h2 class="title">先準備會被問到的句子</h2>
+  <div class="lang2">
+    <div class="phrase"><h3>西班牙語：智利／瓜地馬拉／巴拉圭</h3>
+      <div class="phrase-row"><b>我需要救護車</b><span>Necesito una ambulancia.</span></div>
+      <div class="phrase-row"><b>我現在在這裡</b><span>Estoy aquí / Estoy en ____.</span></div>
+      <div class="phrase-row"><b>我對＿＿過敏</b><span>Soy alérgico/a a ____.</span></div>
+      <div class="phrase-row"><b>我有＿＿病史</b><span>Tengo antecedentes de ____.</span></div>
+      <div class="phrase-row"><b>固定用藥</b><span>Medicamentos que tomo.</span></div>
+    </div>
+    <div class="phrase"><h3>英文：貝里斯／聖露西亞／史瓦帝尼</h3>
+      <div class="phrase-row"><b>我需要救護車</b><span>I need an ambulance.</span></div>
+      <div class="phrase-row"><b>我現在在這裡</b><span>I am here / My location is ____.</span></div>
+      <div class="phrase-row"><b>我對＿＿過敏</b><span>I am allergic to ____.</span></div>
+      <div class="phrase-row"><b>我有＿＿病史</b><span>I have a history of ____.</span></div>
+      <div class="phrase-row"><b>固定用藥</b><span>These are my current medications.</span></div>
+    </div>
+  </div>
+  <div class="foot"><span>讓當地人看得懂，比自己看得懂更重要</span><span>8</span></div>
+</section>
+
+<section class="slide">
+  <div class="top">小互動 2</div>
+  <h2 class="title">個人藥箱：不是越多越好，是越符合自己越好</h2>
+  <div class="medkit">
+    <div class="kit"><div class="kicon">💊</div><h3>固定處方藥</h3><p>全程用量＋延誤備用量。保留原包裝、藥袋與學名。</p></div>
+    <div class="kit"><div class="kicon">🫁</div><h3>個人急症藥</h3><p>氣喘、過敏、血糖等個人必備用品，放在隨身行李。</p></div>
+    <div class="kit"><div class="kicon">🌡️</div><h3>常用症狀藥</h3><p>退燒止痛、腸胃症狀、口服電解質 ORS。</p></div>
+    <div class="kit"><div class="kicon">🩹</div><h3>小外傷用品</h3><p>OK 繃、紗布、透氣膠帶、彈繃、防蚊液、防曬。</p></div>
+  </div>
+  <div class="callout-row">
+    <div class="good"><b>提醒：</b>你的慢性病藥不是團體公藥，不要分享處方藥。</div>
+    <div class="warn"><b>常見錯誤：</b>只帶幾天份、只知道中文藥名、把很多藥混裝在一起。</div>
+  </div>
+  <div class="foot"><span>藥箱的功能，是減少找不到、買不到、講不清楚</span><span>9</span></div>
+</section>
+
+<section class="slide">
+  <div class="top">簡易醫療處理</div>
+  <h2 class="title">小外傷：先會這兩件事</h2>
+  <div class="steps2">
+    <div class="smallstep"><b>1</b><p>保護自己，避免直接接觸血液。</p></div>
+    <div class="smallstep"><b>2</b><p>找到出血點，用乾淨紗布直接加壓。</p></div>
+    <div class="smallstep"><b>3</b><p>不要一直掀開看，先持續穩定加壓。</p></div>
+    <div class="smallstep"><b>4</b><p>止住後固定包紮，持續觀察滲血與感染。</p></div>
+  </div>
+  <div class="callout-row">
+    <div class="note"><b>傷口照護：</b>小傷口用清水沖洗，再以乾淨敷料覆蓋。</div>
+    <div class="warn"><b>不要硬撐：</b>持續出血、傷口深、功能受影響，或紅腫熱痛加劇，就要就醫。</div>
+  </div>
+  <div class="foot"><span>最常用的不是複雜技巧，而是先把基本處置做對</span><span>10</span></div>
+</section>
+
+<section class="slide">
+  <div class="top">不要硬撐</div>
+  <h2 class="title">海外常見紅旗症狀</h2>
+  <div class="redflags">
+    <div class="danger"><h3>立即啟動緊急服務</h3><ul><li>無反應、呼吸異常、呼吸困難</li><li>大量或持續出血</li><li>抽搐、突然意識混亂、昏倒後未恢復</li><li>胸痛、疑似中風症狀</li><li>嚴重過敏反應</li><li>重大撞擊、頭部外傷後持續嗜睡或嘔吐</li></ul></div>
+    <div class="warn"><h3>盡快安排就醫</h3><ul><li>高燒、持續嘔吐、無法進食喝水</li><li>疑似嚴重脫水、熱衰竭、熱中暑</li><li>腹瀉合併血便、發燒、明顯虛弱</li><li>被動物咬抓、可能接觸狂犬病風險</li><li>戶外或淡水接觸後發燒、肌肉痛、眼紅</li></ul></div>
+  </div>
+  <div class="foot"><span>在台灣會去看醫生的狀況，到了國外通常也不該硬拖</span><span>11</span></div>
+</section>
+
+<section class="slide">
+  <div class="top">CPR 最後複習</div>
+  <h2 class="title">叫　叫　C　D</h2>
+  <div class="cpr">
+    <div class="box"><div class="big">叫</div><div class="sub">叫他</div><div class="desc">拍肩呼喚，確認反應與呼吸。</div></div>
+    <div class="box"><div class="big">叫</div><div class="sub">叫人幫忙</div><div class="desc">打急救電話，請人拿 AED。</div></div>
+    <div class="box"><div class="big">C</div><div class="sub">Compression</div><div class="desc">胸外按壓，100–120 下／分鐘。</div></div>
+    <div class="box"><div class="big">D</div><div class="sub">Defibrillation</div><div class="desc">AED 開機，照語音貼片與操作。</div></div>
+  </div>
+  <div class="callout-row"><div class="good"><b>C：</b>胸口中央、用力壓、快快壓、完全回彈、少中斷。</div><div class="note"><b>D：</b>AED 到了就開機，照語音做，不要害怕不會用。</div></div>
+  <div class="foot"><span>CPR 這一段就用最簡單、最好記的版本</span><span>12</span></div>
+</section>
+
+<section class="slide">
+  <div class="top">最後收束</div>
+  <h2 class="title">出國前 Checklist</h2>
+  <div class="check">
+    <div class="card"><h3>出發前</h3><div class="check-row"><span class="boxcheck"></span>我知道目的地急救／警察／消防電話</div><div class="check-row"><span class="boxcheck"></span>我已完成個人醫療卡</div><div class="check-row"><span class="boxcheck"></span>我已整理個人藥箱與固定處方藥</div><div class="check-row"><span class="boxcheck"></span>我知道保險與海外急難救助電話</div></div>
+    <div class="card"><h3>到了當地</h3><div class="check-row"><span class="boxcheck"></span>重要電話與地址截圖離線保存</div><div class="check-row"><span class="boxcheck"></span>先認識交通、高溫、戶外或水域風險</div><div class="check-row"><span class="boxcheck"></span>和同伴說好誰聯絡、誰陪同就醫</div><div class="check-row"><span class="boxcheck"></span>遇到事件先想 SMART</div></div>
+  </div>
+  <div class="good" style="margin-top:18px"><b>最後一句：</b>你不需要變成半個醫生，但一定要成為一個知道怎麼先應對、知道怎麼求助的人。</div>
+  <div class="foot"><span>講到這裡剛好可以收尾</span><span>13</span></div>
+</section>
+
+<section class="slide">
+  <div class="top">資料來源</div>
+  <h2 class="title">References</h2>
+  <div class="card refs">
+    <ul>
+      <li>衛生福利部疾病管制署（CDC Taiwan）「國際旅遊處方箋」與「國際旅遊疫情建議等級」：智利、巴拉圭、瓜地馬拉、貝里斯、聖露西亞、史瓦帝尼（2026-08-10 檢索，www.cdc.gov.tw）。</li>
+      <li>中華民國外交部領事事務局「國外旅遊警示分級」與「旅外安全資訊」專區：同上六國（2026-08-10 檢索，www.boca.gov.tw）。</li>
+      <li>世界衛生組織（WHO）International Travel and Health 相關指引，作為傳染病分類與防護建議之補充依據。</li>
+      <li>本簡報中的「常見意外」以海外移動／實習情境風險整理；「重要傳染病」以疾病管制署國際旅遊處方箋與 WHO 資訊為主，用於行前提醒，不取代個別旅遊醫學門診建議，且各國急難救助電話請以外交部領事事務局最新公告為準。</li>
+    </ul>
+  </div>
+  <div class="foot"><span>授課前若要講非常細，建議再做一次最新官方資訊確認</span><span>14</span></div>
+</section>
+
+<div class="controls"><button id="prev">← 上一頁</button><button id="next">下一頁 →</button></div>
+</div>
+<script>
+const slides=[...document.querySelectorAll('.slide')];let idx=0;function show(i){idx=(i+slides.length)%slides.length;slides.forEach((s,n)=>s.classList.toggle('active',n===idx));}
+document.getElementById('prev').onclick=()=>show(idx-1);document.getElementById('next').onclick=()=>show(idx+1);
+document.addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();show(idx+1)}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(idx-1)}if(e.key==='Home')show(0);if(e.key==='End')show(slides.length-1);});
+</script>
+</body>
+</html>
