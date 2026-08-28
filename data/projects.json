@@ -1,0 +1,31 @@
+[
+  {
+    "id": "take-action-3",
+    "title_zh": "Take Action 3.0 社區醫療韌性計畫",
+    "title_en": "Take Action 3.0: Community Medical Resilience Program",
+    "desc_zh": "與美國在台協會（AIT）合作，推動建立醫療韌性推廣基地，強化民眾災難應變能力與社區防救災網絡。",
+    "desc_en": "In partnership with the American Institute in Taiwan (AIT), building community medical resilience hubs to strengthen public disaster-response capacity and local disaster-prevention networks."
+  },
+  {
+    "id": "responding-to-the-call",
+    "title_zh": "第一線人員心理健康研究",
+    "title_en": "First Responder Mental Health Research",
+    "desc_zh": "執行「Responding to the Call」專案，深入調查並建立緊急救護與消防人員的心理健康支持與同儕支持系統。",
+    "desc_en": "Leading the \"Responding to the Call\" project, investigating and building peer-support and mental-health support systems for EMS and fire personnel."
+  },
+  {
+    "id": "peric-2026",
+    "title_zh": "PERIC 2026 國際研討會",
+    "title_en": "PERIC 2026 International Conference",
+    "desc_zh": "以「Resilience and Technology in EMS」為主題，籌辦 2026 醫療救護與緊急應變國際研討會，促進國際學術交流。",
+    "desc_en": "Organizing the 2026 Paramedicine and Emergency Response International Conference under the theme \"Resilience and Technology in EMS.\""
+  },
+  {
+    "id": "cohtusr",
+    "title_zh": "NTUNHS 社區韌性災難應變計劃",
+    "title_en": "NTUNHS Community Resilience Disaster Response Plan",
+    "desc_zh": "校內 USR 種子育成計劃「紮根校園，共築韌性」，建置住宿型長照機構大規模疏散應變流程與互動演練工具，整合護理與長照系師生人力，作為社區臨時安置站。",
+    "desc_en": "A university social-responsibility (USR) seed project building a mass-evacuation response protocol and interactive drill tool for residential long-term care facilities, staffed by nursing and long-term-care faculty and students as a temporary community relief station.",
+    "url": "https://drjackchang.github.io/cohtusr/ntunhs_disaster_plan.html"
+  }
+]

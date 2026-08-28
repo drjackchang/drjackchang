@@ -1,0 +1,42 @@
+[
+  {
+    "id": "advstat",
+    "title_zh": "進階應用統計學",
+    "title_en": "Advanced Applied Statistics",
+    "desc_zh": "國立臺北護理健康大學 健康科技學院碩士班。以 R 語言為核心工具，系統性介紹從描述統計到結構方程模型（SEM）的完整分析流程，每週提供可執行語法與範例資料。",
+    "desc_en": "Graduate course at NTUNHS College of Health Technology. Uses R as the core tool, covering the full pipeline from descriptive statistics to structural equation modeling, with runnable code and sample data each week.",
+    "url": "https://drjackchang.github.io/advstat/"
+  },
+  {
+    "id": "ebadge",
+    "title_zh": "E-Badge｜智慧電子檢傷標識系統",
+    "title_en": "E-Badge: Smart Electronic Triage Tag System",
+    "desc_zh": "平時是床頭卡，災時三秒轉換為國際通用 START 檢傷卡與疏散優先卡。NTUNHS 健康科技學院 × 資訊工業策進會產學合作，概念驗證於場域測試中。",
+    "desc_en": "An e-paper resident tag that doubles as a bedside card in daily use and switches to a START triage/evacuation-priority card in seconds during a disaster. A proof-of-concept collaboration between NTUNHS and III, currently in field testing.",
+    "url": "https://drjackchang.github.io/ebadge/"
+  },
+  {
+    "id": "ntnu-safety",
+    "title_zh": "安全教育",
+    "title_en": "Safety Education",
+    "desc_zh": "國立臺灣師範大學 健康促進與衛生教育學系大學部課程，全英語授課（EMI）。課程網站彙整每週教材、學生小組專題與成果展示。",
+    "desc_en": "Undergraduate course at NTNU's Department of Health Promotion and Health Education, taught in English (EMI). The site hosts weekly materials, student group projects, and a showcase of past work.",
+    "url": "https://drjackchang.github.io/ntnu-safety/"
+  },
+  {
+    "id": "resemt",
+    "title_zh": "高階專業人員 EMT-1 × 社區韌性",
+    "title_en": "EMT-1 × Community Resilience",
+    "desc_zh": "國立臺北護理健康大學 健康科技學院碩士班「社區韌性專題與實務研析」。以臺灣 EMT-1 法定能力與消防署教材為核心，結合國際 CPG 與實務影音做高階延伸。",
+    "desc_en": "NTUNHS graduate seminar \"Community Resilience: Topics and Practice.\" Built around Taiwan's statutory EMT-1 competencies and the fire agency's official curriculum, extended with international clinical practice guidelines.",
+    "url": "https://drjackchang.github.io/ResEMT/"
+  },
+  {
+    "id": "restech",
+    "title_zh": "韌性科技專題研討",
+    "title_en": "Seminar on Resilience Technology",
+    "desc_zh": "國立臺北護理健康大學 健康科技學院碩士班「韌性科技專題研討」。探討 AI、GIS、穿戴式裝置與數位協作平台如何賦能災難應變，每週搭配一篇 SCI 開放取用全文文獻導讀。",
+    "desc_en": "NTUNHS graduate seminar exploring how AI, GIS, wearables, and digital collaboration platforms empower disaster response, with a weekly open-access SCI paper and short guided reading.",
+    "url": "https://drjackchang.github.io/Restech/"
+  }
+]
