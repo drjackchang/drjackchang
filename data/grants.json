@@ -1,0 +1,25 @@
+[
+  {
+    "id": "nstc1",
+    "type": "nstc",
+    "name_zh": "災防領域人工智慧技術落差診斷：結合領域知識庫與邊緣運算之NGO人機協作先導計畫",
+    "name_en": "AI Technology Gap Diagnosis in Disaster Prevention: A Pilot Study on NGO Human-AI Collaboration Integrating Domain Knowledge Bases and Edge Computing",
+    "number": "NSTC 115-2124-M-227-001"
+  },
+  {
+    "id": "nstc2",
+    "type": "nstc",
+    "name_zh": "創傷登錄年報之標準格式建置與AI輔助報表產製：以公共衛生指標與空間分析為核心的區域性研究",
+    "name_en": "Standardizing Trauma Registry Annual Reports with AI-Assisted Output: A Regional Study Centered on Public Health Indicators and Spatial Analysis",
+    "number": "NSTC 115-2314-B-227-001"
+  },
+  {
+    "id": "ind1",
+    "type": "industry",
+    "name_zh": "照顧場域之緊急疏散智慧化情境設計與實作",
+    "name_en": "Smart Emergency Evacuation Scenario Design and Implementation for Care Facilities",
+    "number": "115D036",
+    "partner_zh": "資訊工業策進會",
+    "partner_en": "Institute for Information Industry (III)"
+  }
+]

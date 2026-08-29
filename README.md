@@ -16,6 +16,7 @@
 - **新增一篇著作** → 編輯 `data/publications.json`，複製一筆現有格式，改內容、`id` 換一個沒用過的名字
 - **新增一個研究專案** → 編輯 `data/projects.json`（有對外連結的話可以加 `"url"` 欄位，卡片會自動出現「查看 →」按鈕）
 - **新增一門課程／課程網站** → 編輯 `data/courses.json`，格式跟研究專案一樣
+- **新增一筆科技部／國科會計畫或產學合作** → 編輯 `data/grants.json`，`type` 填 `nstc` 或 `industry`
 - **新增一則動態消息** → 編輯 `data/news.json`
 - **改個人簡介、聯絡方式、研究關鍵字** → 編輯 `data/site.json`
 

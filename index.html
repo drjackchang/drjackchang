@@ -20,6 +20,7 @@
     <nav class="pillnav" aria-label="主要導覽">
       <a href="#about" data-i18n="navAbout">關於</a>
       <a href="#research" data-i18n="navResearch">研究</a>
+      <a href="#grants" data-i18n="navGrants">計畫</a>
       <a href="#courses" data-i18n="navCourses">課程</a>
       <a href="#publications" data-i18n="navPublications">著作</a>
       <a href="#news" data-i18n="navNews">動態</a>
@@ -57,19 +58,27 @@
     <div class="card-grid" id="projectGrid"></div>
   </section>
 
-  <section class="section" id="courses">
+  <section class="section" id="grants">
+    <h2 data-i18n="sectionGrants">研究計畫與產學合作 Grants &amp; Industry Collaboration</h2>
+    <h3 data-i18n="groupNstc">科技部／國科會計畫</h3>
+    <ul class="grant-list" id="nstcGrantList"></ul>
+    <h3 data-i18n="groupIndustry">產學合作</h3>
+    <ul class="grant-list" id="industryGrantList"></ul>
+  </section>
+
+  <section class="section alt" id="courses">
     <h2 data-i18n="sectionCourses">教學課程 Courses</h2>
     <div class="card-grid" id="courseGrid"></div>
   </section>
 
-  <section class="section alt" id="publications">
+  <section class="section" id="publications">
     <h2 data-i18n="sectionPublications">學術著作 Publications</h2>
     <div class="tab-row" id="pubTabs"></div>
     <ul class="pub-list" id="pubList"></ul>
     <button class="show-all" id="pubShowAll" type="button" data-i18n="showAll">全部展開 / Show All</button>
   </section>
 
-  <section class="section" id="news">
+  <section class="section alt" id="news">
     <h2 data-i18n="sectionNews">媒體與動態 News &amp; Updates</h2>
     <div class="news-list" id="newsList"></div>
   </section>

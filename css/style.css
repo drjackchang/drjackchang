@@ -161,6 +161,10 @@ ul{list-style:none;margin:0;padding:0;}
   padding:1rem 0;border-top:1px solid var(--line);
 }
 .pub-list li:last-child{border-bottom:1px solid var(--line);}
+.grant-list{margin-bottom:1.6rem;}
+.grant-list li{padding:.9rem 0;border-top:1px solid var(--line);}
+.grant-list:last-of-type{margin-bottom:0;}
+.section h3{font-size:1.05rem;margin-top:1.6rem;margin-bottom:.4em;}
 .pub-title{font-size:1rem;margin:0 0 .25em;}
 .pub-meta{font-size:.88rem;color:var(--mist);display:flex;gap:.6em;flex-wrap:wrap;align-items:center;}
 .badge{

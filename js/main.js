@@ -3,8 +3,10 @@
 
   var UI = {
     zh: {
-      navAbout: "關於", navResearch: "研究", navCourses: "課程", navPublications: "著作", navNews: "動態",
+      navAbout: "關於", navResearch: "研究", navGrants: "計畫", navCourses: "課程", navPublications: "著作", navNews: "動態",
       sectionAbout: "關於我 About", sectionResearch: "重點研究與專案 Featured Projects",
+      sectionGrants: "研究計畫與產學合作 Grants & Industry Collaboration",
+      groupNstc: "科技部／國科會計畫", groupIndustry: "產學合作",
       sectionCourses: "教學課程 Courses",
       sectionPublications: "學術著作 Publications", sectionNews: "媒體與動態 News & Updates",
       showAll: "全部展開", showLess: "收合",
@@ -14,8 +16,10 @@
       langBtn: "EN"
     },
     en: {
-      navAbout: "About", navResearch: "Research", navCourses: "Courses", navPublications: "Publications", navNews: "News",
+      navAbout: "About", navResearch: "Research", navGrants: "Grants", navCourses: "Courses", navPublications: "Publications", navNews: "News",
       sectionAbout: "About", sectionResearch: "Featured Projects",
+      sectionGrants: "Grants & Industry Collaboration",
+      groupNstc: "NSTC Grants", groupIndustry: "Industry Collaboration",
       sectionCourses: "Courses",
       sectionPublications: "Publications", sectionNews: "News & Updates",
       showAll: "Show all", showLess: "Show less",
@@ -134,6 +138,29 @@
     });
   }
 
+  function renderGrants(grants) {
+    var nstcList = document.getElementById("nstcGrantList");
+    var indList = document.getElementById("industryGrantList");
+    nstcList.innerHTML = "";
+    indList.innerHTML = "";
+    (grants || []).forEach(function (g) {
+      var li = el("li");
+      li.appendChild(el("p", "pub-title", pick(g, "name")));
+      var meta = el("p", "pub-meta");
+      var metaText = g.number || "";
+      if (g.type === "industry" && (g.partner_zh || g.partner_en)) {
+        metaText += " · " + pick(g, "partner");
+      }
+      meta.appendChild(document.createTextNode(metaText));
+      li.appendChild(meta);
+      if (g.type === "nstc") {
+        nstcList.appendChild(li);
+      } else {
+        indList.appendChild(li);
+      }
+    });
+  }
+
   function renderPubTabs() {
     var strings = UI[state.lang];
     var tabs = [
@@ -228,6 +255,7 @@
     renderHero(state.data.site);
     renderAbout(state.data.site);
     renderProjects(state.data.projects);
+    renderGrants(state.data.grants);
     renderCourses(state.data.courses);
     renderPubTabs();
     renderPublications(state.data.publications);
@@ -249,6 +277,7 @@
     Promise.all([
       fetch("data/site.json").then(function (r) { return r.json(); }),
       fetch("data/projects.json").then(function (r) { return r.json(); }),
+      fetch("data/grants.json").then(function (r) { return r.json(); }),
       fetch("data/courses.json").then(function (r) { return r.json(); }),
       fetch("data/publications.json").then(function (r) { return r.json(); }),
       fetch("data/news.json").then(function (r) { return r.json(); })
@@ -256,9 +285,10 @@
       state.data = {
         site: results[0],
         projects: results[1],
-        courses: results[2],
-        publications: results[3],
-        news: results[4]
+        grants: results[2],
+        courses: results[3],
+        publications: results[4],
+        news: results[5]
       };
       renderAll();
     }).catch(function (err) {
