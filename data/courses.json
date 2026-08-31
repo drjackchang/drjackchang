@@ -7,7 +7,6 @@
     "desc_en": "Graduate course at NTUNHS College of Health Technology. Uses R as the core tool, covering the full pipeline from descriptive statistics to structural equation modeling, with runnable code and sample data each week.",
     "url": "https://drjackchang.github.io/advstat/"
   },
-  
   {
     "id": "ntnu-safety",
     "title_zh": "安全教育",
@@ -32,5 +31,4 @@
     "desc_en": "NTUNHS graduate seminar exploring how AI, GIS, wearables, and digital collaboration platforms empower disaster response, with a weekly open-access SCI paper and short guided reading.",
     "url": "https://drjackchang.github.io/Restech/"
   }
-  
-]
+  ]
