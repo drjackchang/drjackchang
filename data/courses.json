@@ -7,14 +7,7 @@
     "desc_en": "Graduate course at NTUNHS College of Health Technology. Uses R as the core tool, covering the full pipeline from descriptive statistics to structural equation modeling, with runnable code and sample data each week.",
     "url": "https://drjackchang.github.io/advstat/"
   },
-  {
-    "id": "ebadge",
-    "title_zh": "E-Badge｜智慧電子檢傷標識系統",
-    "title_en": "E-Badge: Smart Electronic Triage Tag System",
-    "desc_zh": "平時是床頭卡，災時三秒轉換為國際通用 START 檢傷卡與疏散優先卡。NTUNHS 健康科技學院 × 資訊工業策進會產學合作，概念驗證於場域測試中。",
-    "desc_en": "An e-paper resident tag that doubles as a bedside card in daily use and switches to a START triage/evacuation-priority card in seconds during a disaster. A proof-of-concept collaboration between NTUNHS and III, currently in field testing.",
-    "url": "https://drjackchang.github.io/ebadge/"
-  },
+  
   {
     "id": "ntnu-safety",
     "title_zh": "安全教育",
@@ -38,13 +31,6 @@
     "desc_zh": "國立臺北護理健康大學 健康科技學院碩士班「韌性科技專題研討」。探討 AI、GIS、穿戴式裝置與數位協作平台如何賦能災難應變，每週搭配一篇 SCI 開放取用全文文獻導讀。",
     "desc_en": "NTUNHS graduate seminar exploring how AI, GIS, wearables, and digital collaboration platforms empower disaster response, with a weekly open-access SCI paper and short guided reading.",
     "url": "https://drjackchang.github.io/Restech/"
-  },
-  {
-    "id": "freshman-cpr",
-    "title_zh": "生命的節奏｜大學新生 CPR 與 AED 急救訓練",
-    "title_en": "The Rhythm of Life: Freshman CPR & AED Training",
-    "desc_zh": "國立臺北護理健康大學 115學年度新生急救教學講義，依 AHA《2025年心肺復甦術與心血管急救指引》設計，涵蓋叫叫CABD、AED操作與出血控制，含示範影片、操作練習與情境挑戰測驗。",
-    "desc_en": "NTUNHS freshman first-aid orientation slide deck for the 115th academic year, built on the AHA 2025 CPR & ECC guidelines. Covers recognition, high-quality compressions, AED use, and bleeding control, with demo videos, hands-on practice stations, and scenario quizzes.",
-    "url": "https://drjackchang.org/115newcpr"
   }
+  
 ]
