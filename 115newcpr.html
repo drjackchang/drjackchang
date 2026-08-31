@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生命的節奏｜大學新生 CPR 與 AED 急救訓練</title>
+<style>
+  :root{
+    --ink:#0B1E33;
+    --ink-soft:#4C6072;
+    --ink-faint:#9AACB9;
+    --line: rgba(11,30,51,0.14);
+    --pulse:#0F6D5F;
+    --pulse-soft:#E3F1EE;
+    --alert:#C63A1F;
+    --alert-soft:#FBE7E1;
+    --amber:#9C6B12;
+    --amber-soft:#F6EAD2;
+    --paper:#FFFFFF;
+    --canvas:#14171B;
+    --font-body:'Noto Sans TC','PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif;
+    --font-mono:'Consolas','Menlo','Courier New',monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;margin:0;}
+  body{
+    background:var(--canvas);
+    color:var(--ink);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+    overflow:hidden;
+  }
+
+  /* ---------------- Stage: true 16:9 letterboxed canvas ---------------- */
+  .stage-outer{
+    position:fixed; inset:0;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .stage{
+    position:relative;
+    aspect-ratio:16/9;
+    width:min(100vw, 177.78vh);
+    max-height:100vh;
+    background:var(--paper);
+    box-shadow:0 40px 100px rgba(0,0,0,.55);
+    overflow:hidden;
+    /* Everything inside the stage scales together, like an exported slide */
+    font-size:calc(min(100vw, 177.78vh) * 0.0125);
+  }
+
+  .stage-top-rule{position:absolute; top:0; left:0; right:0; height:.35em; background:var(--pulse); z-index:5;}
+  .stage-header{
+    position:absolute; top:.85em; left:5%; right:5%; height:1.6em;
+    display:flex; align-items:center; justify-content:space-between; z-index:5;
+    font-family:var(--font-mono); font-size:.62em; letter-spacing:.06em; color:var(--ink-faint);
+    text-transform:uppercase;
+  }
+  .stage-header .wordmark{font-weight:700; color:var(--ink-soft);}
+  .stage-footer{
+    position:absolute; bottom:.7em; left:5%; right:5%; height:1.4em;
+    display:flex; align-items:center; justify-content:space-between; z-index:5;
+    font-family:var(--font-mono); font-size:.58em; color:var(--ink-faint);
+  }
+  .stage-footer .dots{display:flex; gap:.35em;}
+  .stage-footer .dots span{width:.4em; height:.4em; border-radius:50%; background:var(--line);}
+  .stage-footer .dots span.active{background:var(--pulse); width:1em; border-radius:.2em;}
+
+  /* ---------------- Slides ---------------- */
+  main{position:absolute; inset:0;}
+  .slide{
+    display:none;
+    position:absolute; inset:0;
+    padding:3.2em 5% 2.6em 5%;
+    flex-direction:column;
+    justify-content:center;
+    gap:.85em;
+  }
+  .slide.active{display:flex;}
+
+  .kicker{
+    display:inline-flex; align-items:center; gap:.5em;
+    font-family:var(--font-mono); font-size:.72em; font-weight:700;
+    letter-spacing:.08em; text-transform:uppercase; color:var(--pulse);
+  }
+  .kicker .chip{
+    background:var(--pulse); color:#fff; border-radius:.25em; padding:.12em .6em;
+    font-size:.92em; letter-spacing:.02em;
+  }
+  .kicker .rule{width:1.6em; height:.14em; background:var(--pulse); border-radius:.1em;}
+
+  h1.title{font-size:2.7em; line-height:1.12; margin:0; font-weight:800; letter-spacing:-.01em;}
+  h1.title .accent{color:var(--pulse);}
+  h2.slide-title{font-size:1.9em; line-height:1.18; margin:0; font-weight:800;}
+  p.lede{font-size:1.02em; color:var(--ink-soft); max-width:34em; margin:0; font-weight:500; line-height:1.55;}
+
+  .bullets{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.6em;}
+  .bullets li{font-size:1.0em; font-weight:600; display:flex; gap:.7em; align-items:flex-start; line-height:1.4;}
+  .bullets li::before{content:"";flex:none;width:.4em;height:.4em;border-radius:50%;background:var(--pulse);margin-top:.55em;}
+  .bullets.alert li::before{background:var(--alert);}
+  .bullets li b{color:var(--alert);}
+  .bullets li .sub{display:block; font-weight:500; font-size:.78em; color:var(--ink-soft); margin-top:.2em;}
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:1.4em;}
+  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:1em;}
+
+  .card{background:var(--paper); border:1px solid var(--line); border-radius:.7em; padding:.95em 1.1em;}
+  .card h3{margin:0 0 .35em 0; font-size:1.02em; font-weight:800;}
+  .card p{margin:0; font-size:.85em; color:var(--ink-soft); font-weight:500; line-height:1.5;}
+  .card.pulse{border-top:.22em solid var(--pulse);}
+  .card.pulse h3{color:var(--pulse);}
+  .card.alert{border-top:.22em solid var(--alert);}
+  .card.alert h3{color:var(--alert);}
+  .card.amber{border-top:.22em solid var(--amber);}
+  .card.amber h3{color:var(--amber);}
+
+  .tag-new{display:inline-block; background:var(--alert); color:#fff; font-family:var(--font-mono); font-size:.62em; font-weight:700; padding:.12em .6em; border-radius:99px; letter-spacing:.05em; margin-left:.4em; vertical-align:middle;}
+
+  .stat-row{display:flex; gap:2.4em; flex-wrap:wrap;}
+  .stat{display:flex; flex-direction:column; gap:.15em;}
+  .stat .num{font-size:3.3em; font-weight:800; color:var(--alert); line-height:1; font-variant-numeric:tabular-nums;}
+  .stat .num.pulse{color:var(--pulse);}
+  .stat .label{font-size:.78em; font-weight:700; color:var(--ink-soft); max-width:16em;}
+
+  .chain{display:flex; gap:.5em;}
+  .link{flex:1; background:var(--paper); border:1px solid var(--line); border-radius:.6em; padding:.7em .5em; text-align:center; display:flex; flex-direction:column; align-items:center; gap:.4em;}
+  .link .n{width:1.5em;height:1.5em;border-radius:50%;background:var(--pulse); color:#fff; display:flex;align-items:center;justify-content:center;font-weight:800;font-family:var(--font-mono);font-size:.75em;}
+  .link .t{font-weight:800; font-size:.72em; line-height:1.25;}
+  .chain-arrow{align-self:center; color:var(--ink-faint); font-size:1em;}
+
+  .facilitator{border:1px dashed var(--amber); background:var(--amber-soft); border-radius:.6em; padding:.75em 1em; display:flex; gap:.7em; align-items:flex-start;}
+  .facilitator .icon{font-size:1.15em; flex:none;}
+  .facilitator b{color:var(--amber); font-size:.85em;}
+  .facilitator p{margin:.25em 0 0 0; font-size:.8em; color:#4a3608; font-weight:600; line-height:1.5;}
+
+  /* Video demo slides */
+  .video-frame{
+    position:relative; width:100%; aspect-ratio:16/9; border-radius:.7em; overflow:hidden;
+    background:#000; border:1px solid var(--line); max-height:58%;
+  }
+  .video-frame iframe{position:absolute; inset:0; width:100%; height:100%; border:0;}
+  .video-note{font-size:.72em; color:var(--ink-faint); font-weight:600;}
+  .video-source{font-size:.72em; color:var(--ink-soft); font-weight:700;}
+
+  /* Metronome */
+  .metro-panel{display:flex; align-items:center; gap:1.6em; background:var(--paper); border:1px solid var(--line); border-radius:.8em; padding:.9em 1.2em;}
+  .metro-pulse-wrap{width:4.6em;height:4.6em;flex:none;display:flex;align-items:center;justify-content:center;position:relative;}
+  .metro-ring{position:absolute; inset:0; border-radius:50%; border:.18em solid var(--pulse-soft);}
+  .metro-dot{width:2.7em;height:2.7em;border-radius:50%;background:var(--pulse); color:#fff; display:flex;align-items:center;justify-content:center; font-family:var(--font-mono); font-weight:800; font-size:.65em; transition:transform .08s ease-out;}
+  .metro-dot.beat{transform:scale(1.22);}
+  .metro-controls{display:flex; flex-direction:column; gap:.5em;}
+  .bpm-row{display:flex; align-items:center; gap:.6em;}
+  .bpm-row .bpm-num{font-family:var(--font-mono); font-size:1.5em; font-weight:800; color:var(--pulse); min-width:1.8ch;}
+  .bpm-row button, .playbtn{font-family:var(--font-body); font-weight:800; font-size:.85em; border:none; border-radius:.5em; padding:.45em .85em; cursor:pointer; background:var(--pulse); color:#fff;}
+  .bpm-row button.minus{background:var(--ink-faint);}
+  .playbtn{background:var(--alert); font-size:.88em; padding:.5em 1.2em;}
+  .metro-hint{font-size:.72em; color:var(--ink-soft); font-weight:600; max-width:26em;}
+
+  .quiz-item{background:var(--paper); border:1px solid var(--line); border-radius:.6em; padding:.65em .9em; cursor:pointer;}
+  .quiz-item .q{font-size:.92em; font-weight:800;}
+  .quiz-item .a{display:none; margin-top:.4em; font-size:.82em; font-weight:600; color:var(--pulse); border-top:1px dashed var(--line); padding-top:.4em;}
+  .quiz-item.open .a{display:block;}
+  .quiz-item .hint{font-size:.68em; color:var(--ink-faint); font-weight:600;}
+
+  .cabd-recap{display:flex; gap:.7em;}
+  .cabd-chip{flex:1; background:var(--pulse); color:#fff; border-radius:.6em; padding:.7em; text-align:center;}
+  .cabd-chip .letter{font-family:var(--font-mono); font-size:1.3em; font-weight:900;}
+  .cabd-chip .desc{font-size:.68em; font-weight:700; margin-top:.2em;}
+
+  /* ---------------- Off-stage chrome (nav) ---------------- */
+  .navzone{position:fixed; top:0; bottom:0; width:8vw; display:flex; align-items:center; z-index:20; opacity:0; transition:opacity .2s ease;}
+  .navzone:hover, .navzone:focus-within{opacity:1;}
+  .navzone.left{left:0; justify-content:flex-start;}
+  .navzone.right{right:0; justify-content:flex-end;}
+  .navbtn{
+    font-family:var(--font-body); font-weight:800; font-size:1.4rem; line-height:1;
+    background:rgba(255,255,255,.92); color:var(--ink); border:none;
+    width:2.6em; height:2.6em; border-radius:50%; cursor:pointer; margin:0 .6em;
+    box-shadow:0 6px 18px rgba(0,0,0,.35);
+  }
+  .navbtn:disabled{opacity:.25; cursor:default;}
+  .kbd-hint{
+    position:fixed; bottom:8px; left:50%; transform:translateX(-50%);
+    color:rgba(255,255,255,.4); font-size:.72rem; font-weight:600; font-family:var(--font-mono);
+    z-index:20;
+  }
+</style>
+</head>
+<body>
+
+<div class="stage-outer">
+  <div class="stage" id="stage">
+    <div class="stage-top-rule"></div>
+    <div class="stage-header">
+      <span id="sectionLabel">開場</span>
+      <span class="wordmark">國立臺北護理健康大學・健康科技學院</span>
+    </div>
+
+    <main id="slides">
+
+      <!-- 1: 封面 -->
+      <section class="slide" data-section="開場">
+        <span class="kicker"><span class="rule"></span>115學年度</span>
+        <h1 class="title">大學新生急救教學<br><span class="accent">CPR 與 AED 急救訓練</span></h1>
+        <p class="lede">依據 AHA《2025年心肺復甦術與心血管急救指引》設計 ── 你不需要是醫護人員，你只需要在最初的90秒，願意動手。</p>
+        <p class="lede" style="margin-top:.3em;">講師：張育通 助理教授｜國立臺北護理健康大學 健康科技學院</p>
+      </section>
+
+      <!-- 2: 課程地圖 -->
+      <section class="slide" data-section="課程地圖">
+        <span class="kicker"><span class="rule"></span>Agenda</span>
+        <h2 class="slide-title">今天這樣安排</h2>
+        <ul class="bullets" style="column-count:2; column-gap:2em;">
+          <li>開場：為什麼你的90秒很重要</li>
+          <li>叫叫：辨識與求救</li>
+          <li>C：高品質胸外按壓原理 ＋ 示範影片</li>
+          <li>操作練習①：按壓大合奏</li>
+          <li>A・B：呼吸道與人工呼吸</li>
+          <li>D：AED怎麼用 ＋ 示範影片</li>
+          <li>操作練習②：AED情境整合</li>
+          <li>外傷出血控制 ＋ 示範影片</li>
+          <li>新知・法律・心理建設</li>
+          <li>校園緊急應變：如果就發生在這裡</li>
+          <li>情境挑戰</li>
+          <li>總結與資源</li>
+        </ul>
+      </section>
+
+      <!-- 3: 為什麼重要 -->
+      <section class="slide" data-section="為什麼重要">
+        <span class="kicker"><span class="rule"></span>Why it matters</span>
+        <h2 class="slide-title">你，就是生存之鏈的第一個環節</h2>
+        <div class="stat-row">
+          <div class="stat"><span class="num">4-6</span><span class="label">分鐘沒有氧氣，腦細胞就開始死亡</span></div>
+          <div class="stat"><span class="num pulse">7-10%</span><span class="label">每延遲1分鐘才開始CPR，存活機會下降的幅度</span></div>
+        </div>
+        <p class="lede">救護車再快，也很難在幾分鐘內趕到你身邊。真正決定病人生死的，往往是<b style="color:var(--alert)">第一個目擊者願不願意動手</b>。</p>
+      </section>
+
+      <!-- 4: 生存之鏈 -->
+      <section class="slide" data-section="生存之鏈">
+        <span class="kicker"><span class="rule"></span>Chain of Survival・2025年統一版</span>
+        <h2 class="slide-title">生存之鏈：六個環節，一個都不能斷</h2>
+        <div class="chain">
+          <div class="link"><span class="n">1</span><span class="t">及早辨識<br>與求救</span></div>
+          <div class="chain-arrow">→</div>
+          <div class="link"><span class="n">2</span><span class="t">高品質<br>CPR</span></div>
+          <div class="chain-arrow">→</div>
+          <div class="link"><span class="n">3</span><span class="t">及早<br>電擊</span></div>
+          <div class="chain-arrow">→</div>
+          <div class="link"><span class="n">4</span><span class="t">高級<br>救命處置</span></div>
+          <div class="chain-arrow">→</div>
+          <div class="link"><span class="n">5</span><span class="t">心跳停止後<br>照護</span></div>
+          <div class="chain-arrow">→</div>
+          <div class="link"><span class="n">6</span><span class="t">復原</span></div>
+        </div>
+        <p class="lede">2025年AHA指引首次把成人／兒童、院內／院外的生存之鏈統一成同一套六環鏈 — <b style="color:var(--alert)">今天的操作練習，就落在前3個環節</b>。</p>
+      </section>
+
+      <!-- 5: 叫叫 -->
+      <section class="slide" data-section="叫叫：辨識與求救">
+        <span class="kicker"><span class="rule"></span><span class="chip">STEP 1-2</span>叫・叫</span>
+        <h2 class="slide-title">先確認，再求救</h2>
+        <ul class="bullets alert">
+          <li>輕拍雙肩、大聲呼喚：「先生／同學，你還好嗎？」<span class="sub">確認有無反應</span></li>
+          <li><b>喘息 ≠ 呼吸</b>：斷斷續續、像打鼾的喘氣，是心跳停止的警訊，不是活著的證據</li>
+          <li>大聲呼救：「你！打119！你！去找AED！」<span class="sub">指定特定人，而不是對著人群喊</span></li>
+          <li>只有你一人時：先撥打119並開擴音，再依調度員指示開始按壓</li>
+        </ul>
+      </section>
+
+      <!-- 6: C 按壓原理 -->
+      <section class="slide" data-section="C：高品質胸外按壓">
+        <span class="kicker"><span class="rule"></span><span class="chip">STEP 3</span>Compression</span>
+        <h2 class="slide-title">C：高品質胸外按壓，5個關鍵數字</h2>
+        <div class="grid3">
+          <div class="card pulse"><h3>位置</h3><p>胸骨下半部，約兩乳頭連線中央，掌根疊掌根</p></div>
+          <div class="card pulse"><h3>深度</h3><p>至少5公分，<b style="color:var(--alert)">不超過6公分</b>（2025年更強調別壓過深）</p></div>
+          <div class="card pulse"><h3>速率</h3><p>每分鐘100–120下</p></div>
+          <div class="card pulse"><h3>回彈</h3><p>每次按壓後讓胸廓完全回彈，不要趴著休息</p></div>
+          <div class="card pulse"><h3>中斷</h3><p>換手、貼AED等中斷時間，盡量控制在10秒以內</p></div>
+        </div>
+      </section>
+
+      <!-- 7: 示範影片① -->
+      <section class="slide" data-section="示範影片：正確按壓姿勢">
+        <span class="kicker"><span class="rule"></span><span class="chip">STEP 3</span>Demonstration</span>
+        <h2 class="slide-title">示範影片：高品質CPR</h2>
+        <div class="video-frame">
+          <iframe src="https://www.youtube.com/embed/pgreyRUB3gk" title="高品質CPR示範" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <span class="video-source">《高品質CPR》安妮怎麼了？－急救教育設計服務</span>
+        <span class="video-note">播放前請先預覽確認能正常嵌入；若現場無網路，可改為現場親自示範按壓姿勢。</span>
+      </section>
+
+      <!-- 8: 操作練習① -->
+      <section class="slide" data-section="操作練習①：按壓大合奏">
+        <span class="kicker"><span class="rule"></span><span class="chip">STEP 3</span>Hands-on Station 1</span>
+        <h2 class="slide-title">操作練習①：按壓大合奏</h2>
+        <div class="facilitator">
+          <span class="icon">👨‍🏫</span>
+          <div><b>教學提示</b><p>3人一組：1人按壓、1人喊口令計數、1人觀察姿勢，每人操作2分鐘後輪替。使用CPR假人或跪墊練習，教師巡場糾正手勢。</p></div>
+        </div>
+        <div class="metro-panel">
+          <div class="metro-pulse-wrap">
+            <div class="metro-ring"></div>
+            <div class="metro-dot" id="metroDot">BPM</div>
+          </div>
+          <div class="metro-controls">
+            <div class="bpm-row">
+              <button class="minus" id="bpmMinus">－</button>
+              <span class="bpm-num" id="bpmNum">110</span>
+              <button id="bpmPlus">＋</button>
+              <button class="playbtn" id="playBtn">▶ 開始節拍</button>
+            </div>
+            <span class="metro-hint">節拍器範圍100–120下/分鐘。找不到手感時，也可以請大家跟著一首自己熟悉、每分鐘接近110拍的歌一起數拍。</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9: A B -->
+      <section class="slide" data-section="A・B：呼吸道與人工呼吸">
+        <span class="kicker"><span class="rule"></span><span class="chip">STEP 4-5</span>Airway・Breathing</span>
+        <h2 class="slide-title">A・B：打開呼吸道，給予人工呼吸</h2>
+        <ul class="bullets">
+          <li><b>A 呼吸道</b>：壓額抬下巴，讓頭部後仰、下巴上抬</li>
+          <li><b>B 人工呼吸</b>：捏住鼻子，口對口吹氣約1秒，看到胸廓微微起伏就好，不要用力猛吹</li>
+          <li>單人施救比例：<b>30次按壓：2次呼吸（30:2）</b></li>
+          <li>沒學過或不敢口對口？<b style="color:var(--pulse)">持續純按壓CPR（Hands-Only）一樣能救命</b>，別因此不敢出手</li>
+        </ul>
+      </section>
+
+      <!-- 10: D AED -->
+      <section class="slide" data-section="D：AED怎麼用">
+        <span class="kicker"><span class="rule"></span><span class="chip">STEP 6</span>Defibrillation</span>
+        <h2 class="slide-title">D：AED，四個動作</h2>
+        <div class="grid2">
+          <ul class="bullets">
+            <li><b>①開</b>：打開電源，跟著語音指示走</li>
+            <li><b>②貼</b>：貼片貼在右上胸、左下肋骨；胸口濕要先擦乾</li>
+            <li><b>③電</b>：機器分析心律時，喊「離開病人」確保沒人碰觸</li>
+            <li><b>④壓</b>：電擊後立刻恢復按壓，AED每2分鐘會再分析一次</li>
+          </ul>
+          <div class="card amber">
+            <h3>安全小提醒</h3>
+            <p>潮濕地面、金屬平台先移開；胸口若有心律調節器凸起，貼片要避開至少2.5公分再貼。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 11: 示範影片② -->
+      <section class="slide" data-section="示範影片：AED操作流程">
+        <span class="kicker"><span class="rule"></span><span class="chip">STEP 6</span>Demonstration</span>
+        <h2 class="slide-title">示範影片：AED正確操作流程</h2>
+        <div class="video-frame">
+          <iframe src="https://www.youtube.com/embed/6Ufmyeg8wi8" title="AED操作步驟示範" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <span class="video-source">《AED操作步驟》安妮怎麼了？－急救教育設計服務</span>
+        <span class="video-note">播放前請先預覽確認能正常嵌入；若現場無網路，可改為現場親自示範開機、貼片、電擊三步驟。</span>
+      </section>
+
+      <!-- 12: 操作練習② -->
+      <section class="slide" data-section="操作練習②：AED情境整合">
+        <span class="kicker"><span class="rule"></span><span class="chip">STEP 6</span>Hands-on Station 2</span>
+        <h2 class="slide-title">操作練習②：完整跑一次流程</h2>
+        <div class="facilitator">
+          <span class="icon">👨‍🏫</span>
+          <div><b>教學提示</b><p>3-4人一組，完整演練：發現倒地 → 確認反應／呼吸 → 打119找AED → 開始按壓 → AED送達並依語音操作 → 電擊後立刻恢復按壓，直到教師喊「119到達」。</p></div>
+        </div>
+        <ul class="bullets alert">
+          <li>觀察重點①：有沒有先打119、指定人找AED</li>
+          <li>觀察重點②：貼片位置是否正確、電擊前有沒有喊「離開病人」</li>
+          <li>觀察重點③：電擊後是否馬上恢復按壓，而不是愣住等待</li>
+        </ul>
+      </section>
+
+      <!-- 13: E 外傷止血理論 -->
+      <section class="slide" data-section="外傷出血控制">
+        <span class="kicker"><span class="rule"></span><span class="chip">外傷</span>Bleeding Control</span>
+        <h2 class="slide-title">除了心跳停止，出血一樣會致命</h2>
+        <ul class="bullets alert">
+          <li><b>直接加壓</b>：找乾淨布料／衣物蓋住傷口，用手掌或手指垂直用力壓下去，持續加壓不要頻繁掀開查看</li>
+          <li>什麼算「嚴重出血」：血像用噴的、加壓後止不住、衣物被血浸透或血流滿地 → 立刻打119</li>
+          <li>傷口插著異物？<b>不要拔除</b>，固定異物避免晃動，等待救護人員處理</li>
+          <li>進階技術（STOP THE BLEED）：<b>傷口填塞</b>與<b>止血帶</b>，適合關節處等加壓無法控制的出血，有機會可報名實體課程學習操作</li>
+        </ul>
+      </section>
+
+      <!-- 14: 示範影片③ 外傷止血 -->
+      <section class="slide" data-section="示範影片：外傷止血">
+        <span class="kicker"><span class="rule"></span><span class="chip">外傷</span>Demonstration</span>
+        <h2 class="slide-title">示範影片：出血的急救步驟</h2>
+        <div class="video-frame">
+          <iframe src="https://www.youtube.com/embed/8Yhml5Vt3rs" title="出血急救步驟示範" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <span class="video-source">《嚴重出血－急救步驟》安妮怎麼了？－急救教育設計服務</span>
+        <span class="video-note">播放前請先預覽確認能正常嵌入；若現場無網路，可改為現場親自示範加壓止血。</span>
+      </section>
+
+      <!-- 15: 新知/法律/心理 -->
+      <section class="slide" data-section="新知・法律・心理建設">
+        <span class="kicker"><span class="rule"></span>Update・Law・Mindset</span>
+        <h2 class="slide-title">三件事，讓你更敢出手</h2>
+        <div class="grid3">
+          <div class="card alert">
+            <h3>異物哽塞新版<span class="tag-new">2025 NEW</span></h3>
+            <p>先做<b>5次背部拍打</b>，再做<b>5次腹部快速按壓</b>，兩者交替，直到異物排出或病人失去反應。</p>
+          </div>
+          <div class="card pulse">
+            <h3>法律保護你</h3>
+            <p>《緊急醫療救護法》第14-2條：非救護人員為搶救生命所為的緊急救護行為，準用民法、刑法緊急避難免責規定。</p>
+          </div>
+          <div class="card amber">
+            <h3>克服猶豫</h3>
+            <p>擔心壓斷肋骨？正確深度造成的骨折，換來的是一條命。旁觀者的猶豫，才是病人最大的風險。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 16: 校園緊急應變 -->
+      <section class="slide" data-section="校園緊急應變">
+        <span class="kicker"><span class="rule"></span>Campus Protocol</span>
+        <h2 class="slide-title">如果就發生在校園裡</h2>
+        <ul class="bullets">
+          <li>你的任務不變：帶頭做叫叫CABD／止血，穩住現場</li>
+          <li>同步請人撥打<b style="color:var(--alert)">校安中心24小時專線 02-2821-4744</b>（住宿生可優先撥宿舍專線 02-2821-3147）</li>
+          <li>依教育部《校園安全及災害事件通報作業要點》，意外傷病本就是校安通報事件之一，學校會依SOP啟動後續處理</li>
+          <li>接下來交給專業分工：健康中心接手醫療、安全組維護現場──你已經完成最關鍵的第一步</li>
+        </ul>
+        <p class="lede" style="margin-top:.2em;">完整流程可查閱本校「校安中心」網頁。</p>
+      </section>
+
+      <!-- 17: 情境挑戰 -->
+      <section class="slide" data-section="情境挑戰">
+        <span class="kicker"><span class="rule"></span>Quiz・點一下看答案</span>
+        <h2 class="slide-title">情境挑戰</h2>
+        <div class="bullets" style="gap:.55em;">
+          <div class="quiz-item" onclick="this.classList.toggle('open')">
+            <div class="q">① 病人只有斷斷續續的喘息聲，代表他還活著，不用CPR？ <span class="hint">（點我看答案）</span></div>
+            <div class="a">錯。喘息不是正常呼吸，是心跳停止的警訊，要立刻開始CPR。</div>
+          </div>
+          <div class="quiz-item" onclick="this.classList.toggle('open')">
+            <div class="q">② 按壓深度是不是壓越深越好？ <span class="hint">（點我看答案）</span></div>
+            <div class="a">錯。超過6公分反而增加受傷風險，5–6公分之間最理想。</div>
+          </div>
+          <div class="quiz-item" onclick="this.classList.toggle('open')">
+            <div class="q">③ 沒學過人工呼吸，是不是就不能救人了？ <span class="hint">（點我看答案）</span></div>
+            <div class="a">錯。持續做純按壓CPR（Hands-Only）一樣能救命。</div>
+          </div>
+          <div class="quiz-item" onclick="this.classList.toggle('open')">
+            <div class="q">④ AED電擊完，是不是就完成了？ <span class="hint">（點我看答案）</span></div>
+            <div class="a">錯。電擊後要立刻恢復按壓，AED每2分鐘會再次分析心律。</div>
+          </div>
+          <div class="quiz-item" onclick="this.classList.toggle('open')">
+            <div class="q">⑤ 傷口插著異物，要先拔出來才能止血？ <span class="hint">（點我看答案）</span></div>
+            <div class="a">錯。不要移除異物，固定它避免晃動，直接加壓周圍傷口並打119。</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 15: 總結與資源 -->
+      <section class="slide" data-section="總結與資源">
+        <span class="kicker"><span class="rule"></span>Recap</span>
+        <h2 class="slide-title">記住這串口訣：叫叫CABD</h2>
+        <div class="cabd-recap">
+          <div class="cabd-chip"><div class="letter">叫</div><div class="desc">確認意識</div></div>
+          <div class="cabd-chip"><div class="letter">叫</div><div class="desc">119+找AED</div></div>
+          <div class="cabd-chip"><div class="letter">C</div><div class="desc">胸外按壓</div></div>
+          <div class="cabd-chip"><div class="letter">A</div><div class="desc">呼吸道</div></div>
+          <div class="cabd-chip"><div class="letter">B</div><div class="desc">人工呼吸</div></div>
+          <div class="cabd-chip"><div class="letter">D</div><div class="desc">AED電擊</div></div>
+        </div>
+        <p class="lede" style="margin-top:.3em;">下載衛福部「全民急救、救急救難一站通」查詢校園及周邊AED位置，有機會歡迎報名完整CPR+AED證照課程，把今天的手感練得更扎實。</p>
+      </section>
+
+      <!-- 16: 謝謝 -->
+      <section class="slide" data-section="Q&A">
+        <span class="kicker"><span class="rule"></span>Thank you</span>
+        <h1 class="title">你的90秒<br><span class="accent">可能就是別人的一生</span></h1>
+        <p class="lede">謝謝大家願意練習。有問題歡迎隨時提問或來信討論。</p>
+        <p class="lede">張育通 助理教授｜國立臺北護理健康大學 健康科技學院｜yutung@ntunhs.edu.tw</p>
+      </section>
+
+      <!-- 17: 社團推廣 -->
+      <section class="slide" data-section="加入我們">
+        <span class="kicker"><span class="rule"></span>Join Us</span>
+        <h2 class="slide-title">今天只是起點，歡迎加入<br><span class="accent">國北護到院前緊急救護社</span></h2>
+        <div class="grid2" style="align-items:center;">
+          <ul class="bullets">
+            <li>由對<b style="color:var(--pulse)">到院前緊急救護（Pre-Hospital Care）</b>有興趣的同學組成的學生社團</li>
+            <li>想更扎實地練CPR、AED，甚至接觸更多EMT實務與急救知識，這裡是你的下一步</li>
+            <li>追蹤 Instagram，掌握社課、講座與活動的最新消息</li>
+          </ul>
+          <div class="card pulse" style="text-align:center;">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https://www.instagram.com/pecc.ntunhs"
+                 alt="到院前緊急救護社 Instagram QR Code" width="130" height="130"
+                 style="display:block;margin:0 auto .5em auto;border-radius:.5em;background:#fff;padding:.4em;">
+            <a href="https://www.instagram.com/pecc.ntunhs" target="_blank" rel="noopener"
+               style="font-family:var(--font-mono);font-weight:800;font-size:1em;color:var(--pulse);text-decoration:none;">
+               @pecc.ntunhs</a>
+            <p style="margin-top:.4em;">掃描QR code或搜尋帳號追蹤我們</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <div class="stage-footer">
+      <span id="footerLabel">生命的節奏｜CPR與AED訓練</span>
+      <span class="dots" id="dots"></span>
+      <span id="counter">01 / 17</span>
+    </div>
+  </div>
+</div>
+
+<div class="navzone left"><button class="navbtn" id="prevBtn" aria-label="上一頁">‹</button></div>
+<div class="navzone right"><button class="navbtn" id="nextBtn" aria-label="下一頁">›</button></div>
+<div class="kbd-hint">← → 方向鍵切換，或將滑鼠移到畫面兩側</div>
+
+<script>
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var total = slides.length;
+  var idx = 0;
+
+  var counterEl = document.getElementById('counter');
+  var sectionEl = document.getElementById('sectionLabel');
+  var dotsWrap = document.getElementById('dots');
+
+  slides.forEach(function(s, i){
+    var d = document.createElement('span');
+    dotsWrap.appendChild(d);
+  });
+  var dotEls = Array.prototype.slice.call(dotsWrap.children);
+
+  function pad(n){ return n < 10 ? '0'+n : ''+n; }
+
+  function render(){
+    slides.forEach(function(s, i){ s.classList.toggle('active', i === idx); });
+    dotEls.forEach(function(d, i){ d.classList.toggle('active', i === idx); });
+    counterEl.textContent = pad(idx+1) + ' / ' + pad(total);
+    sectionEl.textContent = slides[idx].getAttribute('data-section') || '';
+    document.getElementById('prevBtn').disabled = (idx === 0);
+    document.getElementById('nextBtn').disabled = (idx === total - 1);
+  }
+
+  function go(i){
+    idx = Math.max(0, Math.min(total - 1, i));
+    render();
+  }
+
+  document.getElementById('prevBtn').addEventListener('click', function(){ go(idx - 1); });
+  document.getElementById('nextBtn').addEventListener('click', function(){ go(idx + 1); });
+  window.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowRight' || e.key === ' ') { go(idx + 1); }
+    if (e.key === 'ArrowLeft') { go(idx - 1); }
+  });
+
+  render();
+
+  // ---------------- Metronome ----------------
+  var bpm = 110;
+  var playing = false;
+  var timer = null;
+  var audioCtx = null;
+  var bpmNum = document.getElementById('bpmNum');
+  var dot = document.getElementById('metroDot');
+  var playBtn = document.getElementById('playBtn');
+
+  function beep(){
+    try{
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      var osc = audioCtx.createOscillator();
+      var gain = audioCtx.createGain();
+      osc.frequency.value = 880;
+      osc.type = 'sine';
+      gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.09);
+      osc.connect(gain); gain.connect(audioCtx.destination);
+      osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+    }catch(e){}
+  }
+
+  function tick(){
+    beep();
+    dot.classList.add('beat');
+    setTimeout(function(){ dot.classList.remove('beat'); }, 110);
+  }
+
+  function startStop(){
+    playing = !playing;
+    if (playing){
+      playBtn.textContent = '⏸ 暫停節拍';
+      tick();
+      timer = setInterval(tick, 60000 / bpm);
+    } else {
+      playBtn.textContent = '▶ 開始節拍';
+      clearInterval(timer);
+    }
+  }
+
+  function setBpm(v){
+    bpm = Math.max(100, Math.min(120, v));
+    bpmNum.textContent = bpm;
+    if (playing){ clearInterval(timer); timer = setInterval(tick, 60000 / bpm); }
+  }
+
+  document.getElementById('bpmPlus').addEventListener('click', function(){ setBpm(bpm + 2); });
+  document.getElementById('bpmMinus').addEventListener('click', function(){ setBpm(bpm - 2); });
+  playBtn.addEventListener('click', startStop);
+})();
+</script>
+</body>
+</html>
