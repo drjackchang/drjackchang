@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>迫切性／重要性優先矩陣｜壯闊台灣聯盟</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FAFAF6; --paper:#FFFFFF; --ink:#20241F; --muted:#6B726B; --line:#E1E0D8;
+    --red:#B8402F; --amber:#C4881F; --green:#3A7A5C; --slate:#2C3B3E; --blue:#3D5A80;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif; line-height:1.7;}
+  .wrap{max-width:1080px; margin:0 auto; padding:44px 24px 100px;}
+
+  header.hero{border-bottom:2px solid var(--slate); padding-bottom:24px; margin-bottom:28px;}
+  header.hero .eyebrow{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase;}
+  header.hero h1{font-family:'Noto Serif TC',serif; font-size:27px; margin:10px 0 14px;}
+  header.hero p{color:#3A403C; font-size:14px; max-width:760px; margin:0 0 8px;}
+
+  .legend{display:flex; gap:18px; flex-wrap:wrap; font-size:13px; color:var(--muted); margin:20px 0 8px;}
+  .legend span{display:flex; align-items:center; gap:6px;}
+  .dot{width:11px; height:11px; border-radius:50%; display:inline-block;}
+  .dot.q1{background:var(--green);} .dot.q2{background:var(--blue);} .dot.q3{background:var(--amber);} .dot.q4{background:#9AA19C;}
+
+  .chart-card{background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:24px; margin:24px 0 44px;}
+  #chart{width:100%; height:auto; display:block;}
+
+  .tooltip{
+    position:absolute; background:var(--slate); color:#fff; padding:8px 12px; border-radius:6px;
+    font-size:12.5px; max-width:260px; pointer-events:none; opacity:0; transition:opacity .1s; z-index:20;
+    box-shadow:0 4px 12px rgba(0,0,0,.2);
+  }
+
+  h2.sec-title{font-family:'Noto Serif TC',serif; font-size:20px; margin:40px 0 16px; padding-bottom:8px; border-bottom:1px dashed var(--line);}
+
+  table.rank{width:100%; border-collapse:collapse; background:var(--paper); font-size:13.5px;}
+  table.rank th, table.rank td{border:1px solid var(--line); padding:10px 12px; text-align:left; vertical-align:top;}
+  table.rank th{background:var(--slate); color:#fff; font-weight:500; font-size:12.5px;}
+  table.rank tr.q1{background:#EAF3EE;} table.rank tr.q2{background:#E9EEF7;}
+  table.rank tr.q3{background:#FDF3E7;} table.rank tr.q4{background:#F2F1EC;}
+  .code{font-family:'JetBrains Mono',monospace; font-weight:700; color:var(--slate);}
+  .qtag{font-size:11px; font-family:'JetBrains Mono',monospace; padding:2px 8px; border-radius:20px; color:#fff;}
+  .qtag.q1{background:var(--green);} .qtag.q2{background:var(--blue);} .qtag.q3{background:var(--amber);} .qtag.q4{background:#9AA19C;}
+  .disagree{color:var(--red); font-weight:700;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <span class="eyebrow">災防NGO與AI協作先導計畫 · 迫切性／重要性優先矩陣</span>
+    <h1>壯闊台灣聯盟｜AI導入需求優先矩陣（8份有效回覆）</h1>
+    <p>橫軸為迫切性中位數、縱軸為重要性中位數，虛線為分區門檻（迫切性=4、重要性=4.5）。同一位置若有多個題號，會並列標示。點的大小反映填答分歧程度（IQR）——點越大代表受訪者意見越分歧，該項結果較不穩定。</p>
+  </header>
+
+  <div class="legend">
+    <span><span class="dot q1"></span>Q1 高迫切高重要（優先做）</span>
+    <span><span class="dot q2"></span>Q2 高重要低迫切（排隊做）</span>
+    <span><span class="dot q3"></span>Q3 高迫切低重要（快速處理）</span>
+    <span><span class="dot q4"></span>Q4 雙低（暫緩）</span>
+  </div>
+
+  <div class="chart-card">
+    <svg id="chart" viewBox="0 0 1000 760"></svg>
+  </div>
+  <div class="tooltip" id="tooltip"></div>
+
+  <h2 class="sec-title">完整排序清單</h2>
+  <table class="rank">
+    <tr><th>#</th><th>編號</th><th>需求項目</th><th>象限</th><th>迫切性</th><th>迫切樣本數</th><th>重要性</th><th>重要樣本數</th><th>備註</th></tr>
+    <tbody id="rankBody"></tbody>
+  </table>
+</div>
+
+<script>
+const items = [{"code": "N1", "name": "海量志工群組訊息即時分類與自動回覆", "urg": 5, "imp": 5, "iqr_urg": 2, "iqr_imp": 0, "n_urg": 7, "n_imp": 7, "quad": "Q1"}, {"code": "N2", "name": "災情通報資料查核/去重/分類/狀態更新/dashboard", "urg": 3, "imp": 4, "iqr_urg": 2, "iqr_imp": 1, "n_urg": 7, "n_imp": 7, "quad": "Q4"}, {"code": "N3", "name": "即時通訊訊息匯整與每日摘要通知閘道器", "urg": 3.0, "imp": 4.0, "iqr_urg": 2.0, "iqr_imp": 2.5, "n_urg": 8, "n_imp": 8, "quad": "Q4"}, {"code": "N4", "name": "實時專案進度儀表板", "urg": 3.5, "imp": 4.5, "iqr_urg": 1.5, "iqr_imp": 2.0, "n_urg": 8, "n_imp": 8, "quad": "Q2"}, {"code": "N5", "name": "在地端AI，不依賴網路連線", "urg": 3.0, "imp": 4, "iqr_urg": 0.0, "iqr_imp": 2, "n_urg": 8, "n_imp": 7, "quad": "Q4"}, {"code": "N6", "name": "Mesh網路離線資料交換", "urg": 3.0, "imp": 4.0, "iqr_urg": 1.0, "iqr_imp": 2.0, "n_urg": 8, "n_imp": 8, "quad": "Q4"}, {"code": "N7", "name": "雙模式AI運算架構", "urg": 3.0, "imp": 3.5, "iqr_urg": 1.0, "iqr_imp": 1.0, "n_urg": 8, "n_imp": 8, "quad": "Q4"}, {"code": "N8", "name": "自架開源通訊系統", "urg": 3, "imp": 5, "iqr_urg": 1, "iqr_imp": 1, "n_urg": 7, "n_imp": 7, "quad": "Q2"}, {"code": "N9", "name": "雲端權限隔離與檔案版本管理系統", "urg": 4.5, "imp": 5.0, "iqr_urg": 3, "iqr_imp": 1, "n_urg": 6, "n_imp": 6, "quad": "Q1"}, {"code": "N10", "name": "跨系統數據自動化整合（Master整合）", "urg": 4, "imp": 5, "iqr_urg": 2, "iqr_imp": 1, "n_urg": 7, "n_imp": 7, "quad": "Q1"}, {"code": "N12", "name": "志工連續出勤工時提醒", "urg": 3.0, "imp": 4.0, "iqr_urg": 2, "iqr_imp": 1, "n_urg": 6, "n_imp": 6, "quad": "Q4"}, {"code": "N13", "name": "工作人員因志工即時回覆期待產生之情緒勞動與過勞", "urg": 4.5, "imp": 5.0, "iqr_urg": 1, "iqr_imp": 1, "n_urg": 6, "n_imp": 6, "quad": "Q1"}, {"code": "N14", "name": "物資流向追蹤與補給需求預測", "urg": 3, "imp": 5, "iqr_urg": 1, "iqr_imp": 1, "n_urg": 7, "n_imp": 7, "quad": "Q2"}, {"code": "N15", "name": "現場人力/車輛調度記錄", "urg": 3, "imp": 5, "iqr_urg": 1, "iqr_imp": 1, "n_urg": 7, "n_imp": 7, "quad": "Q2"}, {"code": "N16", "name": "現場人力不足時的資料建檔問題（免持/語音輸入）", "urg": 3.0, "imp": 4.5, "iqr_urg": 2.0, "iqr_imp": 1.5, "n_urg": 8, "n_imp": 8, "quad": "Q2"}, {"code": "N17", "name": "多管道金流自動化對帳模組", "urg": 4, "imp": 4, "iqr_urg": 2, "iqr_imp": 3, "n_urg": 7, "n_imp": 7, "quad": "Q3"}, {"code": "N18", "name": "憑證與名片智慧識別系統", "urg": 3.0, "imp": 4.5, "iqr_urg": 2.0, "iqr_imp": 1.5, "n_urg": 8, "n_imp": 8, "quad": "Q2"}, {"code": "N19", "name": "條件觸發型自動化郵件發送系統", "urg": 4.0, "imp": 5.0, "iqr_urg": 2.0, "iqr_imp": 1.0, "n_urg": 8, "n_imp": 8, "quad": "Q1"}, {"code": "N20", "name": "地理資訊系統與主動式災害預警關懷模組", "urg": 3.5, "imp": 4.5, "iqr_urg": 1, "iqr_imp": 1, "n_urg": 6, "n_imp": 6, "quad": "Q2"}, {"code": "N21", "name": "輕量化地圖標記工具", "urg": 3, "imp": 4, "iqr_urg": 2.5, "iqr_imp": 2.0, "n_urg": 5, "n_imp": 5, "quad": "Q4"}, {"code": "N22", "name": "網絡公開資訊自動爬取與CRM動態比對服務", "urg": 3.5, "imp": 5.0, "iqr_urg": 2.0, "iqr_imp": 1.0, "n_urg": 8, "n_imp": 8, "quad": "Q2"}, {"code": "N23", "name": "課程排班自動同步至Google行事曆", "urg": 4, "imp": 5, "iqr_urg": 4, "iqr_imp": 1, "n_urg": 7, "n_imp": 7, "quad": "Q1"}, {"code": "N24", "name": "個資保護型自動化文件匯出服務（含電子簽名）", "urg": 3.5, "imp": 5.0, "iqr_urg": 2.5, "iqr_imp": 1.0, "n_urg": 8, "n_imp": 8, "quad": "Q2"}, {"code": "N25", "name": "報到機制的兩種本質區分", "urg": 3.0, "imp": 3.0, "iqr_urg": 1.5, "iqr_imp": 1.0, "n_urg": 8, "n_imp": 8, "quad": "Q4"}, {"code": "N26", "name": "無email族群的替代聯繫與報到管道", "urg": 3.0, "imp": 3.5, "iqr_urg": 2.0, "iqr_imp": 1.5, "n_urg": 8, "n_imp": 8, "quad": "Q4"}, {"code": "N27", "name": "AAR事後檢討與跨平台通訊紀錄自動彙整", "urg": 3.5, "imp": 4.5, "iqr_urg": 1.0, "iqr_imp": 1.5, "n_urg": 8, "n_imp": 8, "quad": "Q2"}];
+
+const quadOrder = {Q1:0, Q2:1, Q3:2, Q4:3};
+const quadLabel = {Q1:"Q1 優先做", Q2:"Q2 排隊做", Q3:"Q3 快速處理", Q4:"Q4 暫緩"};
+const quadColor = {Q1:"#3A7A5C", Q2:"#3D5A80", Q3:"#C4881F", Q4:"#9AA19C"};
+const quadBg    = {Q1:"#EAF3EE", Q2:"#E9EEF7", Q3:"#FDF3E7", Q4:"#F2F1EC"};
+
+// ---------- Build ranking table ----------
+const sorted = [...items].sort((a,b) => {
+  if (quadOrder[a.quad] !== quadOrder[b.quad]) return quadOrder[a.quad]-quadOrder[b.quad];
+  const scoreA = a.imp*10+a.urg, scoreB = b.imp*10+b.urg;
+  return scoreB-scoreA;
+});
+const tbody = document.getElementById('rankBody');
+sorted.forEach((it, idx) => {
+  const tr = document.createElement('tr');
+  tr.className = it.quad.toLowerCase();
+  let note = [];
+  if (it.iqr_urg >= 2) note.push(`<span class="disagree">迫切性分歧IQR=${it.iqr_urg}</span>`);
+  if (it.iqr_imp >= 2) note.push(`<span class="disagree">重要性分歧IQR=${it.iqr_imp}</span>`);
+  tr.innerHTML = `<td>${idx+1}</td><td class="code">${it.code}</td><td>${it.name}</td>
+    <td><span class="qtag ${it.quad.toLowerCase()}">${quadLabel[it.quad]}</span></td>
+    <td>${it.urg}</td><td>${it.n_urg}</td><td>${it.imp}</td><td>${it.n_imp}</td><td>${note.join('<br>') || '—'}</td>`;
+  tbody.appendChild(tr);
+});
+
+// ---------- Build scatter chart ----------
+const svg = document.getElementById('chart');
+const W = 1000, H = 760;
+const M = {left:70, right:40, top:40, bottom:70};
+const plotW = W - M.left - M.right;
+const plotH = H - M.top - M.bottom;
+const xMin=1, xMax=5.5, yMin=1, yMax=5.5;
+const xScale = v => M.left + (v-xMin)/(xMax-xMin)*plotW;
+const yScale = v => M.top + plotH - (v-yMin)/(yMax-yMin)*plotH;
+
+const XCUT = 4, YCUT = 4.5;
+
+let svgParts = [];
+
+// quadrant backgrounds
+svgParts.push(`<rect x="${xScale(XCUT)}" y="${M.top}" width="${xScale(xMax)-xScale(XCUT)}" height="${yScale(YCUT)-M.top}" fill="${quadBg.Q1}"/>`);
+svgParts.push(`<rect x="${M.left}" y="${M.top}" width="${xScale(XCUT)-M.left}" height="${yScale(YCUT)-M.top}" fill="${quadBg.Q2}"/>`);
+svgParts.push(`<rect x="${xScale(XCUT)}" y="${yScale(YCUT)}" width="${xScale(xMax)-xScale(XCUT)}" height="${yScale(yMin)-yScale(YCUT)}" fill="${quadBg.Q3}"/>`);
+svgParts.push(`<rect x="${M.left}" y="${yScale(YCUT)}" width="${xScale(XCUT)-M.left}" height="${yScale(yMin)-yScale(YCUT)}" fill="${quadBg.Q4}"/>`);
+
+// quadrant labels
+svgParts.push(`<text x="${xScale(XCUT)+16}" y="${M.top+26}" font-size="15" font-weight="700" fill="${quadColor.Q1}" font-family="Noto Serif TC, serif">Q1 優先做</text>`);
+svgParts.push(`<text x="${M.left+14}" y="${M.top+26}" font-size="15" font-weight="700" fill="${quadColor.Q2}" font-family="Noto Serif TC, serif">Q2 排隊做</text>`);
+svgParts.push(`<text x="${xScale(XCUT)+16}" y="${yScale(yMin)-14}" font-size="15" font-weight="700" fill="${quadColor.Q3}" font-family="Noto Serif TC, serif">Q3 快速處理</text>`);
+svgParts.push(`<text x="${M.left+14}" y="${yScale(yMin)-14}" font-size="15" font-weight="700" fill="${quadColor.Q4}" font-family="Noto Serif TC, serif">Q4 暫緩</text>`);
+
+// axes
+svgParts.push(`<line x1="${M.left}" y1="${M.top}" x2="${M.left}" y2="${yScale(yMin)}" stroke="#8A9088" stroke-width="1.5"/>`);
+svgParts.push(`<line x1="${M.left}" y1="${yScale(yMin)}" x2="${xScale(xMax)}" y2="${yScale(yMin)}" stroke="#8A9088" stroke-width="1.5"/>`);
+
+// tick marks 1-5
+for(let t=1;t<=5;t++){
+  svgParts.push(`<line x1="${xScale(t)}" y1="${yScale(yMin)}" x2="${xScale(t)}" y2="${yScale(yMin)+6}" stroke="#8A9088"/>`);
+  svgParts.push(`<text x="${xScale(t)}" y="${yScale(yMin)+26}" font-size="13" fill="#6B726B" text-anchor="middle">${t}</text>`);
+  svgParts.push(`<line x1="${M.left-6}" y1="${yScale(t)}" x2="${M.left}" y2="${yScale(t)}" stroke="#8A9088"/>`);
+  svgParts.push(`<text x="${M.left-14}" y="${yScale(t)+4}" font-size="13" fill="#6B726B" text-anchor="end">${t}</text>`);
+}
+
+// threshold dashed lines
+svgParts.push(`<line x1="${xScale(XCUT)}" y1="${M.top}" x2="${xScale(XCUT)}" y2="${yScale(yMin)}" stroke="${quadColor.Q1}" stroke-width="1.5" stroke-dasharray="6,5" opacity="0.6"/>`);
+svgParts.push(`<line x1="${M.left}" y1="${yScale(YCUT)}" x2="${xScale(xMax)}" y2="${yScale(YCUT)}" stroke="${quadColor.Q2}" stroke-width="1.5" stroke-dasharray="6,5" opacity="0.6"/>`);
+
+// axis titles
+svgParts.push(`<text x="${M.left+plotW/2}" y="${H-18}" font-size="15" fill="${'#20241F'}" text-anchor="middle" font-weight="700" font-family="Noto Sans TC, sans-serif">迫切性中位數 →</text>`);
+svgParts.push(`<text x="20" y="${M.top+plotH/2}" font-size="15" fill="#20241F" text-anchor="middle" font-weight="700" font-family="Noto Sans TC, sans-serif" transform="rotate(-90 20 ${M.top+plotH/2})">重要性中位數 →</text>`);
+
+// group items by coordinate
+const groups = {};
+items.forEach(it => {
+  const key = it.urg + "_" + it.imp;
+  if(!groups[key]) groups[key] = [];
+  groups[key].push(it);
+});
+
+Object.values(groups).forEach(group => {
+  const it0 = group[0];
+  const cx = xScale(it0.urg), cy = yScale(it0.imp);
+  const avgIqr = group.reduce((s,it)=>s+it.iqr_urg+it.iqr_imp,0)/(group.length*2);
+  const r = 8 + Math.min(avgIqr,3)*3;
+  const color = quadColor[it0.quad];
+
+  svgParts.push(`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${color}" opacity="0.28" class="pt" data-codes="${group.map(g=>g.code).join(',')}" data-cx="${cx}" data-cy="${cy}"/>`);
+  svgParts.push(`<circle cx="${cx}" cy="${cy}" r="4.5" fill="${color}" class="pt" data-codes="${group.map(g=>g.code).join(',')}" data-cx="${cx}" data-cy="${cy}"/>`);
+
+  // label: stack codes, offset to avoid overlapping the point itself
+  const labelX = cx + r + 6;
+  let labelY = cy - (group.length-1)*7;
+  group.forEach((it, i) => {
+    svgParts.push(`<text x="${labelX}" y="${labelY + i*15}" font-size="12.5" font-family="JetBrains Mono, monospace" font-weight="700" fill="${color}" class="pt" data-codes="${group.map(g=>g.code).join(',')}" data-cx="${cx}" data-cy="${cy}">${it.code}</text>`);
+  });
+});
+
+svg.innerHTML = svgParts.join('');
+
+// tooltip interaction
+const tooltip = document.getElementById('tooltip');
+const itemByCode = {};
+items.forEach(it => itemByCode[it.code] = it);
+
+document.querySelectorAll('.pt').forEach(el => {
+  el.addEventListener('mouseenter', (e) => {
+    const codes = el.getAttribute('data-codes').split(',');
+    let html = codes.map(c => {
+      const it = itemByCode[c];
+      const nText = it.n_urg === it.n_imp ? `n=${it.n_urg}` : `迫切性n=${it.n_urg}／重要性n=${it.n_imp}`;
+      return `<b>${it.code}</b> ${it.name}<br>迫切性${it.urg}／重要性${it.imp}（${nText}）`;
+    }).join('<hr style="border-color:rgba(255,255,255,.2); margin:6px 0;">');
+    tooltip.innerHTML = html;
+    tooltip.style.opacity = 1;
+  });
+  el.addEventListener('mousemove', (e) => {
+    const rect = svg.getBoundingClientRect();
+    tooltip.style.left = (e.clientX + 16) + 'px';
+    tooltip.style.top = (e.clientY + 16) + 'px';
+  });
+  el.addEventListener('mouseleave', () => { tooltip.style.opacity = 0; });
+});
+</script>
+</body>
+</html>
