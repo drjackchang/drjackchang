@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>隧道搜救人員心理壓力之3D虛擬實境誘發與訓練成效：台日跨國比較研究（初稿）</title>
+<style>
+  body {
+    font-family: "Noto Serif TC", "Microsoft JhengHei", serif;
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 24px 100px;
+    line-height: 1.85;
+    color: #222;
+    background: #fdfdfb;
+    font-size: 16px;
+  }
+  h1.title { font-size: 26px; text-align: center; margin-bottom: 4px; color: #1f3864; font-family: "Microsoft JhengHei", sans-serif; }
+  p.subtitle { text-align: center; color: #666; margin-top: 0; font-family: "Microsoft JhengHei", sans-serif; }
+  p.entitle { text-align: center; font-style: italic; color: #444; }
+  h2 {
+    font-family: "Microsoft JhengHei", sans-serif;
+    color: #1f3864;
+    border-bottom: 2px solid #1f3864;
+    padding-bottom: 6px;
+    margin-top: 44px;
+    font-size: 21px;
+  }
+  h3 {
+    font-family: "Microsoft JhengHei", sans-serif;
+    color: #1f3864;
+    font-size: 17px;
+    margin-top: 28px;
+  }
+  h4 {
+    font-family: "Microsoft JhengHei", sans-serif;
+    color: #33507a;
+    font-size: 15.5px;
+    margin-top: 20px;
+  }
+  .citeref { color: #a33; }
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 14.5px; font-family: "Microsoft JhengHei", sans-serif;}
+  th, td { border: 1px solid #ccc; padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { background: #1f3864; color: white; }
+  tr:nth-child(even) td { background: #f5f5f2; }
+  .note { font-size: 13.5px; color: #777; font-style: italic; }
+  .infobox { background: #f2f2ef; border-left: 4px solid #1f3864; padding: 14px 18px; margin: 20px 0; font-family: "Microsoft JhengHei", sans-serif; font-size: 14.5px;}
+  .infobox b { color: #1f3864; }
+  .warn { background: #fdf2e9; border-left: 4px solid #c0392b; padding: 10px 16px; font-family: "Microsoft JhengHei", sans-serif; font-size: 14.5px; }
+  figure { margin: 28px 0; text-align: center; }
+  figcaption { font-size: 13.5px; color: #666; margin-top: 8px; font-family: "Microsoft JhengHei", sans-serif;}
+  .refs p { font-size: 14.5px; margin: 10px 0; text-indent: -28px; padding-left: 28px; }
+  .toc { background: #f2f2ef; padding: 16px 24px; font-family: "Microsoft JhengHei", sans-serif; font-size: 14.5px; }
+  .toc a { color: #1f3864; text-decoration: none; }
+  .pagebreak { border-top: 1px dashed #ccc; margin: 50px 0; }
+  ul { padding-left: 22px; }
+  li { margin-bottom: 6px; }
+  .langtoggle { position: fixed; top: 16px; right: 16px; z-index: 100; font-family: "Microsoft JhengHei", sans-serif; }
+  .langtoggle button { background: #1f3864; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-size: 13px; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+  .langtoggle button:hover { background: #16294a; }
+  #content-en { display: none; }
+  @media print { .langtoggle { display: none; } }
+</style>
+</head>
+<body>
+<div class="langtoggle"><button onclick="toggleLang()">🌐 <span id="langlabel">View in English</span></button></div>
+<script>
+function toggleLang(){
+  var zh = document.getElementById('content-zh');
+  var en = document.getElementById('content-en');
+  var label = document.getElementById('langlabel');
+  if (en.style.display === 'none') {
+    zh.style.display = 'none';
+    en.style.display = 'block';
+    label.textContent = '切換回中文';
+  } else {
+    zh.style.display = 'block';
+    en.style.display = 'none';
+    label.textContent = 'View in English';
+  }
+}
+</script>
+<div id="content-zh">
+
+<h1 class="title">國科會專題研究計畫申請書（初稿）</h1>
+<p class="subtitle">含國際合作規劃（台灣－日本）｜HTML工作版，供內容確認用，定稿後再輸出Word</p>
+<p><b>中文題目：</b>隧道搜救人員心理壓力之3D虛擬實境誘發與訓練成效：台日跨國比較研究</p>
+<p class="entitle">English Title: Psychological Stress Induction and VR-Based Training for Tunnel Rescue Personnel: A Taiwan-Japan Cross-National Comparative Study</p>
+
+<div class="infobox">
+<p><b>計畫主持人：</b>張育通（Jack Chang）／國立臺北護理健康大學 健康科技學院</p>
+<p><b>國外合作研究人員：</b>Dr. Miho Seike（清家美帆）／查證現職為日本廣島大學先進理工系研究科副教授，正式合作文件請與本人確認目前服務機構全銜與職稱</p>
+<p><b>建議國內顧問：</b>張賢龢教授（美國安柏瑞德航天大學）——曾任新北市消防局，為雪山隧道火災應變計畫負責人</p>
+<p><b>執行期程：</b>2年（草擬 116/08/01－118/07/31，實際以徵求公告年度為準）｜<b>計畫類型：</b>一般型研究計畫（自行提出）</p>
+</div>
+
+<div class="toc">
+目次：摘要｜一、研究動機與重要性｜二、文獻回顧｜三、研究缺口與創新性｜四、理論架構（含圖示）｜五、研究目的｜六、研究方法與步驟（含設備規格）｜七、國際合作規劃｜八、預期結果與貢獻｜九、進度甘特圖｜十、學門選擇說明｜十一、預算編列｜十二、跨國合作表格清單｜十三、參考文獻｜附錄一、二
+</div>
+
+<h2>摘要</h2>
+<h4>中文摘要</h4>
+<p>隧道環境救援任務具有空間侷限、高溫濃煙、能見度低、逃生路徑複雜等特性，對執行任務之搜救人員構成顯著之心理壓力，長期而言可能影響其臨場判斷、行動效率與心理韌性，甚至導致創傷後壓力反應。然而目前對搜救人員（相對於一般疏散民眾）在隧道情境下之心理壓力歷程，仍缺乏可控、可重複之實驗場域進行系統性測量、行為科學分析與事前訓練介入。本研究將以團隊已完成之隧道環境360度影像資料為基礎，透過攝影測量技術重建為可互動之三維虛擬實境（VR）隧道場域，並整合火煙特效模擬，建立一套可調控情境變因之心理壓力誘發與測量平台，並以行為科學觀點分析壓力狀態下之決策與行為改變。本研究將與日本Dr. Miho Seike合作，比較台灣與日本兩地搜救人員於相同VR隧道情境下之心理壓力反應與應變行為，並評估VR暴露訓練對強化心理準備之成效。</p>
+<h4>Abstract</h4>
+<p><i>Tunnel rescue operations present unique psychological challenges due to confined space, dense smoke, poor visibility, and complex evacuation routes, placing significant stress on rescue personnel — as distinct from general evacuees — that can affect real-time judgment, operational efficiency, and psychological resilience. Building on 360° footage of an actual tunnel already captured by our team, this project reconstructs the environment into an interactive VR space to create a controllable platform for inducing and measuring psychological stress, in collaboration with Dr. Miho Seike (Hiroshima University), an internationally recognized researcher on psychological stress in tunnel evacuation.</i></p>
+
+<div class="pagebreak"></div>
+
+<h2>一、研究動機與重要性</h2>
+<p>隧道、地下空間等封閉環境的火災與坍塌事故，因逃生路徑單一、濃煙擴散快速、通訊與定位困難，長期被消防與緊急救護體系列為高風險任務類型。第一線人員在此情境下除面對生理負荷外，更承受高強度心理壓力；依壓力因應交易理論（Transactional Model of Stress and Coping）之觀點<span class="citeref">（Lazarus &amp; Folkman, 1984）</span>，此壓力狀態若未經適當之認知評估調適與訓練，可能影響其決策品質、團隊溝通與長期心理健康。</p>
+<p>目前台灣與日本在隧道搜救訓練上多仍仰賴實體演練場地，受限於場地取得、安全風險與可重複性，難以在受控條件下系統性測量人員之心理壓力反應。VR技術之發展使可控、可重複、低風險之情境模擬訓練成為可能，國際上已有研究證實VR之多感官情境模擬可有效提升疏散情境之緊迫感知與行為真實性<span class="citeref">（Shaw et al., 2019）</span>，也提供跨國以相同刺激情境進行比較研究的機會。</p>
+<p>本計畫團隊已完成隧道實景之360度影像拍攝，並具備將其重建為可互動VR場域之技術基礎。值得特別說明的是，隧道搜救情境對「執行任務之搜救人員」與「受困之一般用路人／民眾」所引發的心理歷程並不相同：既有國際文獻（如Li et al., 2022, 2024a, 2024b之隧道疏散研究）多以「一般用路人」為對象，其核心反應為逃生求生；搜救人員則須在承受相近環境壓力之同時，持續進行任務判斷、器材操作與團隊協作，其心理韌性與抗壓表現直接關係搜救成效與自身安全。本計畫聚焦於「搜救人員」而非一般用路人之心理壓力反應，並以行為科學觀點（詳見理論架構，特別是Easterbrook, 1959之線索利用理論）探討壓力狀態下之注意力、決策與行為改變歷程。</p>
+
+<h2>二、文獻回顧</h2>
+<h3>（一）國外相關研究：Dr. Miho Seike 團隊</h3>
+<p>日本廣島大學（現職，過去與筑波大學有淵源）Dr. Miho Seike 為隧道火災疏散行為與心理壓力量測領域之國際重要學者。其團隊近年運用實尺寸隧道充煙疏散實驗，量測受試者之疏散步行速度與心理／情緒狀態，並以結構方程模式（SEM）分析負向情緒與步行行為之關聯性<span class="citeref">（Li et al., 2024a——《Negative emotion degree in smoke filled tunnel evacuation》, Tunnelling and Underground Space Technology; Li et al., 2024b——《Structural equation modeling of negative emotion and walking behavior》, Safety Science）</span>，近期並發表以機器學習方法解析隧道疏散情境下人員情緒反應之研究<span class="citeref">（Seike et al., 2024）</span>，以及結合步行速度與心理狀態之全尺寸實驗<span class="citeref">（Li et al., 2026）</span>。</p>
+<p>特別值得注意的是，該團隊已發表以中國與日本用路人為對象、比較兩國人員於隧道火災情境下疏散行為與心理壓力反應之跨國研究<span class="citeref">（Li et al., 2022）</span>，顯示其團隊具備執行跨國比較研究之實務經驗與方法論基礎，與本計畫欲進行之台日比較設計高度呼應。此外，Dr. Seike過去亦曾參與台灣高雄過港隧道機車道之火災安全評估研究，並直接以2012年雪山隧道火燒車事件之影像分析作為研究起點<span class="citeref">（Chung et al., 2022）</span>，另有隧道火災熱釋放率相關研究<span class="citeref">（Seike et al., 2019）</span>，顯示其與台灣隧道議題已有直接研究連結。</p>
+<p>惟其既有研究對象多為「一般用路人／疏散民眾」，尚未針對「執行搜救任務之消防／救護人員」在隧道情境下之心理壓力反應與事前訓練需求進行系統性研究，此為本計畫可與其研究形成互補、並作為延伸合作切入點之關鍵所在。</p>
+
+<h3>（二）國內相關研究</h3>
+<p>台灣現有消防人員心理壓力相關研究多聚焦一般勤務情境，例如以中文版戴氏創傷量表（DTS）調查到院前心肺功能停止（OHCA）案件與消防人員創傷後壓力症候群（PTSD）危險因子之橫斷式研究<span class="citeref">（陳豐仁，2019）</span>，以及消防人員工作壓力、休閒調適與身心健康關聯之問卷研究<span class="citeref">（吳偉民、陳餘鋆，2020）</span>，方法上多以量表調查為主，較少針對特定高風險情境建立可控之情境模擬並輔以生理指標測量。另一方面，國內對公路隧道之研究則多集中於工程與管理面向，例如國道雪山隧道之災害應變及救援標準作業程序建制<span class="citeref">（陳發林，交通部高速公路局委託研究，年份待查證）</span>，研究對象同樣以「用路人／乘客」疏散安全為主，較少觸及執行搜救任務人員之心理層面。綜合上述，國內目前尚缺乏結合VR情境模擬、生理心理量測與搜救人員訓練介入之整合性研究，本計畫可望填補此一空缺。</p>
+
+<h3>（三）建議邀請之國內顧問：張賢龢教授</h3>
+<p>美國安柏瑞德航天大學安全與應急機關管理學系助理教授張賢龢，2002–2010年任職台灣消防單位期間時任新北市消防局，為雪山隧道火災應變計畫之負責人，現專長美國事故指揮體系（ICS）與台美災害應變體系比較。其「應變體系管理」層次之專長，與Dr. Seike之「個體疏散心理與行為」研究、以及本計畫之「VR訓練介入」形成三個互補層次，建議邀請其擔任國內顧問。</p>
+
+<h2>三、本計畫之研究缺口與創新性</h2>
+<ul>
+<li><b>對象創新：</b>聚焦「執行搜救任務之人員」而非一般疏散民眾，與Dr. Seike既有研究<span class="citeref">（Li et al., 2022, 2024a, 2024b）</span>形成互補而非重疊</li>
+<li><b>方法創新：</b>以VR取代真實充煙隧道實驗，可控制情境變因並大幅降低受試者實際暴露風險，同時參考多感官模擬文獻<span class="citeref">（Shaw et al., 2019; Chen et al., 2024）</span>保留高沉浸感之心理壓力誘發效果</li>
+<li><b>應用創新：</b>依壓力免疫訓練理論<span class="citeref">（Meichenbaum, 1985）</span>將VR平台轉化為可重複操作之事前心理準備訓練工具</li>
+<li><b>比較創新：</b>延續Dr. Seike團隊既有跨國比較研究之方法基礎<span class="citeref">（Li et al., 2022）</span>，將比較對象由一般用路人擴展至專業搜救人員</li>
+</ul>
+
+<h2>四、理論架構</h2>
+<p>本計畫整合三層理論，建構貫穿「環境壓力源→行為表現」與「訓練介入」兩條路徑之整體架構。</p>
+
+<h3>4.1 總體框架：壓力因應交易理論（Lazarus &amp; Folkman, 1984）</h3>
+<p>此理論主張心理壓力並非環境刺激直接造成，而是由「初級評估」（此情境對我是否構成威脅）與「次級評估」（我是否具備因應資源）交互中介而成，是壓力研究中最具代表性之經典框架<span class="citeref">（Lazarus &amp; Folkman, 1984）</span>。</p>
+
+<figure>
+<svg viewBox="0 0 760 220" width="100%" role="img">
+<title>Lazarus與Folkman壓力因應交易模式</title>
+<defs><marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#1f3864" stroke-width="1.5"/></marker></defs>
+<rect x="20" y="70" width="140" height="60" rx="8" fill="#e6f1fb" stroke="#1f3864"/>
+<text x="90" y="94" text-anchor="middle" font-size="13" font-family="Microsoft JhengHei">潛在壓力事件</text>
+<text x="90" y="112" text-anchor="middle" font-size="11" fill="#555" font-family="Microsoft JhengHei">濃煙、高溫、低能見度</text>
+
+<line x1="160" y1="100" x2="196" y2="100" stroke="#1f3864" stroke-width="1.5" marker-end="url(#a1)"/>
+
+<rect x="200" y="30" width="150" height="60" rx="8" fill="#eeedfe" stroke="#534ab7"/>
+<text x="275" y="54" text-anchor="middle" font-size="13" font-family="Microsoft JhengHei">初級評估</text>
+<text x="275" y="72" text-anchor="middle" font-size="11" fill="#555" font-family="Microsoft JhengHei">這是威脅／挑戰／無關？</text>
+
+<rect x="200" y="130" width="150" height="60" rx="8" fill="#eeedfe" stroke="#534ab7"/>
+<text x="275" y="154" text-anchor="middle" font-size="13" font-family="Microsoft JhengHei">次級評估</text>
+<text x="275" y="172" text-anchor="middle" font-size="11" fill="#555" font-family="Microsoft JhengHei">我有什麼資源可因應？</text>
+
+<line x1="350" y1="60" x2="350" y2="60" stroke="none"/>
+<path d="M350 60 C 380 60, 380 100, 350 130" fill="none" stroke="#1f3864" stroke-width="1.5" marker-end="url(#a1)"/>
+
+<line x1="350" y1="160" x2="406" y2="160" stroke="#1f3864" stroke-width="1.5" marker-end="url(#a1)"/>
+<line x1="350" y1="60" x2="406" y2="100" stroke="#1f3864" stroke-width="1.5"/>
+
+<rect x="410" y="70" width="150" height="60" rx="8" fill="#e1f5ee" stroke="#0f6e56"/>
+<text x="485" y="94" text-anchor="middle" font-size="13" font-family="Microsoft JhengHei">因應行為</text>
+<text x="485" y="112" text-anchor="middle" font-size="11" fill="#555" font-family="Microsoft JhengHei">問題導向／情緒導向</text>
+
+<line x1="560" y1="100" x2="616" y2="100" stroke="#1f3864" stroke-width="1.5" marker-end="url(#a1)"/>
+<rect x="620" y="70" width="120" height="60" rx="8" fill="#faece7" stroke="#993c1d"/>
+<text x="680" y="94" text-anchor="middle" font-size="13" font-family="Microsoft JhengHei">適應結果</text>
+<text x="680" y="112" text-anchor="middle" font-size="11" fill="#555" font-family="Microsoft JhengHei">生理／行為／情緒</text>
+
+<path d="M680 130 C 680 190, 90 190, 90 130" fill="none" stroke="#999" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#a1)"/>
+<text x="385" y="205" text-anchor="middle" font-size="11" fill="#777" font-family="Microsoft JhengHei">再評估（reappraisal）回饋迴路</text>
+</svg>
+<figcaption>圖1：Lazarus與Folkman（1984）壓力因應交易模式，為本計畫理論主軸</figcaption>
+</figure>
+
+<h3>4.2 延伸Dr. Seike既有實證模型</h3>
+<p>Dr. Seike團隊已以結構方程模式（SEM）驗證「負向情緒→步行速度」之路徑關係<span class="citeref">（Li et al., 2024b）</span>。本計畫將此路徑向前延伸，加入認知評估階段作為前置變項，並向後將行為結果由單純之疏散步行速度，擴展為專業任務行為（決策正確率、器材操作表現）。此延伸策略之優點在於：計畫並非憑空提出新模型，而是在既有國際發表之實證路徑上，清楚標示本計畫之延伸貢獻。此外，Dr. Seike團隊已發表之效果量將進一步作為本計畫貝氏統計分析（詳見6.6）之資訊性先驗，使既有實證知識能正式轉化為模型估計的一部分，而非僅止於文字引用。</p>
+
+<figure>
+<svg viewBox="0 0 760 260" width="100%" role="img">
+<title>整合延伸路徑模型</title>
+<defs><marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#1f3864" stroke-width="1.5"/></marker></defs>
+
+<rect x="20" y="90" width="140" height="56" rx="8" fill="#f1efe8" stroke="#5f5e5a"/>
+<text x="90" y="112" text-anchor="middle" font-size="13" font-family="Microsoft JhengHei">環境壓力源</text>
+<text x="90" y="130" text-anchor="middle" font-size="10.5" fill="#555" font-family="Microsoft JhengHei">濃煙、高溫、低能見度</text>
+
+<line x1="160" y1="118" x2="196" y2="118" stroke="#1f3864" stroke-width="1.5" marker-end="url(#a2)"/>
+
+<rect x="200" y="90" width="140" height="56" rx="8" fill="#eeedfe" stroke="#534ab7"/>
+<text x="270" y="112" text-anchor="middle" font-size="13" font-family="Microsoft JhengHei">認知評估</text>
+<text x="270" y="130" text-anchor="middle" font-size="10.5" fill="#555" font-family="Microsoft JhengHei">Lazarus &amp; Folkman, 1984</text>
+
+<line x1="340" y1="118" x2="376" y2="118" stroke="#1f3864" stroke-width="1.5" marker-end="url(#a2)"/>
+
+<rect x="380" y="90" width="150" height="56" rx="8" fill="#faece7" stroke="#993c1d"/>
+<text x="455" y="112" text-anchor="middle" font-size="13" font-family="Microsoft JhengHei">生理與情緒反應</text>
+<text x="455" y="130" text-anchor="middle" font-size="10.5" fill="#555" font-family="Microsoft JhengHei">HRV、EDA、負向情緒</text>
+
+<line x1="530" y1="118" x2="586" y2="118" stroke="#0f6e56" stroke-width="2" marker-end="url(#a2)"/>
+<text x="558" y="105" text-anchor="middle" font-size="9.5" fill="#0f6e56" font-family="Microsoft JhengHei">Li et al.,2024b<tspan x="558" dy="10">已驗證(SEM)</tspan></text>
+
+<rect x="590" y="90" width="150" height="56" rx="8" fill="#e1f5ee" stroke="#0f6e56"/>
+<text x="665" y="112" text-anchor="middle" font-size="13" font-family="Microsoft JhengHei">行為與任務表現</text>
+<text x="665" y="130" text-anchor="middle" font-size="10.5" fill="#555" font-family="Microsoft JhengHei">決策、器材操作、步行速度</text>
+
+<rect x="20" y="190" width="180" height="56" rx="8" fill="#faeeda" stroke="#854f0b"/>
+<text x="110" y="212" text-anchor="middle" font-size="13" font-family="Microsoft JhengHei">VR心理準備訓練</text>
+<text x="110" y="230" text-anchor="middle" font-size="10.5" fill="#555" font-family="Microsoft JhengHei">Meichenbaum, 1985</text>
+<path d="M200 210 C 240 210, 240 150, 260 148" fill="none" stroke="#854f0b" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#a2)"/>
+<text x="230" y="175" text-anchor="middle" font-size="10" fill="#854f0b" font-family="Microsoft JhengHei">調節認知評估</text>
+
+<rect x="590" y="190" width="150" height="56" rx="8" fill="#faeeda" stroke="#854f0b"/>
+<text x="665" y="212" text-anchor="middle" font-size="13" font-family="Microsoft JhengHei">注意力窄化測量</text>
+<text x="665" y="230" text-anchor="middle" font-size="10.5" fill="#555" font-family="Microsoft JhengHei">Easterbrook, 1959</text>
+<path d="M665 190 C 665 165, 665 155, 665 148" fill="none" stroke="#854f0b" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#a2)"/>
+</svg>
+<figcaption>圖2：本計畫整合延伸路徑模型——延伸自Dr. Seike團隊之SEM實證路徑（Li et al., 2024b），並加入認知評估前端、訓練介入調節、與注意力窄化之額外測量面向</figcaption>
+</figure>
+
+<h3>4.3 訓練介入框架：壓力免疫訓練（Meichenbaum, 1985）</h3>
+<p>此為臨床心理學中用於建立心理韌性之經典應用理論，包含三階段：概念化教育、技能習得與演練、應用與追蹤<span class="citeref">（Meichenbaum, 1985）</span>。此框架可直接對應本計畫「VR心理準備訓練」介入設計之三個階段。</p>
+
+<figure>
+<svg viewBox="0 0 760 160" width="100%" role="img">
+<title>壓力免疫訓練三階段</title>
+<defs><marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#854f0b" stroke-width="1.5"/></marker></defs>
+<rect x="20" y="40" width="210" height="70" rx="8" fill="#faeeda" stroke="#854f0b"/>
+<text x="125" y="66" text-anchor="middle" font-size="13" font-family="Microsoft JhengHei">階段一：概念化教育</text>
+<text x="125" y="86" text-anchor="middle" font-size="10.5" fill="#555" font-family="Microsoft JhengHei">說明壓力生理與心理反應機制</text>
+
+<line x1="230" y1="75" x2="266" y2="75" stroke="#854f0b" stroke-width="1.5" marker-end="url(#a3)"/>
+
+<rect x="270" y="40" width="220" height="70" rx="8" fill="#faeeda" stroke="#854f0b"/>
+<text x="380" y="66" text-anchor="middle" font-size="13" font-family="Microsoft JhengHei">階段二：技能習得與演練</text>
+<text x="380" y="86" text-anchor="middle" font-size="10.5" fill="#555" font-family="Microsoft JhengHei">VR分級暴露，反覆練習因應技巧</text>
+
+<line x1="490" y1="75" x2="526" y2="75" stroke="#854f0b" stroke-width="1.5" marker-end="url(#a3)"/>
+
+<rect x="530" y="40" width="210" height="70" rx="8" fill="#faeeda" stroke="#854f0b"/>
+<text x="635" y="66" text-anchor="middle" font-size="13" font-family="Microsoft JhengHei">階段三：應用與追蹤</text>
+<text x="635" y="86" text-anchor="middle" font-size="10.5" fill="#555" font-family="Microsoft JhengHei">評估訓練遷移至真實情境之成效</text>
+</svg>
+<figcaption>圖3：Meichenbaum（1985）壓力免疫訓練三階段模型，對應本計畫VR訓練介入設計</figcaption>
+</figure>
+
+<h3>4.4 補充變項：自我效能理論（Bandura, 1997）</h3>
+<p>建議將自我效能納入訓練前後測之心理量表，作為除生理與行為指標外之第三種訓練成效證據<span class="citeref">（Bandura, 1997）</span>，並可作為認知評估與因應行為間之中介變項進行後續統計分析。</p>
+
+<h3>4.5 延伸測量面向：注意力窄化與視覺搜索行為（Easterbrook, 1959）</h3>
+<p>Easterbrook之線索利用理論主張，情緒喚起程度升高會使個體可利用之線索範圍縮減，此現象常用於解釋高壓情境下專業人員資訊蒐集與決策品質下降之機制<span class="citeref">（Easterbrook, 1959）</span>。若採用具備眼動追蹤功能之VR頭盔（詳見六、6.7），可量測受試者凝視點分布範圍、掃視路徑複雜度等指標，作為驗證圖2模型之額外行為科學證據。</p>
+
+<h3>4.6 研究假設</h3>
+<ul>
+<li>H1：環境壓力源強度與受試者之威脅認知評估程度呈正相關<span class="citeref">（Lazarus &amp; Folkman, 1984）</span></li>
+<li>H2：威脅認知評估程度與生理喚起指標及主觀負向情緒呈正相關</li>
+<li>H3：生理與情緒反應程度與任務行為表現呈負相關，此路徑延伸自Dr. Seike團隊既有SEM實證模型<span class="citeref">（Li et al., 2024b）</span></li>
+<li>H4：接受VR心理準備訓練之受試者，其訓練後之心理壓力反應顯著低於訓練前，且自我效能顯著提升<span class="citeref">（Meichenbaum, 1985; Bandura, 1997）</span></li>
+<li>H5：台灣與日本受試者於相同VR情境下之心理壓力反應與任務行為表現模式存在差異，以貝氏後驗可信區間（credible interval）重疊程度判定<span class="citeref">（呼應Li et al., 2022之跨國比較發現）</span></li>
+</ul>
+
+<h2>五、研究目的</h2>
+<ul>
+<li>建置可互動、可調控情境變因之隧道VR心理壓力誘發暨測試平台</li>
+<li>建立搜救人員心理壓力生理與主觀測量之標準化施測流程</li>
+<li>以行為科學觀點分析搜救人員於高壓情境下之注意力、決策與行為改變歷程</li>
+<li>比較台灣與日本兩地搜救人員於相同VR情境下之心理壓力反應與應變行為差異</li>
+<li>評估VR暴露訓練介入對心理韌性提升與事前心理準備之成效</li>
+</ul>
+
+<h2>六、研究方法與步驟</h2>
+<h3>6.1 VR隧道場景建置</h3>
+<p>延續團隊既有之隧道360度影像資料，透過攝影測量法（SfM-MVS）重建為具真實幾何之三維網格，於Unity中整合火煙粒子特效、動態光影與碰撞系統。</p>
+<h3>6.2 研究對象</h3>
+<p>台灣端與日本端各招募一定規模之消防／緊急救護相關人員，依雙方倫理委員會核准之納入排除標準進行招募。</p>
+<h3>6.3 心理壓力測量工具</h3>
+<ul>
+<li>生理指標：心率變異度（HRV）、膚電反應（EDA），採即時、非侵入性穿戴式感測器（詳見6.8）</li>
+<li>主觀量表：STAI、PSS、自我效能量表</li>
+<li>行為科學觀察指標：任務決策反應時間、器材操作正確率、凝視與掃視行為（詳見4.5）</li>
+</ul>
+<h3>6.4 實驗設計與流程</h3>
+<p>採基線測量→VR情境暴露→即時生理訊號紀錄→情境後主觀量表填寫之流程；並規劃訓練介入研究，設計前測—VR心理準備訓練介入（依壓力免疫訓練三階段設計，<span class="citeref">Meichenbaum, 1985</span>）—後測。</p>
+<h3>6.5 跨國比較設計</h3>
+<p>台灣與日本兩地採用相同之VR版本與施測流程，並就資料跨境傳輸與隱私處理分別取得雙方倫理委員會核准。</p>
+<h3>6.6 資料分析方法</h3>
+<p>考量本研究之目標母體（隧道搜救人員）招募不易，正式樣本規模預期有限，傳統最大概似估計（ML）之結構方程模式在小樣本下容易產生偏誤或不穩定之估計<span class="citeref">（van de Schoot et al., 2014）</span>。故本計畫規劃採用<b>貝氏結構方程模式（Bayesian SEM）</b>取代傳統SEM來驗證圖2之延伸路徑模型，其優點在於可將既有實證知識轉化為「資訊性先驗」（informative priors）納入模型估計，且在小樣本情境下仍能維持較穩定之參數估計<span class="citeref">（Muthén &amp; Asparouhov, 2012; van de Schoot et al., 2014）</span>：</p>
+<ul>
+<li><b>先驗來源一（現場實務經驗）：</b>「生理情緒反應→行為表現」路徑之先驗分布，直接依據Dr. Seike團隊已發表之SEM效果量設定<span class="citeref">（Li et al., 2024b）</span>，等於把她既有的實證發現正式轉化為本計畫模型的起始知識，而非從零估計</li>
+<li><b>先驗來源二（專家實務經驗）：</b>「環境壓力源→認知評估」路徑之先驗，參考國內顧問張賢龢教授之隧道應變體系實務經驗，以及計畫主持人本身20年新北市消防局義消暨EMT實務經驗，透過結構化專家訪談轉化為先驗分布之範圍設定</li>
+<li><b>後驗更新與跨國比較：</b>以台灣與日本兩地實際蒐集之資料分別更新後驗分布，並比較兩組後驗參數之可信區間（credible interval）重疊程度，作為H5跨國差異假設之判定依據，取代傳統顯著性檢定之p值判斷</li>
+<li><b>穩健性檢查：</b>同時提供傳統頻率學派SEM與混合設計變異數分析結果作為對照，檢視貝氏與頻率學派結論是否一致</li>
+</ul>
+<p class="note">貝氏方法之採用需仰賴計畫主持人與團隊具備相對應之統計軟體操作能力（如R之brms／blavaan套件或Mplus），建議於計畫執行第1年安排團隊成員接受貝氏統計方法之教育訓練，必要時可洽詢具貝氏統計專長之顧問協助模型設定與先驗敏感度分析。</p>
+
+<h3>6.7 VR頭盔選擇</h3>
+<p>團隊現有Meta Quest 3（2台）可持續用於場景開發與一般測試。惟本研究之行為科學測量若欲納入凝視與掃視等注意力窄化指標（見4.5），建議另添購具備內建眼動追蹤功能之PC VR頭盔：</p>
+<table>
+<tr><th>項目</th><th>Meta Quest 3（既有）</th><th>HTC Vive Focus Vision（建議添購）</th><th>備註</th></tr>
+<tr><td>解析度／眼</td><td>2064×2208</td><td>2448×2448</td><td>Focus Vision解析度較高</td></tr>
+<tr><td>視野角（FOV）</td><td>約110°</td><td>最高120°</td><td></td></tr>
+<tr><td>更新率</td><td>90–120Hz</td><td>90Hz（DisplayPort模式支援120Hz）</td><td></td></tr>
+<tr><td>眼動追蹤</td><td>無</td><td>內建雙眼動攝影機</td><td>本研究注意力窄化測量之關鍵需求</td></tr>
+<tr><td>參考價格</td><td>團隊既有設備</td><td>約999美元（約NT$32,000）</td><td>2026年市價，正式採購前需重新報價</td></tr>
+</table>
+
+<h3>6.8 即時非侵入性生理監測設備</h3>
+<ul>
+<li><b>HRV：</b>Polar H10胸帶式感測器，130Hz心電訊號，官方藍牙BLE SDK即時串流，已有VR訓練研究採用先例（"Work at Heights Training: Conventional Approach With and Without Immersive Virtual Reality" 研究方案）</li>
+<li><b>EDA：</b>Shimmer3 GSR+穿戴式感測器，指環電極量測皮膚電導並可同步擷取PPG訊號</li>
+<li><b>同步方式：</b>以時間戳記將HRV／EDA串流資料與Unity情境事件對齊</li>
+</ul>
+
+<h3>6.9 環境溫溼度模擬設備</h3>
+<p>參考國際多感官VR訓練文獻之作法，以低風險裝置模擬溫熱與濕度：</p>
+<ul>
+<li><b>紅外線輻射熱燈：</b>模擬火場輻射熱感，此作法已見於學術文獻中的多感官VR疏散研究<span class="citeref">（Shaw et al., 2019）</span></li>
+<li><b>超音波加濕器／噴霧器：</b>模擬濕度與細微水氣觸感，參考機器手臂多感官模擬研究之噴霧裝置設計<span class="citeref">（Chen et al., 2024）</span></li>
+<li><b>控制方式：</b>Arduino／ESP32透過繼電器模組控制，與Unity情境觸發點同步</li>
+</ul>
+
+<h3>6.10 VR原地行走裝置</h3>
+<p>建議添購市售全向式VR原地行走機，如KAT Walk C2 Core（約799美元，約NT$25,000），採光學足部追蹤，相容PC VR與經橋接軟體之Meta Quest系統。</p>
+
+<h3>6.11 消防瞄子與VR手把整合方案</h3>
+<ul>
+<li><b>位置追蹤：</b>於瞄子握把內嵌入VR控制器，與日本市售VR消火訓練器原理相同</li>
+<li><b>旋轉角度感測：</b>於瞄子噴頭調整環加裝旋轉編碼器，直接參考學術文獻之做法<span class="citeref">（Jeon et al., 2021）</span>，將旋轉編碼器裝設於消防瞄子噴頭調整部位</li>
+<li><b>商用參考案例：</b>HTC Vive Tracker吊掛於消防水線末端追蹤移動，見於商用系統FLAIM Trainer</li>
+</ul>
+
+<h2>七、國際合作規劃與分工</h2>
+<table>
+<tr><th>項目</th><th>台灣團隊（張育通）</th><th>日本團隊（Dr. Seike／廣島大學，待確認）</th></tr>
+<tr><td>主要負責</td><td>VR場景開發、台灣端受試者招募與施測、整體資料分析</td><td>日本端受試者招募與施測、測量工具在地化與倫理審查</td></tr>
+<tr><td>移地研究</td><td>赴日聯合施測（每年至少1次）</td><td>來台參與平台測試（期間至少1次）</td></tr>
+<tr><td>倫理審查</td><td>台灣端IRB</td><td>日方對應倫理委員會審查</td></tr>
+</table>
+<p>建議邀請張賢龢教授擔任國內顧問，與台日團隊共同形成「應變體系管理－個體心理與行為－VR訓練工具開發」三層互補之研究團隊結構。</p>
+
+<h2>八、預期結果與貢獻</h2>
+<ul>
+<li>建立可跨國複製之隧道VR心理壓力誘發與測量平台，與Dr. Seike既有研究<span class="citeref">（Li et al., 2022, 2024a, 2024b）</span>形成互補</li>
+<li>產出台灣與日本搜救人員心理壓力反應與應變行為之跨國比較實證資料</li>
+<li>提出以VR暴露訓練提升心理韌性之課程設計建議<span class="citeref">（Meichenbaum, 1985）</span></li>
+<li>深化與日方團隊之國際合作關係，作為後續台日雙邊協議型計畫之基礎</li>
+</ul>
+
+<h2>九、執行進度甘特圖（2年期，草案）</h2>
+<table>
+<tr><th>工作項目</th><th>第1–6月</th><th>第7–12月</th><th>第13–18月</th><th>第19–24月</th></tr>
+<tr><td>VR場景開發與系統測試</td><td>●●</td><td>●</td><td></td><td></td></tr>
+<tr><td>雙方倫理審查</td><td>●●</td><td></td><td></td><td></td></tr>
+<tr><td>台灣端施測</td><td></td><td>●●</td><td>●</td><td></td></tr>
+<tr><td>日本端施測（含移地研究）</td><td></td><td></td><td>●●</td><td>●</td></tr>
+<tr><td>資料分析</td><td></td><td>●</td><td>●●</td><td>●</td></tr>
+<tr><td>論文撰寫與投稿</td><td></td><td></td><td>●</td><td>●●</td></tr>
+</table>
+
+<h2>十、學門選擇說明</h2>
+<p><b>建議一（主要推薦）：</b>人文司心理學門，或生醫處護理學門／醫學工程學門——一般型研究計畫之開放式徵題，較能完整呈現本計畫之心理測量與VR訓練介入設計。</p>
+<p><b>建議二（可併陳評估）：</b>自然科學及永續研究發展處防災科技學門（M1710–M1760）。</p>
+<div class="warn">⚠️ 重要提醒：防災科技學門為「目標導向型」一般專題研究計畫，其徵求主題係逐年配合國家災害防治政策公告，申請前務必確認當年度公告之徵求課題是否涵蓋「應變人員心理韌性／訓練科技」相關方向。</div>
+
+<h2>十一、預算編列（草案）</h2>
+<table>
+<tr><th>經費項目</th><th>第1年</th><th>第2年</th><th>合計(NTD)</th><th>說明</th></tr>
+<tr><td>主持人研究主持費</td><td>240,000</td><td>240,000</td><td>480,000</td><td>依國科會現行標準每月NT$20,000（113/8/1起調整後之專題研究計畫標準）</td></tr>
+<tr><td>研究人力費（專任助理，碩士級）</td><td>486,000</td><td>486,000</td><td>972,000</td><td>1名碩士級專任助理，月支酬金NT$40,488為國科會現行最低標準，未含年終獎金與雇主負擔勞健保</td></tr>
+<tr><td>VR頭盔（HTC Vive Focus Vision）</td><td>32,000</td><td>0</td><td>32,000</td><td>眼動追蹤功能</td></tr>
+<tr><td>生理監測設備</td><td>94,000</td><td>15,000</td><td>109,000</td><td>Polar H10×3、Shimmer3 GSR+</td></tr>
+<tr><td>VR原地行走機（KAT Walk C2 Core）</td><td>25,000</td><td>0</td><td>25,000</td><td>光學足部追蹤</td></tr>
+<tr><td>環境模擬設備</td><td>15,000</td><td>3,000</td><td>18,000</td><td>紅外線加熱燈、加濕器、控制模組</td></tr>
+<tr><td>消防瞄子VR化改裝材料</td><td>12,000</td><td>3,000</td><td>15,000</td><td>旋轉編碼器、控制器內嵌改裝</td></tr>
+<tr><td>軟體授權與雲端服務</td><td>30,000</td><td>20,000</td><td>50,000</td><td></td></tr>
+<tr><td>受試者招募與測試耗材</td><td>40,000</td><td>60,000</td><td>100,000</td><td></td></tr>
+<tr><td>國際合作與移地研究（赴日）</td><td>70,000</td><td>70,000</td><td>140,000</td><td></td></tr>
+<tr><td>邀請國外學者來台</td><td>0</td><td>100,000</td><td>100,000</td><td></td></tr>
+<tr><td>國際會議發表</td><td>0</td><td>80,000</td><td>80,000</td><td></td></tr>
+<tr><td>倫理審查與行政費</td><td>20,000</td><td>10,000</td><td>30,000</td><td></td></tr>
+<tr><td><b>小計（不含管理費）</b></td><td><b>1,064,000</b></td><td><b>1,087,000</b></td><td><b>2,151,000</b></td><td></td></tr>
+</table>
+<p class="note">以上設備品項與單價已依市售現況查證，惟實際採購時之匯率、關稅、學術折扣可能造成差異；差旅費部分需依國科會當年度標準重新核算；專任助理實際到職後之年終工作獎金與雇主負擔勞健保費用，須另依所屬學校標準加計，會使實際人事費略高於本表所列基本酬金。</p>
+
+<h2>十二、跨國合作所需表格與資料清單</h2>
+<ul>
+<li>Dr. Seike之簡要英文學術履歷（CV）</li>
+<li>合作意願書（Letter of Collaboration Intent）簽署版（見附錄一）</li>
+<li>國外合作研究人員基本資料表（正式送件時國科會系統需要）</li>
+<li>台灣端IRB送審文件與日方對應倫理委員會核准文件</li>
+</ul>
+
+<h2>十三、參考文獻</h2>
+<p class="note">以下所有文獻均已於撰寫本文件時逐筆檢索確認確實存在（含期刊、卷期頁碼或DOI），未經確認之項目已標註「待查證」，不作為正式引用。</p>
+<h3>外文文獻</h3>
+<div class="refs">
+<p>Bandura, A. (1997). <i>Self-efficacy: The exercise of control</i>. W. H. Freeman and Company.</p>
+<p>Chen, J., Fu, S., Liao, Z., Xiao, X., Qu, H., &amp; Lv, J. (2024). RobotFire: A multisensory VR simulator for fire training with robot-assisted smoke and temperature simulation. <i>Proceedings of the 17th International Symposium on Visual Information Communication and Interaction (VINCI 2024)</i>. ACM. https://doi.org/10.1145/3678698.3687173</p>
+<p>Chung, H. C., Seike, M., Kawabata, N., Hasegawa, M., Chien, S. W., &amp; Shen, T. S. (2022). Investigation of bus evacuation flow rates for tunnel fire quantitative risk assessment. <i>Journal of Asian Architecture and Building Engineering, 21</i>(3), 806–824. https://doi.org/10.1080/13467581.2021.1905646</p>
+<p>Easterbrook, J. A. (1959). The effect of emotion on cue utilization and the organization of behavior. <i>Psychological Review, 66</i>(3), 183–201. https://doi.org/10.1037/h0047707</p>
+<p>Jeon, S., Paik, S., Yang, U., Shih, P. C., &amp; Han, K. (2021). The more, the better? Improving VR firefighting training system with realistic firefighter tools as controllers. <i>Sensors, 21</i>(21), 7193. https://doi.org/10.3390/s21217193</p>
+<p>Lazarus, R. S., &amp; Folkman, S. (1984). <i>Stress, appraisal, and coping</i>. Springer Publishing Company.</p>
+<p>Li, W., Seike, M., Fujiwara, A., &amp; Chikaraishi, M. (2022). Survey on evacuation behavior and stress of Chinese and Japanese in tunnel fires [Conference presentation]. JSME Annual Meeting 2022. (in Japanese)</p>
+<p>Li, W., Seike, M., Fujiwara, A., &amp; Chikaraishi, M. (2024a). Negative emotion degree in smoke filled tunnel evacuation. <i>Tunnelling and Underground Space Technology, 153</i>, 106010. https://doi.org/10.1016/j.tust.2024.106010</p>
+<p>Li, W., Seike, M., Fujiwara, A., &amp; Chikaraishi, M. (2024b). Structural equation modeling of negative emotion and walking behavior by smoke-filled model-scale tunnel experiments. <i>Safety Science, 171</i>, 106394.</p>
+<p>Li, W., Seike, M., Fujiwara, A., Sasaoka, T., Chikaraishi, M., &amp; Yamawaki, S. (2026). Association of walking speed with psychological state: An experiment in smoke-filled full-scale tunnel. <i>Fire Safety Journal, 161</i>, 104645.</p>
+<p>Meichenbaum, D. (1985). <i>Stress inoculation training</i>. Pergamon Press.</p>
+<p>Muthén, B., &amp; Asparouhov, T. (2012). Bayesian structural equation modeling: A more flexible representation of substantive theory. <i>Psychological Methods, 17</i>(3), 313–335. https://doi.org/10.1037/a0026802</p>
+<p>Seike, M., Kawabata, N., Hasegawa, M., &amp; Tanaka, H. (2019). Heat release rate and thermal fume behavior estimation of fuel cell vehicles in tunnel fires. <i>International Journal of Hydrogen Energy, 44</i>(48), 26597–26608.</p>
+<p>Seike, M., Li, W. H., Fujiwara, A., &amp; Chikaraishi, M. (2024). Evacuation safety and human emotional responses in smoke-filled tunnels for machine learning insights. <i>Proceedings of the 12th International Conference Tunnel Safety and Ventilation</i>, 69–76.</p>
+<p>Shaw, E., Roper, T., Nilsson, T., Lawson, G., Cobb, S. V. G., &amp; Miller, D. (2019). The heat is on: Exploring user behaviour in a multisensory virtual environment for fire evacuation. <i>Proceedings of the 2019 CHI Conference on Human Factors in Computing Systems</i>, 1–13. ACM. https://doi.org/10.1145/3290605.3300856</p>
+<p>van de Schoot, R., Kaplan, D., Denissen, J., Asendorpf, J. B., Neyer, F. J., &amp; van Aken, M. A. G. (2014). A gentle introduction to Bayesian analysis: Applications to developmental research. <i>Child Development, 85</i>(3), 842–860.</p>
+</div>
+<h3>中文文獻</h3>
+<div class="refs">
+<p>吳偉民、陳餘鋆（2020）。休閒運動參與，工作壓力與身心健康關係之探討－以高雄市第三大隊外勤消防員為例。<i>運動健康休閒學報</i>，11，86–102。</p>
+<p>陳豐仁（2019）。消防人員創傷後壓力症候群之危險因子－以到院前心肺功能停止案件為例〔碩士論文〕。國立臺灣大學公共衛生學院流行病學與預防醫學研究所。https://doi.org/10.6342/NTU202002628</p>
+<p>陳發林（計畫主持人）。北宜高速公路雪山隧道災害應變及救援標準作業程序建制。交通部高速公路局委託研究報告，國立臺灣大學執行。（年份與報告編號待查證）</p>
+</div>
+
+<div class="pagebreak"></div>
+<h2>附錄一：合作意願書草稿（英文，供Dr. Seike參考與簽署）</h2>
+<p class="note">以下為草擬範本，正式使用前請依實際合作內容調整措辭。</p>
+<p><b>Letter of Collaboration Intent</b></p>
+<p>Re: International Collaborative Research Project — "Psychological Stress Induction and VR-Based Training for Tunnel Rescue Personnel: A Taiwan-Japan Cross-National Comparative Study"</p>
+<p>I, Dr. Miho Seike, of [Hiroshima University / please confirm current affiliation], Japan, confirm my intent to collaborate with Dr. Jack Chang (National Taipei University of Nursing and Health Sciences, Taiwan) on the above-referenced research project.</p>
+<p>Signature: ______________________ &nbsp;&nbsp;&nbsp; Date: ______________________</p>
+
+<h2>附錄二：一頁英文專案摘要（供與Dr. Seike洽談使用）</h2>
+<p>Title: Psychological Stress Induction and VR-Based Training for Tunnel Rescue Personnel: A Taiwan-Japan Cross-National Comparative Study</p>
+<p>Why this study, and why you: Your team's full-scale smoke-filled tunnel evacuation experiments (Li et al., 2024a, 2024b) and prior Chinese-Japanese cross-national comparison (Li et al., 2022) are the most directly relevant body of work we know of. We aim to extend this line of work to rescue/fire personnel rather than general evacuees, using VR to lower risk while enabling repeatable training.</p>
+
+</div><!-- /content-zh -->
+
+<div id="content-en">
+
+<h1 class="title">NSTC Research Project Proposal (Draft)</h1>
+<p class="subtitle">Including International Collaboration Plan (Taiwan–Japan) | HTML working version for content review; convert to Word once finalized</p>
+<p><b>Title:</b> Psychological Stress Induction and VR-Based Training for Tunnel Rescue Personnel: A Taiwan-Japan Cross-National Comparative Study</p>
+
+<div class="infobox">
+<p><b>Principal Investigator:</b> Jack Chang / College of Health Technology, National Taipei University of Nursing and Health Sciences</p>
+<p><b>Foreign Collaborating Researcher:</b> Dr. Miho Seike / currently verified as Associate Professor, Graduate School of Advanced Science and Engineering, Hiroshima University — please confirm her current affiliation and title directly with her before finalizing formal documents</p>
+<p><b>Suggested Domestic Advisor:</b> Prof. Hsien-Ho Chang (Embry-Riddle Aeronautical University) — former New Taipei City Fire Department officer and lead author of the Hsuehshan Tunnel fire emergency response plan</p>
+<p><b>Duration:</b> 2 years (draft: Aug 2027 – Jul 2029; actual dates depend on the funding cycle) | <b>Project type:</b> General research project (self-initiated, not tied to a specific call)</p>
+</div>
+
+<div class="toc">
+Contents: Abstract | 1. Motivation &amp; Significance | 2. Literature Review | 3. Research Gap &amp; Innovation | 4. Theoretical Framework (with diagrams) | 5. Research Objectives | 6. Methods &amp; Procedures (incl. equipment specs) | 7. International Collaboration Plan | 8. Expected Outcomes | 9. Timeline (Gantt Chart) | 10. Discipline Selection | 11. Budget | 12. Document Checklist | 13. References | Appendices 1–2
+</div>
+
+<h2>Abstract</h2>
+<p>Tunnel rescue operations present unique psychological challenges due to confined space, dense smoke, poor visibility, and complex evacuation routes, placing significant stress on rescue personnel — as distinct from general evacuees — that can affect real-time judgment, operational efficiency, and psychological resilience, and may contribute to post-traumatic stress responses. Building on 360° footage of an actual tunnel already captured by our team, this project reconstructs the environment into an interactive VR space through photogrammetry, integrated with fire and smoke simulation, to create a controllable platform for inducing and measuring psychological stress and analyzing stress-related behavioral change from a behavioral-science perspective. In collaboration with Dr. Miho Seike, an internationally recognized researcher on psychological stress in tunnel evacuation, this study will compare physiological stress responses and response behavior between rescue personnel in Taiwan and Japan under the same VR tunnel scenario, and evaluate the effectiveness of VR exposure training in strengthening pre-incident psychological preparedness.</p>
+
+<div class="pagebreak"></div>
+
+<h2>1. Motivation and Significance</h2>
+<p>Fires and structural collapses in confined environments such as tunnels and underground spaces have long been classified by fire and emergency medical services as high-risk incident types, due to single evacuation routes, rapid smoke spread, and difficulties in communication and localization. Beyond the physical demands they face, first responders in these situations also endure intense psychological stress; from the perspective of the Transactional Model of Stress and Coping <span class="citeref">(Lazarus &amp; Folkman, 1984)</span>, if this stress is not properly regulated through cognitive appraisal and training, it can compromise decision quality, team communication, and long-term mental health.</p>
+<p>Tunnel rescue training in Taiwan and Japan still relies mainly on physical drill sites, constrained by site availability, safety risk, and limited repeatability, making it difficult to systematically measure personnel's psychological stress responses under controlled conditions. Advances in VR technology now make controllable, repeatable, low-risk scenario-based training possible; international research has already shown that multisensory VR simulation can effectively enhance the perceived urgency and behavioral realism of evacuation scenarios <span class="citeref">(Shaw et al., 2019)</span>, and also creates an opportunity for cross-national comparative research using identical stimulus conditions.</p>
+<p>Our team has already completed 360° photography of an actual tunnel and has the technical foundation to reconstruct it into an interactive VR environment. It is worth emphasizing that the psychological processes triggered by tunnel rescue scenarios differ between "personnel carrying out rescue tasks" and "trapped general road users/the public": existing international literature (e.g., the tunnel evacuation studies of Li et al., 2022, 2024a, 2024b) largely targets "general road users," whose core response is escape and survival; rescue personnel, by contrast, must continue making task judgments, operating equipment, and coordinating as a team while under similar environmental stress, and their psychological resilience and stress tolerance directly affect both rescue effectiveness and their own safety. This project focuses on the psychological stress responses of "rescue personnel" rather than general road users, and examines attention, decision-making, and behavioral change under stress from a behavioral-science perspective (see Theoretical Framework, especially Easterbrook's 1959 cue-utilization theory).</p>
+
+<h2>2. Literature Review</h2>
+<h3>(1) International Research: Dr. Miho Seike's Team</h3>
+<p>Dr. Miho Seike (currently Associate Professor, Hiroshima University; previously affiliated with the University of Tsukuba) is an internationally recognized researcher in tunnel-fire evacuation behavior and psychological-stress measurement. Her team has conducted full-scale smoke-filled tunnel evacuation experiments measuring participants' evacuation walking speed and psychological/emotional state, using structural equation modeling (SEM) to analyze the relationship between negative emotion and walking behavior <span class="citeref">(Li et al., 2024a — "Negative emotion degree in smoke filled tunnel evacuation," Tunnelling and Underground Space Technology; Li et al., 2024b — "Structural equation modeling of negative emotion and walking behavior," Safety Science)</span>, and has recently published work applying machine learning to analyze emotional responses during tunnel evacuation <span class="citeref">(Seike et al., 2024)</span>, as well as a full-scale experiment linking walking speed and psychological state <span class="citeref">(Li et al., 2026)</span>.</p>
+<p>Notably, her team has already published a cross-national study comparing evacuation behavior and stress responses of Chinese and Japanese road users in tunnel-fire scenarios <span class="citeref">(Li et al., 2022)</span>, demonstrating direct practical experience and a methodological foundation for cross-national comparative research — closely aligned with the Taiwan–Japan comparison this project intends to conduct. Dr. Seike has also previously participated in a fire-safety assessment of the motorcycle lane in Kaohsiung's Sizihwan (Cross-Harbor) Tunnel in Taiwan, and used video analysis of the 2012 Hsuehshan Tunnel fire as a direct starting point for one of her studies <span class="citeref">(Chung et al., 2022)</span>; she has also published research on heat-release rates in tunnel fires <span class="citeref">(Seike et al., 2019)</span>, showing an existing direct research connection to tunnel issues in Taiwan.</p>
+<p>However, her existing research subjects are mostly "general road users/evacuees"; no systematic research has yet addressed the psychological stress responses and pre-incident training needs of "fire/EMS personnel carrying out rescue tasks" in tunnel settings. This is precisely where this project can complement her research and serve as an entry point for extended collaboration.</p>
+
+<h3>(2) Domestic (Taiwan) Research</h3>
+<p>Existing Taiwanese research on firefighters' psychological stress mostly focuses on general duty contexts — for example, a cross-sectional study using the Chinese-version Davidson Trauma Scale (DTS) to examine risk factors for post-traumatic stress disorder (PTSD) among firefighters in out-of-hospital cardiac arrest (OHCA) cases <span class="citeref">(Chen, 2019)</span>, and a questionnaire study on the relationship between firefighters' work stress, leisure coping, and physical/mental health <span class="citeref">(Wu &amp; Chen, 2020)</span>. Methodologically these studies rely mainly on scale-based surveys, with little use of controlled scenario simulation combined with physiological measurement for specific high-risk contexts. Meanwhile, domestic research on road tunnels has concentrated on engineering and management aspects — for example, the development of disaster-response and rescue standard operating procedures for the Hsuehshan Tunnel on the Taipei–Yilan Freeway <span class="citeref">(Chen, commissioned by the Directorate General of Highways, MOTC; year to be verified)</span> — with subjects again framed as "road users/passengers" rather than the psychological dimension of personnel carrying out rescue tasks. Taken together, Taiwan currently lacks integrated research combining VR scenario simulation, physio-psychological measurement, and training intervention for rescue personnel — a gap this project aims to fill.</p>
+
+<h3>(3) Suggested Domestic Advisor: Prof. Hsien-Ho Chang</h3>
+<p>Prof. Hsien-Ho Chang, Assistant Professor in the Department of Safety and Emergency Services at Embry-Riddle Aeronautical University (USA), served in Taiwan's fire service from 2002–2010, during which time he was with the New Taipei City Fire Department and led the Hsuehshan Tunnel fire emergency response plan. He now specializes in the U.S. Incident Command System (ICS) and comparative Taiwan–U.S. disaster-response systems. His expertise at the "response-system management" level, together with Dr. Seike's research on "individual evacuation psychology and behavior" and this project's "VR training intervention," forms three complementary layers; we recommend inviting him to serve as a domestic advisor.</p>
+
+<h2>3. Research Gap and Innovation</h2>
+<ul>
+<li><b>Population innovation:</b> Focuses on "personnel carrying out rescue tasks" rather than general evacuees, complementing rather than duplicating Dr. Seike's existing research <span class="citeref">(Li et al., 2022, 2024a, 2024b)</span></li>
+<li><b>Methodological innovation:</b> Uses VR instead of real smoke-filled tunnel experiments, allowing controlled scenario variables and substantially reducing participants' actual exposure risk, while drawing on multisensory-simulation literature <span class="citeref">(Shaw et al., 2019; Chen et al., 2024)</span> to preserve a highly immersive stress-induction effect</li>
+<li><b>Applied innovation:</b> Based on Stress Inoculation Training theory <span class="citeref">(Meichenbaum, 1985)</span>, transforms the VR platform into a repeatable pre-incident psychological-preparedness training tool</li>
+<li><b>Comparative innovation:</b> Builds on Dr. Seike's team's existing methodological foundation for cross-national comparison <span class="citeref">(Li et al., 2022)</span>, extending the comparison from general road users to professional rescue personnel</li>
+</ul>
+
+<h2>4. Theoretical Framework</h2>
+<p>This project integrates three layers of theory, constructing an overall framework spanning two pathways: "environmental stressor → behavioral performance" and "training intervention."</p>
+
+<h3>4.1 Overall Framework: Transactional Model of Stress and Coping (Lazarus &amp; Folkman, 1984)</h3>
+<p>This theory holds that psychological stress is not caused directly by environmental stimuli, but is jointly mediated by "primary appraisal" (whether this situation constitutes a threat) and "secondary appraisal" (whether one has the resources to cope) — the most representative classic framework in stress research <span class="citeref">(Lazarus &amp; Folkman, 1984)</span>.</p>
+
+<figure>
+<svg viewBox="0 0 760 220" width="100%" role="img">
+<title>Lazarus and Folkman's Transactional Model of Stress and Coping</title>
+<defs><marker id="ea1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#1f3864" stroke-width="1.5"/></marker></defs>
+<rect x="15" y="70" width="150" height="60" rx="8" fill="#e6f1fb" stroke="#1f3864"/>
+<text x="90" y="94" text-anchor="middle" font-size="12.5" font-family="Arial,sans-serif">Potential stressor</text>
+<text x="90" y="112" text-anchor="middle" font-size="10.5" fill="#555" font-family="Arial,sans-serif">Smoke, heat, low visibility</text>
+
+<line x1="165" y1="100" x2="201" y2="100" stroke="#1f3864" stroke-width="1.5" marker-end="url(#ea1)"/>
+
+<rect x="205" y="25" width="160" height="65" rx="8" fill="#eeedfe" stroke="#534ab7"/>
+<text x="285" y="49" text-anchor="middle" font-size="12.5" font-family="Arial,sans-serif">Primary appraisal</text>
+<text x="285" y="67" text-anchor="middle" font-size="10" fill="#555" font-family="Arial,sans-serif">Threat / challenge /</text>
+<text x="285" y="79" text-anchor="middle" font-size="10" fill="#555" font-family="Arial,sans-serif">irrelevant?</text>
+
+<rect x="205" y="130" width="160" height="65" rx="8" fill="#eeedfe" stroke="#534ab7"/>
+<text x="285" y="154" text-anchor="middle" font-size="12.5" font-family="Arial,sans-serif">Secondary appraisal</text>
+<text x="285" y="172" text-anchor="middle" font-size="10" fill="#555" font-family="Arial,sans-serif">What resources do I</text>
+<text x="285" y="184" text-anchor="middle" font-size="10" fill="#555" font-family="Arial,sans-serif">have to cope?</text>
+
+<path d="M365 57 C 395 57, 395 100, 365 130" fill="none" stroke="#1f3864" stroke-width="1.5" marker-end="url(#ea1)"/>
+<line x1="365" y1="162" x2="421" y2="162" stroke="#1f3864" stroke-width="1.5" marker-end="url(#ea1)"/>
+<line x1="365" y1="57" x2="421" y2="100" stroke="#1f3864" stroke-width="1.5"/>
+
+<rect x="425" y="70" width="150" height="60" rx="8" fill="#e1f5ee" stroke="#0f6e56"/>
+<text x="500" y="94" text-anchor="middle" font-size="12.5" font-family="Arial,sans-serif">Coping behavior</text>
+<text x="500" y="112" text-anchor="middle" font-size="10" fill="#555" font-family="Arial,sans-serif">Problem- / emotion-focused</text>
+
+<line x1="575" y1="100" x2="616" y2="100" stroke="#1f3864" stroke-width="1.5" marker-end="url(#ea1)"/>
+<rect x="620" y="70" width="120" height="60" rx="8" fill="#faece7" stroke="#993c1d"/>
+<text x="680" y="94" text-anchor="middle" font-size="12.5" font-family="Arial,sans-serif">Adaptational</text>
+<text x="680" y="112" text-anchor="middle" font-size="10" fill="#555" font-family="Arial,sans-serif">outcome</text>
+
+<path d="M680 130 C 680 205, 90 205, 90 130" fill="none" stroke="#999" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#ea1)"/>
+<text x="385" y="215" text-anchor="middle" font-size="10.5" fill="#777" font-family="Arial,sans-serif">Reappraisal feedback loop</text>
+</svg>
+<figcaption>Figure 1: Lazarus and Folkman's (1984) Transactional Model of Stress and Coping, the theoretical backbone of this project</figcaption>
+</figure>
+
+<h3>4.2 Extending Dr. Seike's Existing Empirical Model</h3>
+<p>Dr. Seike's team has already used structural equation modeling (SEM) to validate the path "negative emotion → walking speed" <span class="citeref">(Li et al., 2024b)</span>. This project extends that path forward by adding a cognitive-appraisal stage as an antecedent variable, and extends it backward by expanding the behavioral outcome from simple evacuation walking speed to professional task behavior (decision accuracy, equipment-operation performance). The advantage of this extension strategy is that the project does not propose a new model out of thin air, but clearly marks its contribution as an extension of an already internationally published empirical pathway. In addition, the effect sizes already published by Dr. Seike's team will further serve as informative priors for this project's Bayesian statistical analysis (see 6.6), formally translating existing empirical knowledge into part of the model estimation rather than merely citing it in text.</p>
+
+<figure>
+<svg viewBox="0 0 760 260" width="100%" role="img">
+<title>Integrated extended path model</title>
+<defs><marker id="ea2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#1f3864" stroke-width="1.5"/></marker></defs>
+
+<rect x="10" y="88" width="145" height="60" rx="8" fill="#f1efe8" stroke="#5f5e5a"/>
+<text x="82" y="112" text-anchor="middle" font-size="12" font-family="Arial,sans-serif">Environmental</text>
+<text x="82" y="126" text-anchor="middle" font-size="12" font-family="Arial,sans-serif">stressor</text>
+<text x="82" y="141" text-anchor="middle" font-size="9.5" fill="#555" font-family="Arial,sans-serif">Smoke, heat, low visibility</text>
+
+<line x1="155" y1="118" x2="191" y2="118" stroke="#1f3864" stroke-width="1.5" marker-end="url(#ea2)"/>
+
+<rect x="195" y="88" width="140" height="60" rx="8" fill="#eeedfe" stroke="#534ab7"/>
+<text x="265" y="112" text-anchor="middle" font-size="12" font-family="Arial,sans-serif">Cognitive appraisal</text>
+<text x="265" y="132" text-anchor="middle" font-size="9.5" fill="#555" font-family="Arial,sans-serif">Lazarus &amp; Folkman, 1984</text>
+
+<line x1="335" y1="118" x2="371" y2="118" stroke="#1f3864" stroke-width="1.5" marker-end="url(#ea2)"/>
+
+<rect x="375" y="88" width="175" height="60" rx="8" fill="#faece7" stroke="#993c1d"/>
+<text x="462" y="108" text-anchor="middle" font-size="11.5" font-family="Arial,sans-serif">Physiological /</text>
+<text x="462" y="122" text-anchor="middle" font-size="11.5" font-family="Arial,sans-serif">emotional response</text>
+<text x="462" y="138" text-anchor="middle" font-size="9.5" fill="#555" font-family="Arial,sans-serif">HRV, EDA, negative emotion</text>
+
+<line x1="550" y1="118" x2="606" y2="118" stroke="#0f6e56" stroke-width="2" marker-end="url(#ea2)"/>
+<text x="578" y="103" text-anchor="middle" font-size="8.5" fill="#0f6e56" font-family="Arial,sans-serif">Li et al.,2024b<tspan x="578" dy="9">validated (SEM)</tspan></text>
+
+<rect x="610" y="88" width="140" height="60" rx="8" fill="#e1f5ee" stroke="#0f6e56"/>
+<text x="680" y="108" text-anchor="middle" font-size="11.5" font-family="Arial,sans-serif">Behavioral / task</text>
+<text x="680" y="122" text-anchor="middle" font-size="11.5" font-family="Arial,sans-serif">performance</text>
+<text x="680" y="138" text-anchor="middle" font-size="9" fill="#555" font-family="Arial,sans-serif">Decisions, equipment, speed</text>
+
+<rect x="10" y="195" width="190" height="58" rx="8" fill="#faeeda" stroke="#854f0b"/>
+<text x="105" y="217" text-anchor="middle" font-size="12" font-family="Arial,sans-serif">VR psychological</text>
+<text x="105" y="231" text-anchor="middle" font-size="12" font-family="Arial,sans-serif">preparedness training</text>
+<text x="105" y="246" text-anchor="middle" font-size="9.5" fill="#555" font-family="Arial,sans-serif">Meichenbaum, 1985</text>
+<path d="M200 218 C 240 218, 240 155, 262 152" fill="none" stroke="#854f0b" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#ea2)"/>
+<text x="232" y="180" text-anchor="middle" font-size="9" fill="#854f0b" font-family="Arial,sans-serif">moderates appraisal</text>
+
+<rect x="600" y="195" width="150" height="58" rx="8" fill="#faeeda" stroke="#854f0b"/>
+<text x="675" y="213" text-anchor="middle" font-size="11" font-family="Arial,sans-serif">Attentional narrowing</text>
+<text x="675" y="227" text-anchor="middle" font-size="11" font-family="Arial,sans-serif">measurement</text>
+<text x="675" y="242" text-anchor="middle" font-size="9.5" fill="#555" font-family="Arial,sans-serif">Easterbrook, 1959</text>
+<path d="M680 195 C 680 170, 680 155, 680 148" fill="none" stroke="#854f0b" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#ea2)"/>
+</svg>
+<figcaption>Figure 2: This project's integrated extended path model — extending Dr. Seike's team's SEM empirical pathway (Li et al., 2024b), with an added cognitive-appraisal front end, a training-intervention moderator, and an additional measurement dimension for attentional narrowing</figcaption>
+</figure>
+
+<h3>4.3 Training Intervention Framework: Stress Inoculation Training (Meichenbaum, 1985)</h3>
+<p>This is a classic applied theory in clinical psychology for building psychological resilience, comprising three phases: conceptualization education, skill acquisition and rehearsal, and application and follow-through <span class="citeref">(Meichenbaum, 1985)</span>. This framework maps directly onto the three phases of this project's "VR psychological preparedness training" intervention design.</p>
+
+<figure>
+<svg viewBox="0 0 760 160" width="100%" role="img">
+<title>Three phases of Stress Inoculation Training</title>
+<defs><marker id="ea3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#854f0b" stroke-width="1.5"/></marker></defs>
+<rect x="15" y="35" width="220" height="80" rx="8" fill="#faeeda" stroke="#854f0b"/>
+<text x="125" y="62" text-anchor="middle" font-size="12.5" font-family="Arial,sans-serif">Phase 1: Conceptualization</text>
+<text x="125" y="80" text-anchor="middle" font-size="10" fill="#555" font-family="Arial,sans-serif">Explaining stress physiology</text>
+<text x="125" y="93" text-anchor="middle" font-size="10" fill="#555" font-family="Arial,sans-serif">and psychology</text>
+
+<line x1="235" y1="75" x2="271" y2="75" stroke="#854f0b" stroke-width="1.5" marker-end="url(#ea3)"/>
+
+<rect x="275" y="35" width="230" height="80" rx="8" fill="#faeeda" stroke="#854f0b"/>
+<text x="390" y="55" text-anchor="middle" font-size="12" font-family="Arial,sans-serif">Phase 2: Skill acquisition</text>
+<text x="390" y="70" text-anchor="middle" font-size="12" font-family="Arial,sans-serif">&amp; rehearsal</text>
+<text x="390" y="88" text-anchor="middle" font-size="10" fill="#555" font-family="Arial,sans-serif">Graded VR exposure, repeated</text>
+<text x="390" y="100" text-anchor="middle" font-size="10" fill="#555" font-family="Arial,sans-serif">coping practice</text>
+
+<line x1="505" y1="75" x2="541" y2="75" stroke="#854f0b" stroke-width="1.5" marker-end="url(#ea3)"/>
+
+<rect x="545" y="35" width="200" height="80" rx="8" fill="#faeeda" stroke="#854f0b"/>
+<text x="645" y="55" text-anchor="middle" font-size="12" font-family="Arial,sans-serif">Phase 3: Application</text>
+<text x="645" y="70" text-anchor="middle" font-size="12" font-family="Arial,sans-serif">&amp; follow-through</text>
+<text x="645" y="88" text-anchor="middle" font-size="10" fill="#555" font-family="Arial,sans-serif">Assessing transfer to real</text>
+<text x="645" y="100" text-anchor="middle" font-size="10" fill="#555" font-family="Arial,sans-serif">settings</text>
+</svg>
+<figcaption>Figure 3: Meichenbaum's (1985) three-phase Stress Inoculation Training model, mapped onto this project's VR training-intervention design</figcaption>
+</figure>
+
+<h3>4.4 Supplementary Variable: Self-Efficacy Theory (Bandura, 1997)</h3>
+<p>We recommend including self-efficacy in the pre-/post-training psychological scales as a third line of evidence for training effectiveness beyond physiological and behavioral indicators <span class="citeref">(Bandura, 1997)</span>, and it can also serve as a mediating variable between cognitive appraisal and coping behavior in subsequent statistical analysis.</p>
+
+<h3>4.5 Extended Measurement Dimension: Attentional Narrowing and Visual Search Behavior (Easterbrook, 1959)</h3>
+<p>Easterbrook's cue-utilization theory holds that as emotional arousal increases, the range of cues an individual can utilize narrows — a phenomenon often used to explain the decline in information-gathering and decision quality among professionals under high-stress conditions <span class="citeref">(Easterbrook, 1959)</span>. If a VR headset with eye-tracking capability is used (see Section 6.7), gaze-distribution range and saccade-path complexity can be measured as additional behavioral-science evidence supporting the model in Figure 2.</p>
+
+<h3>4.6 Research Hypotheses</h3>
+<ul>
+<li>H1: The intensity of environmental stressors is positively correlated with participants' degree of threat appraisal <span class="citeref">(Lazarus &amp; Folkman, 1984)</span></li>
+<li>H2: Degree of threat appraisal is positively correlated with physiological-arousal indicators and subjective negative emotion</li>
+<li>H3: The degree of physiological and emotional response is negatively correlated with task behavioral performance; this pathway extends Dr. Seike's team's existing SEM empirical model <span class="citeref">(Li et al., 2024b)</span></li>
+<li>H4: Participants who receive VR psychological preparedness training show significantly lower post-training psychological stress responses than pre-training, and significantly increased self-efficacy <span class="citeref">(Meichenbaum, 1985; Bandura, 1997)</span></li>
+<li>H5: Taiwanese and Japanese participants show differing patterns of psychological stress response and task behavioral performance under the same VR scenario, as determined by the degree of overlap in Bayesian posterior credible intervals <span class="citeref">(echoing the cross-national comparison findings of Li et al., 2022)</span></li>
+</ul>
+
+<h2>5. Research Objectives</h2>
+<ul>
+<li>Build an interactive, scenario-variable-adjustable VR platform for inducing and testing tunnel-related psychological stress</li>
+<li>Establish a standardized protocol for physiological and subjective measurement of psychological stress in rescue personnel</li>
+<li>Analyze rescue personnel's attention, decision-making, and behavioral change under high-stress conditions from a behavioral-science perspective</li>
+<li>Compare psychological stress responses and response behavior between Taiwanese and Japanese rescue personnel under the same VR scenario</li>
+<li>Evaluate the effectiveness of VR exposure training in enhancing psychological resilience and pre-incident preparedness</li>
+</ul>
+
+<h2>6. Methods and Procedures</h2>
+<h3>6.1 VR Tunnel Scene Construction</h3>
+<p>Building on the team's existing 360° tunnel imagery, we will use photogrammetry (SfM-MVS) to reconstruct it into a geometrically accurate 3D mesh, integrating fire/smoke particle effects, dynamic lighting, and collision systems in Unity.</p>
+<h3>6.2 Study Participants</h3>
+<p>Fire/EMS personnel will be recruited in Taiwan and Japan respectively, following inclusion/exclusion criteria approved by each side's ethics committee.</p>
+<h3>6.3 Psychological Stress Measurement Tools</h3>
+<ul>
+<li>Physiological indicators: heart rate variability (HRV), electrodermal activity (EDA), using real-time, non-invasive wearable sensors (see 6.8)</li>
+<li>Subjective scales: STAI, PSS, self-efficacy scale</li>
+<li>Behavioral-science observational indicators: task decision reaction time, equipment-operation accuracy, gaze and saccade behavior (see 4.5)</li>
+</ul>
+<h3>6.4 Experimental Design and Procedure</h3>
+<p>The protocol follows: baseline measurement → VR scenario exposure → real-time physiological signal recording → post-scenario subjective scale completion; a training-intervention study is also planned, with a pre-test — VR psychological preparedness training intervention (designed per the three phases of Stress Inoculation Training, <span class="citeref">Meichenbaum, 1985</span>) — post-test design.</p>
+<h3>6.5 Cross-National Comparative Design</h3>
+<p>Taiwan and Japan will use the same VR version and testing protocol, with ethics approval obtained separately from each side's ethics committee for cross-border data transfer and privacy handling.</p>
+<h3>6.6 Data Analysis Method</h3>
+<p>Given that the target population for this study (tunnel rescue personnel) is difficult to recruit and the formal sample size is expected to be limited, conventional maximum-likelihood (ML) structural equation modeling is prone to biased or unstable estimates with small samples <span class="citeref">(van de Schoot et al., 2014)</span>. This project therefore plans to use <b>Bayesian Structural Equation Modeling (Bayesian SEM)</b> instead of conventional SEM to validate the extended path model in Figure 2. Its advantage is that existing empirical knowledge can be converted into "informative priors" incorporated into model estimation, maintaining more stable parameter estimates even in small-sample settings <span class="citeref">(Muthén &amp; Asparouhov, 2012; van de Schoot et al., 2014)</span>:</p>
+<ul>
+<li><b>Prior source 1 (field empirical evidence):</b> The prior distribution for the "physiological/emotional response → behavioral performance" path is set directly from the SEM effect sizes already published by Dr. Seike's team <span class="citeref">(Li et al., 2024b)</span> — formally converting her existing empirical findings into the starting knowledge for this project's model, rather than estimating from scratch</li>
+<li><b>Prior source 2 (expert field experience):</b> The prior for the "environmental stressor → cognitive appraisal" path draws on the practical tunnel-response-system experience of domestic advisor Prof. Hsien-Ho Chang, as well as the PI's own 20 years of experience as a volunteer EMT with the New Taipei City Fire Department, translated into prior-distribution ranges through structured expert interviews</li>
+<li><b>Posterior updating and cross-national comparison:</b> Posterior distributions will be updated separately using data actually collected in Taiwan and Japan, and the degree of overlap between the two groups' posterior credible intervals will be compared as the basis for testing hypothesis H5, replacing conventional p-value-based significance testing</li>
+<li><b>Robustness check:</b> Conventional frequentist SEM and mixed-design ANOVA results will also be provided for comparison, to check whether Bayesian and frequentist conclusions are consistent</li>
+</ul>
+<p class="note">Adopting Bayesian methods requires the PI and team to have corresponding statistical software skills (e.g., R's brms/blavaan packages or Mplus); we recommend arranging training in Bayesian statistical methods for team members in Year 1 of the project, and consulting an advisor with Bayesian-statistics expertise for model specification and prior-sensitivity analysis if needed.</p>
+
+<h3>6.7 VR Headset Selection</h3>
+<p>The team's existing Meta Quest 3 units (×2) can continue to be used for scene development and general testing. However, if this study's behavioral-science measurement is to include attentional-narrowing indicators such as gaze and saccades (see 4.5), we recommend also acquiring a PC VR headset with built-in eye tracking:</p>
+<table>
+<tr><th>Item</th><th>Meta Quest 3 (existing)</th><th>HTC Vive Focus Vision (recommended)</th><th>Notes</th></tr>
+<tr><td>Resolution/eye</td><td>2064×2208</td><td>2448×2448</td><td>Higher resolution on Focus Vision</td></tr>
+<tr><td>Field of view (FOV)</td><td>~110°</td><td>up to 120°</td><td></td></tr>
+<tr><td>Refresh rate</td><td>90–120Hz</td><td>90Hz (120Hz via DisplayPort mode)</td><td></td></tr>
+<tr><td>Eye tracking</td><td>None</td><td>Built-in dual eye-tracking cameras</td><td>Key requirement for attentional-narrowing measurement</td></tr>
+<tr><td>Reference price</td><td>Team's existing equipment</td><td>~US$999 (~NT$32,000)</td><td>2026 market price; re-quote before formal purchase</td></tr>
+</table>
+
+<h3>6.8 Real-Time Non-Invasive Physiological Monitoring Equipment</h3>
+<ul>
+<li><b>HRV:</b> Polar H10 chest-strap sensor, 130Hz ECG signal, real-time streaming via the official Bluetooth BLE SDK; already used in VR training research (the "Work at Heights Training: Conventional Approach With and Without Immersive Virtual Reality" study protocol)</li>
+<li><b>EDA:</b> Shimmer3 GSR+ wearable sensor, finger-electrode skin-conductance measurement with simultaneous PPG-signal acquisition</li>
+<li><b>Synchronization:</b> HRV/EDA streaming data will be aligned with Unity scenario events using timestamps</li>
+</ul>
+
+<h3>6.9 Temperature and Humidity Simulation Equipment</h3>
+<p>Drawing on international multisensory VR training literature, low-risk devices will be used to simulate heat and humidity:</p>
+<ul>
+<li><b>Infrared radiant heat lamp:</b> simulates radiant heat from fire, an approach already seen in multisensory VR evacuation research in the academic literature <span class="citeref">(Shaw et al., 2019)</span></li>
+<li><b>Ultrasonic humidifier/mister:</b> simulates humidity and fine moisture sensation, drawing on the misting-device design used in robotic-arm multisensory simulation research <span class="citeref">(Chen et al., 2024)</span></li>
+<li><b>Control method:</b> Arduino/ESP32 controlling via relay modules, synchronized with Unity scenario trigger points</li>
+</ul>
+
+<h3>6.10 VR Omnidirectional Walking Device</h3>
+<p>We recommend acquiring a commercially available omnidirectional VR treadmill such as the KAT Walk C2 Core (~US$799, ~NT$25,000), which uses optical foot tracking and is compatible with PC VR and, via bridging software, the Meta Quest system.</p>
+
+<h3>6.11 Fire Nozzle and VR Controller Integration Plan</h3>
+<ul>
+<li><b>Position tracking:</b> A VR controller will be embedded inside the nozzle grip — the same principle used in commercially available VR fire-training simulators in Japan</li>
+<li><b>Rotation-angle sensing:</b> A rotary encoder will be fitted to the nozzle's spray-pattern adjustment ring, directly following the approach in the academic literature <span class="citeref">(Jeon et al., 2021)</span>, which mounted a rotary encoder on the nozzle-adjustment section of a fire hose</li>
+<li><b>Commercial reference case:</b> An HTC Vive Tracker attached to the end of a fire hose to track its movement, as seen in the commercial system FLAIM Trainer</li>
+</ul>
+
+<h2>7. International Collaboration Plan and Division of Labor</h2>
+<table>
+<tr><th>Item</th><th>Taiwan team (Jack Chang)</th><th>Japan team (Dr. Seike / Hiroshima University, tbc)</th></tr>
+<tr><td>Main responsibilities</td><td>VR scene development, recruitment and testing of Taiwan-side participants, overall data analysis</td><td>Recruitment and testing of Japan-side participants, localization of measurement tools, ethics review</td></tr>
+<tr><td>Field visits</td><td>Joint testing visit to Japan (at least once per year)</td><td>Visit to Taiwan to participate in platform testing (at least once during the project)</td></tr>
+<tr><td>Ethics review</td><td>Taiwan-side IRB</td><td>Corresponding ethics committee review on the Japan side</td></tr>
+</table>
+<p>We recommend inviting Prof. Hsien-Ho Chang to serve as a domestic advisor, forming — together with the Taiwan and Japan teams — a three-layer complementary research-team structure of "response-system management – individual psychology and behavior – VR training-tool development."</p>
+
+<h2>8. Expected Outcomes and Contributions</h2>
+<ul>
+<li>Establish a cross-nationally replicable VR platform for inducing and measuring tunnel-related psychological stress, complementing Dr. Seike's existing research <span class="citeref">(Li et al., 2022, 2024a, 2024b)</span></li>
+<li>Produce cross-national comparative empirical data on psychological-stress responses and response behavior of Taiwanese and Japanese rescue personnel</li>
+<li>Propose curriculum-design recommendations for using VR exposure training to enhance psychological resilience <span class="citeref">(Meichenbaum, 1985)</span></li>
+<li>Deepen international collaboration with the Japanese team, laying the groundwork for a future Taiwan–Japan bilateral-agreement-type project</li>
+</ul>
+
+<h2>9. Timeline (Gantt Chart, 2-Year Draft)</h2>
+<table>
+<tr><th>Work item</th><th>Months 1–6</th><th>Months 7–12</th><th>Months 13–18</th><th>Months 19–24</th></tr>
+<tr><td>VR scene development &amp; system testing</td><td>●●</td><td>●</td><td></td><td></td></tr>
+<tr><td>Ethics review (both sides)</td><td>●●</td><td></td><td></td><td></td></tr>
+<tr><td>Taiwan-side testing</td><td></td><td>●●</td><td>●</td><td></td></tr>
+<tr><td>Japan-side testing (incl. field visit)</td><td></td><td></td><td>●●</td><td>●</td></tr>
+<tr><td>Data analysis</td><td></td><td>●</td><td>●●</td><td>●</td></tr>
+<tr><td>Manuscript writing &amp; submission</td><td></td><td></td><td>●</td><td>●●</td></tr>
+</table>
+
+<h2>10. Discipline Selection</h2>
+<p><b>Recommendation 1 (primary):</b> Psychology Division (Department of Humanities and Social Sciences), or Nursing/Biomedical Engineering Division (Department of Life Sciences) — an open-topic general research project that can more fully present this project's psychological-measurement and VR training-intervention design.</p>
+<p><b>Recommendation 2 (for consideration):</b> Disaster Prevention Science and Technology Division, Department of Natural Sciences and Sustainable Development (codes M1710–M1760).</p>
+<div class="warn">⚠️ Important reminder: The Disaster Prevention Science and Technology Division runs "mission-oriented" general research projects whose call topics are announced annually in line with national disaster-prevention policy; before applying, be sure to confirm whether that year's announced topics cover directions related to "responder psychological resilience/training technology."</div>
+
+<h2>11. Budget (Draft)</h2>
+<table>
+<tr><th>Item</th><th>Year 1</th><th>Year 2</th><th>Total (NTD)</th><th>Notes</th></tr>
+<tr><td>PI research stipend</td><td>240,000</td><td>240,000</td><td>480,000</td><td>Per NSTC's current standard of NT$20,000/month (effective since 8/1/2024 for general research projects)</td></tr>
+<tr><td>Personnel cost (full-time, Master's-level assistant)</td><td>486,000</td><td>486,000</td><td>972,000</td><td>1 full-time Master's-level assistant; monthly stipend of NT$40,488 is NSTC's current minimum standard, excluding year-end bonus and employer-side labor/health insurance</td></tr>
+<tr><td>VR headset (HTC Vive Focus Vision)</td><td>32,000</td><td>0</td><td>32,000</td><td>Eye-tracking capability</td></tr>
+<tr><td>Physiological monitoring equipment</td><td>94,000</td><td>15,000</td><td>109,000</td><td>3× Polar H10, Shimmer3 GSR+</td></tr>
+<tr><td>VR omnidirectional treadmill (KAT Walk C2 Core)</td><td>25,000</td><td>0</td><td>25,000</td><td>Optical foot tracking</td></tr>
+<tr><td>Environmental simulation equipment</td><td>15,000</td><td>3,000</td><td>18,000</td><td>IR heat lamp, humidifier, control modules</td></tr>
+<tr><td>Fire-nozzle VR conversion materials</td><td>12,000</td><td>3,000</td><td>15,000</td><td>Rotary encoder, embedded-controller conversion</td></tr>
+<tr><td>Software licenses &amp; cloud services</td><td>30,000</td><td>20,000</td><td>50,000</td><td></td></tr>
+<tr><td>Participant recruitment &amp; testing supplies</td><td>40,000</td><td>60,000</td><td>100,000</td><td></td></tr>
+<tr><td>International collaboration &amp; field research (to Japan)</td><td>70,000</td><td>70,000</td><td>140,000</td><td></td></tr>
+<tr><td>Hosting foreign scholar in Taiwan</td><td>0</td><td>100,000</td><td>100,000</td><td></td></tr>
+<tr><td>International conference presentation</td><td>0</td><td>80,000</td><td>80,000</td><td></td></tr>
+<tr><td>Ethics review &amp; administrative costs</td><td>20,000</td><td>10,000</td><td>30,000</td><td></td></tr>
+<tr><td><b>Subtotal (excl. overhead)</b></td><td><b>1,064,000</b></td><td><b>1,087,000</b></td><td><b>2,151,000</b></td><td></td></tr>
+</table>
+<p class="note">The equipment items and unit prices above have been verified against current market listings, but actual purchase cost may vary due to exchange rates, customs duties, or academic discounts; travel costs must be recalculated per NSTC's rates for the relevant year; the full-time assistant's actual year-end bonus and employer-side labor/health insurance contributions must be added per the host institution's standards, which will raise the actual personnel cost somewhat above the base stipend listed here.</p>
+
+<h2>12. International Collaboration Document Checklist</h2>
+<ul>
+<li>Dr. Seike's brief English academic CV</li>
+<li>Signed Letter of Collaboration Intent (see Appendix 1)</li>
+<li>Foreign collaborating-researcher information form (required by the NSTC system at formal submission)</li>
+<li>Taiwan-side IRB submission documents and the corresponding ethics-committee approval from the Japan side</li>
+</ul>
+
+<h2>13. References</h2>
+<p class="note">Every reference below was individually verified to exist at the time this document was written (including journal, volume/page numbers, or DOI); any item that could not be confirmed is marked "to be verified" and is not treated as a formal citation.</p>
+<div class="refs">
+<p>Bandura, A. (1997). <i>Self-efficacy: The exercise of control</i>. W. H. Freeman and Company.</p>
+<p>Chen, F.-J. (2019). Risk factors of post-traumatic stress disorder (PTSD) of firefighters: A case study of out-of-hospital cardiac arrest (OHCA) [Master's thesis]. Institute of Epidemiology and Preventive Medicine, College of Public Health, National Taiwan University. https://doi.org/10.6342/NTU202002628 (in Chinese)</p>
+<p>Chen, F.-L. (PI). Development of disaster response and rescue standard operating procedures for the Hsuehshan Tunnel on the Taipei–Yilan Freeway. Commissioned research report, Directorate General of Highways, MOTC, conducted by National Taiwan University. (Year and report number to be verified; in Chinese)</p>
+<p>Chen, J., Fu, S., Liao, Z., Xiao, X., Qu, H., &amp; Lv, J. (2024). RobotFire: A multisensory VR simulator for fire training with robot-assisted smoke and temperature simulation. <i>Proceedings of the 17th International Symposium on Visual Information Communication and Interaction (VINCI 2024)</i>. ACM. https://doi.org/10.1145/3678698.3687173</p>
+<p>Chung, H. C., Seike, M., Kawabata, N., Hasegawa, M., Chien, S. W., &amp; Shen, T. S. (2022). Investigation of bus evacuation flow rates for tunnel fire quantitative risk assessment. <i>Journal of Asian Architecture and Building Engineering, 21</i>(3), 806–824. https://doi.org/10.1080/13467581.2021.1905646</p>
+<p>Easterbrook, J. A. (1959). The effect of emotion on cue utilization and the organization of behavior. <i>Psychological Review, 66</i>(3), 183–201. https://doi.org/10.1037/h0047707</p>
+<p>Jeon, S., Paik, S., Yang, U., Shih, P. C., &amp; Han, K. (2021). The more, the better? Improving VR firefighting training system with realistic firefighter tools as controllers. <i>Sensors, 21</i>(21), 7193. https://doi.org/10.3390/s21217193</p>
+<p>Lazarus, R. S., &amp; Folkman, S. (1984). <i>Stress, appraisal, and coping</i>. Springer Publishing Company.</p>
+<p>Li, W., Seike, M., Fujiwara, A., &amp; Chikaraishi, M. (2022). Survey on evacuation behavior and stress of Chinese and Japanese in tunnel fires [Conference presentation]. JSME Annual Meeting 2022. (in Japanese)</p>
+<p>Li, W., Seike, M., Fujiwara, A., &amp; Chikaraishi, M. (2024a). Negative emotion degree in smoke filled tunnel evacuation. <i>Tunnelling and Underground Space Technology, 153</i>, 106010. https://doi.org/10.1016/j.tust.2024.106010</p>
+<p>Li, W., Seike, M., Fujiwara, A., &amp; Chikaraishi, M. (2024b). Structural equation modeling of negative emotion and walking behavior by smoke-filled model-scale tunnel experiments. <i>Safety Science, 171</i>, 106394.</p>
+<p>Li, W., Seike, M., Fujiwara, A., Sasaoka, T., Chikaraishi, M., &amp; Yamawaki, S. (2026). Association of walking speed with psychological state: An experiment in smoke-filled full-scale tunnel. <i>Fire Safety Journal, 161</i>, 104645.</p>
+<p>Meichenbaum, D. (1985). <i>Stress inoculation training</i>. Pergamon Press.</p>
+<p>Muthén, B., &amp; Asparouhov, T. (2012). Bayesian structural equation modeling: A more flexible representation of substantive theory. <i>Psychological Methods, 17</i>(3), 313–335. https://doi.org/10.1037/a0026802</p>
+<p>Seike, M., Kawabata, N., Hasegawa, M., &amp; Tanaka, H. (2019). Heat release rate and thermal fume behavior estimation of fuel cell vehicles in tunnel fires. <i>International Journal of Hydrogen Energy, 44</i>(48), 26597–26608.</p>
+<p>Seike, M., Li, W. H., Fujiwara, A., &amp; Chikaraishi, M. (2024). Evacuation safety and human emotional responses in smoke-filled tunnels for machine learning insights. <i>Proceedings of the 12th International Conference Tunnel Safety and Ventilation</i>, 69–76.</p>
+<p>Shaw, E., Roper, T., Nilsson, T., Lawson, G., Cobb, S. V. G., &amp; Miller, D. (2019). The heat is on: Exploring user behaviour in a multisensory virtual environment for fire evacuation. <i>Proceedings of the 2019 CHI Conference on Human Factors in Computing Systems</i>, 1–13. ACM. https://doi.org/10.1145/3290605.3300856</p>
+<p>van de Schoot, R., Kaplan, D., Denissen, J., Asendorpf, J. B., Neyer, F. J., &amp; van Aken, M. A. G. (2014). A gentle introduction to Bayesian analysis: Applications to developmental research. <i>Child Development, 85</i>(3), 842–860.</p>
+<p>Wu, W.-M., &amp; Chen, Y.-Y. (2020). A study of motivation of leisure sports, working pressure and employee health: Taking the third brigade of fire bureau of Kaohsiung City as an example. <i>Journal of Sport, Health and Leisure Studies, 11</i>, 86–102. (in Chinese)</p>
+</div>
+
+<div class="pagebreak"></div>
+<h2>Appendix 1: Draft Letter of Collaboration Intent (for Dr. Seike's reference and signature)</h2>
+<p class="note">This is a draft template; please adjust the wording to reflect the actual scope of collaboration before formal use.</p>
+<p><b>Letter of Collaboration Intent</b></p>
+<p>Re: International Collaborative Research Project — "Psychological Stress Induction and VR-Based Training for Tunnel Rescue Personnel: A Taiwan-Japan Cross-National Comparative Study"</p>
+<p>I, Dr. Miho Seike, of [Hiroshima University / please confirm current affiliation], Japan, confirm my intent to collaborate with Dr. Jack Chang (National Taipei University of Nursing and Health Sciences, Taiwan) on the above-referenced research project.</p>
+<p>Signature: ______________________ &nbsp;&nbsp;&nbsp; Date: ______________________</p>
+
+<h2>Appendix 2: One-Page Project Summary (for discussion with Dr. Seike)</h2>
+<p>Title: Psychological Stress Induction and VR-Based Training for Tunnel Rescue Personnel: A Taiwan-Japan Cross-National Comparative Study</p>
+<p>Why this study, and why you: Your team's full-scale smoke-filled tunnel evacuation experiments (Li et al., 2024a, 2024b) and prior Chinese-Japanese cross-national comparison (Li et al., 2022) are the most directly relevant body of work we know of. We aim to extend this line of work to rescue/fire personnel rather than general evacuees, using VR to lower risk while enabling repeatable training.</p>
+
+</div><!-- /content-en -->
+
+</body>
+</html>
