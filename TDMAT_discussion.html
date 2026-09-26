@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台災AI導入需求評估建議｜會議討論版</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FAFAF6; --paper:#FFFFFF; --ink:#20241F; --muted:#6B726B; --line:#E1E0D8;
+    --red:#B8402F; --amber:#C4881F; --green:#3A7A5C; --slate:#2C3B3E; --slate-tint:#EEF2F1; --blue:#3D5A80;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif; line-height:1.75;}
+  .layout{display:grid; grid-template-columns:260px 1fr; max-width:1240px; margin:0 auto;}
+  nav.toc{position:sticky; top:0; align-self:start; height:100vh; overflow-y:auto; padding:32px 20px; border-right:1px solid var(--line);}
+  nav.toc .tag{font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.08em; color:var(--muted); text-transform:uppercase; margin-bottom:8px; display:block;}
+  nav.toc h1{font-family:'Noto Serif TC',serif; font-size:17px; line-height:1.4; margin:0 0 24px;}
+  nav.toc ul{list-style:none; margin:0; padding:0;}
+  nav.toc li{margin-bottom:2px;}
+  nav.toc a{display:block; padding:7px 10px; border-radius:6px; color:var(--ink); text-decoration:none; font-size:13px; border-left:3px solid transparent;}
+  nav.toc a:hover{background:var(--slate-tint);}
+  nav.toc a.g{border-left-color:var(--green);} nav.toc a.a{border-left-color:var(--amber);} nav.toc a.s{border-left-color:var(--slate);} nav.toc a.r{border-left-color:var(--red);}
+  main{padding:48px 56px 120px;}
+  header.hero{margin-bottom:44px; padding-bottom:26px; border-bottom:2px solid var(--slate);}
+  header.hero .eyebrow{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--muted); letter-spacing:.1em; text-transform:uppercase;}
+  header.hero h1{font-family:'Noto Serif TC',serif; font-size:30px; margin:10px 0 12px;}
+  header.hero p.lead{color:var(--muted); font-size:15px; max-width:700px; margin:0;}
+  section{margin-bottom:52px; scroll-margin-top:24px;}
+  section h2{font-family:'Noto Serif TC',serif; font-size:21px; display:flex; align-items:center; gap:12px; margin-bottom:18px;}
+  section h2 .num{font-family:'JetBrains Mono',monospace; font-size:13px; background:var(--slate); color:#fff; padding:3px 9px; border-radius:4px;}
+  section h3{font-size:16px; margin:24px 0 10px; font-weight:700;}
+  table{width:100%; border-collapse:collapse; background:var(--paper); font-size:13.5px; border:1px solid var(--line);}
+  th,td{border:1px solid var(--line); padding:10px 12px; text-align:left; vertical-align:top;}
+  th{background:var(--slate); color:#fff; font-weight:500; font-size:12.5px;}
+  tr:nth-child(even) td{background:#FBFBF8;}
+  .code{font-family:'JetBrains Mono',monospace; font-weight:700; color:var(--slate); white-space:nowrap;}
+  table.q1 th{background:var(--green);} table.q3 th{background:var(--amber);} table.q4 th{background:#8A9088;} table.disagree th{background:var(--red);}
+  .summary-box{background:var(--paper); border:1px solid var(--line); border-left:6px solid var(--slate); border-radius:8px; padding:22px 26px; margin-bottom:20px;}
+  .summary-box ul{margin:8px 0 0; padding-left:20px;}
+  .summary-box li{margin-bottom:8px;}
+  .chip{display:inline-block; font-size:11px; font-family:'JetBrains Mono',monospace; padding:2px 8px; border-radius:20px; margin:1px 4px 1px 0; color:#fff;}
+  .chip.g{background:var(--green);} .chip.a{background:var(--amber);} .chip.s{background:#8A9088;} .chip.r{background:var(--red);}
+  .phase{background:var(--paper); border:1px solid var(--line); border-radius:10px; padding:20px 24px; margin-bottom:16px; border-left:6px solid var(--slate);}
+  .phase.p1{border-left-color:var(--green);} .phase.p2{border-left-color:var(--amber);} .phase.p3{border-left-color:#8A9088;}
+  .phase h4{margin:0 0 8px; font-size:16px; font-family:'Noto Serif TC',serif;}
+  .phase ul{margin:8px 0 0; padding-left:20px; font-size:13.5px;}
+  .phase ul li{margin-bottom:5px;}
+  .note{font-size:13px; color:var(--muted); background:#F4F1E9; border:1px dashed #D8D2BE; border-radius:6px; padding:10px 14px; margin-top:10px;}
+  .agenda{background:var(--paper); border:1px solid var(--line); border-radius:10px; padding:8px 24px;}
+  .agenda li{margin:14px 0; font-size:14.5px;}
+  .agenda li b{color:var(--slate);}
+  @media (max-width:860px){ .layout{grid-template-columns:1fr;} nav.toc{position:relative; height:auto;} main{padding:32px 20px 80px;} }
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="toc">
+  <span class="tag">災防NGO與AI協作先導計畫</span>
+  <h1>台災AI導入<br>需求評估建議</h1>
+  <ul>
+    <li><a href="#summary" class="s">0．摘要與核心建議</a></li>
+    <li><a href="#method" class="s">1．方法說明</a></li>
+    <li><a href="#q1" class="g">2．優先執行清單（Q1）</a></li>
+    <li><a href="#q3" class="a">3．快速處理清單（Q3）</a></li>
+    <li><a href="#q4" class="s">4．建議暫緩清單（Q4）</a></li>
+    <li><a href="#disagree" class="r">5．高分歧項目（待會議釐清）</a></li>
+    <li><a href="#excluded" class="s">6．未評分項目後續</a></li>
+    <li><a href="#roadmap" class="g">7．建議分階段執行藍圖</a></li>
+    <li><a href="#agenda" class="a">8．會議討論提綱</a></li>
+  </ul>
+</nav>
+<main>
+  <header class="hero">
+    <span class="eyebrow">災防NGO與AI協作先導計畫 · 需求評估建議（會議討論版）</span>
+    <h1>台灣災難醫療隊發展協會｜AI導入需求評估建議</h1>
+    <p class="lead">本文件整合三場訪談（第一次訪談／蕭醫師／余醫師與柳哥）之質性編碼，與10份「迫切性／重要性矩陣問卷」回覆之量化結果，作為與台災開會決定執行優先序之討論基礎。</p>
+  </header>
+
+  <section id="summary">
+    <h2><span class="num">0</span>摘要與核心建議</h2>
+    <div class="summary-box">
+      <b>本輪27項可評分需求中，10項落入「高迫切高重要」優先區（Q1），9項為「高迫切但非最高重要性」的快速處理候選（Q3），8項建議暫緩。</b>
+      <ul>
+        <li><b>最高信度項目：</b>T1「三層級人力資料庫建置」是全問卷唯一兩項指標（迫切性、重要性）IQR皆為0的項目，10位受訪者評分完全一致，建議作為第一階段建置的旗艦項目。</li>
+        <li><b>後勤物資模組評分最高：</b>T6「物資出入庫管理系統」為全問卷最高分項目（迫切性中位數5、重要性中位數5），與T8「防拆驗證機制」同屬Q1，建議與人力資料庫並列第一階段核心。</li>
+        <li><b>資料主權／離線韌性需求明確：</b>T19（自架部署）、T20（內網環境建置）雙雙落入Q1，顯示台災對「不依賴外部網路與第三方雲端」的需求非常堅定，這是規劃技術架構時的硬性條件，而非可選功能。</li>
+        <li><b>醫療記錄電子化（ePCR）刻意保持保守：</b>類別四（T16-T18，勾選式病歷、漸進式電子化、現場身分辨識）全數落在Q3／Q4，沒有任何一項進入Q1——這與台災「紙本備援原則」的既定立場一致，建議會議中明確定調為「第二階段以後才推進」，避免研究團隊誤判其為急件。</li>
+        <li><b>訓練模擬與AI角色原則屬於「設計原則」而非「待建功能」：</b>類別七（T25-T28）同樣全數落在Q3／Q4，但其中T27「AI是整理者而非決策者」等原則性項目建議不以「優先序」看待，而是從第一階段就內建為系統設計規範。</li>
+        <li><b>11項需求存在受訪者間顯著分歧（IQR≥2）</b>，建議會議中逐項確認原因，很可能反映不同職務角色（醫療決策 vs. 後勤 vs. 資訊系統）看待同一功能的視角差異，而非問卷設計問題。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="method">
+    <h2><span class="num">1</span>方法說明</h2>
+    <p>27項可評分需求整理自三場訪談的開放編碼與需求整合，經10位台災成員填答「迫切性／重要性矩陣問卷」（1-5分李克特量表）後，以<b>中位數</b>（median，避免離群值扭曲整體判斷）作為象限分類依據，<b>IQR（四分位距，以上四分位中位數－下四分位中位數計算）</b>作為意見分歧指標。象限分界採用與壯闊矩陣一致之門檻（迫切性=4、重要性=4.5），以利兩案未來跨域比較。IQR≥2以紅字標示於工作底稿，代表受訪者間評分分歧較大，建議列入會議討論而非直接依中位數定案。</p>
+    <p class="note">完整統計數字（含平均數、各項樣本數）請見「台災訪談分析工作底稿.xlsx」之「問卷結果分析」工作表；互動式視覺化矩陣請見「迫切性重要性優先矩陣_台災.html」。</p>
+  </section>
+
+  <section id="q1">
+    <h2><span class="num">2</span>優先執行清單（Q1｜高迫切高重要）</h2>
+    <p>共10項，建議作為與台災討論「第一階段執行」的候選清單。</p>
+    <table class="q1">
+      <tr><th>編號</th><th>需求項目</th><th>所屬類別</th><th>迫切性</th><th>重要性</th><th>備註</th></tr>
+      <tr><td class='code'>T6</td><td>物資出入庫管理系統</td><td>後勤物資倉儲管理系統</td><td>5.0</td><td>5.0</td><td>—</td></tr>
+<tr><td class='code'>T23</td><td>資訊來源查證機制（雙軌制）</td><td>國際／外部資訊整理與查證</td><td>4.0</td><td>5.0</td><td>—</td></tr>
+<tr><td class='code'>T1</td><td>三層級人力資料庫建置，含證照效期自動提醒</td><td>人力資料庫與派遣調度系統</td><td>4.0</td><td>5.0</td><td>—</td></tr>
+<tr><td class='code'>T8</td><td>防拆驗證機制</td><td>後勤物資倉儲管理系統</td><td>4.0</td><td>5.0</td><td>—</td></tr>
+<tr><td class='code'>T5</td><td>基本審查與資安保護機制</td><td>人力資料庫與派遣調度系統</td><td>4.0</td><td>5.0</td><td>—</td></tr>
+<tr><td class='code'>T24</td><td>多語系介面支援</td><td>國際／外部資訊整理與查證</td><td>4.5</td><td>5.0</td><td>迫切性意見分歧大(IQR=2)</td></tr>
+<tr><td class='code'>T11</td><td>工作日誌與每日通報自動生成</td><td>現場記錄與指揮協調</td><td>4.0</td><td>5.0</td><td>迫切性意見分歧大(IQR=2)</td></tr>
+<tr><td class='code'>T12</td><td>無線電通訊語音轉文字逐筆記錄</td><td>現場記錄與指揮協調</td><td>4.0</td><td>4.5</td><td>迫切性意見分歧大(IQR=2)</td></tr>
+<tr><td class='code'>T20</td><td>內網環境建置能力</td><td>資料主權與離線韌性</td><td>4</td><td>5</td><td>—</td></tr>
+<tr><td class='code'>T19</td><td>自架伺服器或本地筆電部署AI</td><td>資料主權與離線韌性</td><td>4</td><td>5</td><td>—</td></tr>
+    </table>
+  </section>
+
+  <section id="q3">
+    <h2><span class="num">3</span>快速處理清單（Q3｜高迫切、非最高重要性）</h2>
+    <p>共9項。此類項目受訪者認為「現在就需要處理」，但相對Q1項目在整體重要性評價上略低，適合作為第一階段之外、成本較低即可快速實作的候選（例如表單化、規則式自動化，非必然需要複雜AI模型）。</p>
+    <table class="q3">
+      <tr><th>編號</th><th>需求項目</th><th>所屬類別</th><th>迫切性</th><th>重要性</th><th>備註</th></tr>
+      <tr><td class='code'>T22</td><td>整理過的戰情儀表板</td><td>國際／外部資訊整理與查證</td><td>4.0</td><td>4.0</td><td>—</td></tr>
+<tr><td class='code'>T4</td><td>志工／會員招募回應機制</td><td>人力資料庫與派遣調度系統</td><td>4.0</td><td>4.0</td><td>—</td></tr>
+<tr><td class='code'>T13</td><td>訊息優先順序（priority）自動排序</td><td>現場記錄與指揮協調</td><td>4.0</td><td>4.0</td><td>迫切性意見分歧大(IQR=2)</td></tr>
+<tr><td class='code'>T17</td><td>紙本備援原則下的漸進式電子化策略</td><td>醫療現場記錄電子化</td><td>4.0</td><td>4.0</td><td>—</td></tr>
+<tr><td class='code'>T16</td><td>勾選式電子病歷表單</td><td>醫療現場記錄電子化</td><td>4.0</td><td>4</td><td>—</td></tr>
+<tr><td class='code'>T28</td><td>資料格式標準化（非必要用AI，自動化即可解決部分問題）</td><td>訓練模擬與方法論原則</td><td>4</td><td>4</td><td>迫切性意見分歧大(IQR=2.0)</td></tr>
+<tr><td class='code'>T21</td><td>系統須可由團隊自主維護修改</td><td>資料主權與離線韌性</td><td>4.0</td><td>4.0</td><td>—</td></tr>
+<tr><td class='code'>T7</td><td>個人化品項清單與自動補貨提醒</td><td>後勤物資倉儲管理系統</td><td>4.0</td><td>4.0</td><td>重要性意見分歧大(IQR=2)</td></tr>
+<tr><td class='code'>T10</td><td>跨組織／跨區資源共享與臨時授權</td><td>後勤物資倉儲管理系統</td><td>4.0</td><td>4.0</td><td>重要性意見分歧大(IQR=2)</td></tr>
+    </table>
+  </section>
+
+  <section id="q4">
+    <h2><span class="num">4</span>建議暫緩清單（Q4｜雙低）</h2>
+    <p>共8項。建議先不投入開發資源，但應保留於roadmap中，於第一階段成果穩定後重新評估（部分項目如T27「AI角色定位原則」性質特殊，詳見下方分階段藍圖說明）。</p>
+    <table class="q4">
+      <tr><th>編號</th><th>需求項目</th><th>所屬類別</th><th>迫切性</th><th>重要性</th><th>備註</th></tr>
+      <tr><td class='code'>T9</td><td>醫療處置與庫存自動連動扣除</td><td>後勤物資倉儲管理系統</td><td>3</td><td>4</td><td>—</td></tr>
+<tr><td class='code'>T15</td><td>出勤時間與工作負荷追蹤（含疲勞提醒）</td><td>現場記錄與指揮協調</td><td>3.5</td><td>4.0</td><td>—</td></tr>
+<tr><td class='code'>T14</td><td>人員即時狀態Dashboard</td><td>現場記錄與指揮協調</td><td>3.0</td><td>4.0</td><td>重要性意見分歧大(IQR=2)</td></tr>
+<tr><td class='code'>T2</td><td>依事件狀態自動判斷派遣建議</td><td>人力資料庫與派遣調度系統</td><td>3.0</td><td>4.0</td><td>—</td></tr>
+<tr><td class='code'>T18</td><td>現場身分辨識與資料歸檔機制</td><td>醫療現場記錄電子化</td><td>3.0</td><td>4.0</td><td>重要性意見分歧大(IQR=2)</td></tr>
+<tr><td class='code'>T26</td><td>跨單位報到／交接流程與病患後送責任歸屬</td><td>訓練模擬與方法論原則</td><td>3</td><td>4</td><td>迫切性意見分歧大(IQR=2.0)</td></tr>
+<tr><td class='code'>T25</td><td>演練情境模擬與病患狀態時序管理（訓練用途）</td><td>訓練模擬與方法論原則</td><td>3.0</td><td>4.0</td><td>—</td></tr>
+<tr><td class='code'>T27</td><td>AI角色定位原則：整理者而非決策者，原始紀錄須可回溯查證</td><td>訓練模擬與方法論原則</td><td>3.0</td><td>4.0</td><td>重要性意見分歧大(IQR=2)</td></tr>
+    </table>
+  </section>
+
+  <section id="disagree">
+    <h2><span class="num">5</span>高分歧項目（IQR≥2，待會議中討論釐清）</h2>
+    <p>以下11項在迫切性或重要性任一構面出現IQR≥2，代表受訪者評分不一致。分歧本身是有意義的訊號——常反映不同職務角色（例如醫療決策者、後勤官、資訊系統負責人）對同一功能的迫切程度感受不同，建議會議中直接請相關角色說明各自評分理由，而非以中位數強行定案。</p>
+    <table class="disagree">
+      <tr><th>編號</th><th>需求項目</th><th>分歧說明</th><th>所屬象限</th></tr>
+      <tr><td class='code'>T24</td><td>多語系介面支援</td><td>迫切性意見分歧大(IQR=2)</td><td>Q1</td></tr>
+<tr><td class='code'>T11</td><td>工作日誌與每日通報自動生成</td><td>迫切性意見分歧大(IQR=2)</td><td>Q1</td></tr>
+<tr><td class='code'>T12</td><td>無線電通訊語音轉文字逐筆記錄</td><td>迫切性意見分歧大(IQR=2)</td><td>Q1</td></tr>
+<tr><td class='code'>T13</td><td>訊息優先順序（priority）自動排序</td><td>迫切性意見分歧大(IQR=2)</td><td>Q3</td></tr>
+<tr><td class='code'>T28</td><td>資料格式標準化（非必要用AI，自動化即可解決部分問題）</td><td>迫切性意見分歧大(IQR=2.0)</td><td>Q3</td></tr>
+<tr><td class='code'>T7</td><td>個人化品項清單與自動補貨提醒</td><td>重要性意見分歧大(IQR=2)</td><td>Q3</td></tr>
+<tr><td class='code'>T10</td><td>跨組織／跨區資源共享與臨時授權</td><td>重要性意見分歧大(IQR=2)</td><td>Q3</td></tr>
+<tr><td class='code'>T14</td><td>人員即時狀態Dashboard</td><td>重要性意見分歧大(IQR=2)</td><td>Q4</td></tr>
+<tr><td class='code'>T18</td><td>現場身分辨識與資料歸檔機制</td><td>重要性意見分歧大(IQR=2)</td><td>Q4</td></tr>
+<tr><td class='code'>T26</td><td>跨單位報到／交接流程與病患後送責任歸屬</td><td>迫切性意見分歧大(IQR=2.0)</td><td>Q4</td></tr>
+<tr><td class='code'>T27</td><td>AI角色定位原則：整理者而非決策者，原始紀錄須可回溯查證</td><td>重要性意見分歧大(IQR=2)</td><td>Q4</td></tr>
+    </table>
+  </section>
+
+  <section id="excluded">
+    <h2><span class="num">6</span>未列入評分項目後續處理</h2>
+    <div class="summary-box">
+      <ul>
+        <li><b>T3｜全國NGO資源分類調度平台：</b>余醫師提出之政策／願景層級構想，涉及政府跨機構協作與資源分類調度之制度設計，非台災自身可獨立實作之技術功能。建議此項不進入本次執行優先序討論，另行整理進最終研究報告之政策建議章節，未來可作為對主管機關倡議的素材。</li>
+        <li><b>藥材管理標準化：</b>受訪者明確指出此項需先完成內部SOP標準化之前置作業，AI或自動化在SOP未定案前沒有施力點（做了也會因規則不穩定而很快過時）。建議會議中確認台災內部SOP標準化的時程規劃，待SOP到位後再排入下一輪需求評估，而非現階段勉強列入技術開發清單。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="roadmap">
+    <h2><span class="num">7</span>建議分階段執行藍圖</h2>
+    <p>綜合量化排序與訪談中呈現的功能相依關係（例如：內網環境建置是自架AI部署的前提；人力資料庫是派遣建議的前提），建議以下分階段推進方式供會議討論：</p>
+
+    <div class="phase p1">
+      <h4>第一階段（核心基礎，建議優先啟動）</h4>
+      <ul>
+        <li><b>技術架構前提：</b>T20 內網環境建置能力 → T19 自架伺服器／本地筆電部署AI → T21 系統須可由團隊自主維護修改。三項具明確先後相依關係，建議作為技術選型的第一步，且是後續所有功能能否落地的基礎建設，而非與其他功能並列的「一個功能項目」。</li>
+        <li><b>人力與後勤核心：</b>T1 三層級人力資料庫（全問卷最高信度項目）＋ T5 基本審查與資安保護機制；T6 物資出入庫管理系統（全問卷最高分）＋ T8 防拆驗證機制。這四項可視為「兩大核心資料庫」（人力庫、物資庫）的第一階段MVP範圍。</li>
+        <li><b>現場記錄自動化起點：</b>T11 工作日誌與每日通報自動生成、T12 無線電通訊語音轉文字逐筆記錄——這兩項直接對應訪談中反覆提及的「事後補記錄」痛點，且迫切性評分高，建議與人力/物資模組同期規劃。</li>
+        <li><b>查證與多語支援：</b>T23 資訊來源查證機制（雙軌制）、T24 多語系介面支援——與國際合作／外部資訊查核相關，評分皆為Q1最高重要性層級，建議納入第一階段規劃範圍（T24迫切性分歧較大，建議會議中確認急迫程度）。</li>
+      </ul>
+    </div>
+
+    <div class="phase p2">
+      <h4>第二階段（快速處理／規則式自動化，成本相對較低）</h4>
+      <ul>
+        <li>Q3清單中的9項多屬「現有流程數位化」而非需要複雜AI推論的功能（如T4招募回應機制、T13訊息排序、T7個人化補貨提醒、T10跨組織資源共享），可視團隊量能於第一階段尾聲或並行處理。</li>
+        <li>T16／T17（電子病歷相關）建議明確與台災確認「紙本備援原則」下的電子化尺度——這不是技術問題，是台災自身的政策決定，會議中應優先釐清此立場再排入時程。</li>
+      </ul>
+    </div>
+
+    <div class="phase p3">
+      <h4>第三階段／原則內建（不是「延後的功能」，而是「從第一天就要遵守的設計規範」）</h4>
+      <ul>
+        <li><b>T27（AI是整理者而非決策者，原始紀錄須可回溯查證）</b>雖然量化評分落在Q4，但性質上並非「不重要」，而是「不是一個可以單獨排期的功能」——這是貫穿所有階段的設計原則，建議會議中明確定調為「所有模組開發時都必須遵守的紅線」，而非放入優先序清單一起排隊。</li>
+        <li>T25（演練情境模擬）、T26（跨單位報到／病患後送責任歸屬）、T28（資料格式標準化）建議留在roadmap後段，待前述核心模組穩定運作、有實際資料累積後再評估其AI導入的必要性與時機。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="agenda">
+    <h2><span class="num">8</span>會議討論提綱（建議）</h2>
+    <ol class="agenda">
+      <li><b>確認Q1十項的執行順序與資源分配：</b>是否認同以「內網/自架部署」為技術前提、「人力庫＋物資庫」為第一階段核心資料庫的分階段藍圖？</li>
+      <li><b>釐清11項高分歧項目：</b>逐項請相關職務角色（醫療決策／後勤／資訊系統）說明評分理由，特別是T24（多語系，IQR=2）、T11／T12（現場記錄自動化，IQR=2）、T28／T26（訓練與交接流程，IQR≥2）。</li>
+      <li><b>確認「紙本備援原則」下電子病歷（T16-T18）的電子化尺度</b>——這是政策立場問題，需要台災內部先有共識，才能決定第二階段時程。</li>
+      <li><b>確認藥材管理SOP標準化的時程</b>，作為該項需求何時可重新排入評估的依據。</li>
+      <li><b>確認T3（全國調度平台）是否列入本計畫最終報告的政策建議章節</b>，以及台災是否有意願參與後續對主管機關的倡議。</li>
+      <li><b>確認T27原則（AI為整理者而非決策者）是否可作為本計畫所有後續開發之共同設計規範</b>，並列入未來系統驗收標準。</li>
+    </ol>
+  </section>
+</main>
+</div>
+</body>
+</html>
