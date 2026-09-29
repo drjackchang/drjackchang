@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PERIC 2026 國際講者接待行程規劃</title>
+<style>
+  :root {
+    --red: #d64545;
+    --amber: #e0a316;
+    --green: #3fa34d;
+    --ink: #1d2733;
+    --sub: #5a6674;
+    --line: #e3e7ec;
+    --bg: #f6f8fa;
+    --card: #ffffff;
+    --accent: #2b6cb0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", -apple-system, sans-serif;
+    line-height: 1.6;
+    padding: 32px 16px 80px;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; }
+  header {
+    background: linear-gradient(135deg, #1d3a5f, #2b6cb0);
+    color: white;
+    border-radius: 16px;
+    padding: 32px 36px;
+    margin-bottom: 28px;
+  }
+  header h1 { margin: 0 0 6px; font-size: 26px; }
+  header p { margin: 4px 0; color: #dbe8f7; font-size: 14px; }
+  h2 {
+    font-size: 19px;
+    margin: 40px 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--accent);
+    color: var(--ink);
+  }
+  h3 { font-size: 16px; margin: 22px 0 8px; color: var(--accent); }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin: 10px 0;
+  }
+  th, td {
+    border: 1px solid var(--line);
+    padding: 8px 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background: #eef2f6;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  tr:nth-child(even) td { background: #fafbfc; }
+  .tag {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: white;
+    white-space: nowrap;
+  }
+  .tag.red { background: var(--red); }
+  .tag.amber { background: var(--amber); }
+  .tag.green { background: var(--green); }
+  .tag.gray { background: #8a94a3; }
+  .tag.blue { background: var(--accent); }
+  .day {
+    border-left: 4px solid var(--accent);
+    padding: 14px 20px;
+    margin-bottom: 14px;
+    background: var(--card);
+    border-radius: 0 10px 10px 0;
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--accent);
+  }
+  .day.conflict { border-left-color: var(--red); }
+  .day.busy { border-left-color: var(--amber); }
+  .day-title {
+    font-weight: 700;
+    font-size: 15.5px;
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .day-date { color: var(--accent); }
+  ul { margin: 6px 0; padding-left: 22px; }
+  li { margin-bottom: 4px; }
+  .note {
+    background: #fff7e6;
+    border: 1px solid #f0d38a;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13.5px;
+    margin: 10px 0;
+  }
+  .note.critical {
+    background: #fdecec;
+    border-color: #f0a3a3;
+  }
+  .note b { color: var(--red); }
+  .flag {
+    color: var(--sub);
+    font-size: 12.5px;
+  }
+  .grid2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 700px) { .grid2 { grid-template-columns: 1fr; } }
+  .legend { font-size: 12.5px; color: var(--sub); margin-top: 4px; }
+  .legend span { margin-right: 14px; }
+  footer { text-align: center; color: var(--sub); font-size: 12px; margin-top: 40px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>PERIC 2026 國際講者接待行程規劃</h1>
+    <p>研討會日期：2026/10/2（五）－10/3（六）｜地點：北投</p>
+    <p>接待期間：2026/9/30（三）－10/9（五）｜實體接待對象：David Anderson、Brett Williams、Kenneth Foong</p>
+    <p>版本：草稿 v3｜新增瑞士貴賓 Sascha Jennson（沿用 Justin Hunter 原訂房），Justin Hunter 改為線上參與</p>
+  </header>
+
+  <h2>一、貴賓出入境資訊</h2>
+  <div class="card">
+    <table>
+      <tr>
+        <th>姓名</th><th>國家</th><th>研討會角色</th>
+        <th>入境航班</th><th>入境日期</th><th>入境時間</th>
+        <th>離境航班</th><th>離境日期</th><th>離境時間</th>
+      </tr>
+      <tr>
+        <td>David Anderson</td><td>澳洲</td><td>Day1 開場 Keynote／Day2 Keynote</td>
+        <td>3U3783</td><td>2026/9/30（三）</td><td>17:55</td>
+        <td>CI-915</td><td>2026/10/4（日）</td><td>14:35</td>
+      </tr>
+      <tr>
+        <td>Brett Williams</td><td>澳洲</td><td>Day1／Day2 Keynote</td>
+        <td>EY898</td><td>2026/10/1（四）</td><td>10:00</td>
+        <td>EY0899</td><td>2026/10/9（五）</td><td>19:40</td>
+      </tr>
+      <tr>
+        <td>Kenneth Foong</td><td>新加坡</td><td>Day2 Keynote／學術發表開場致詞</td>
+        <td>CI754</td><td>2026/10/1（四）</td><td>18:35</td>
+        <td>CI755</td><td>2026/10/4（日）</td><td>20:00</td>
+      </tr>
+      <tr>
+        <td>Justin Hunter</td><td>美國</td><td>Day1／Day2 Keynote（<span class="tag blue">改為線上</span>）</td>
+        <td colspan="6">不來台，無需接送機／住宿，議程時段改由視訊連線方式參與</td>
+      </tr>
+      <tr>
+        <td>Sascha Jennson</td><td>瑞士</td><td>待確認</td>
+        <td colspan="6"><span class="tag amber">航班資訊待提供</span> 入住北投會館（原 Justin Hunter 訂房，10/1-10/4）</td>
+      </tr>
+    </table>
+    <div class="note">
+      <b>重要異動：</b>Justin Hunter 無法來台，其 Keynote 場次改為線上視訊參與，其餘所有實體安排（接送機、住宿、高醫行程）都不需要再為他排。北投會場需事先確認 Day1／Day2 的視訊連線設備（螢幕、收音、網路頻寬）。
+    </div>
+    <div class="note critical">
+      <b>新增貴賓：</b>Sascha Jennson（瑞士）將入住原本 Justin Hunter 的訂房（10/1-10/4，北投會館），無需另外加訂房間。但目前還沒有他的航班資訊與研討會角色，需要盡快補上才能排接機和議程。
+    </div>
+  </div>
+
+  <h2>二、逐日行程總覽</h2>
+
+  <div class="day">
+    <div class="day-title"><span class="day-date">9/30（三）</span><span class="tag gray">接機日</span></div>
+    <ul>
+      <li>17:55　David Anderson 抵台（3U3783）→ 安排接機，送往台北飯店 Check-in（已加訂 9/30 這晚房間）</li>
+      <li>晚間：David 自由活動／簡單接風（其他講者尚未抵達）</li>
+    </ul>
+  </div>
+
+  <div class="day">
+    <div class="day-title"><span class="day-date">10/1（四）</span><span class="tag gray">接機日</span></div>
+    <ul>
+      <li>10:00　Brett Williams 抵台（EY898）→ 接機，飯店提早入住，白天可安排城市簡單導覽或休息</li>
+      <li>18:35　Kenneth Foong 抵台（CI754）→ 接機</li>
+      <li>晚間：三位講者到齊後安排歡迎晚宴</li>
+    </ul>
+  </div>
+
+  <div class="day">
+    <div class="day-title"><span class="day-date">10/2（五）</span><span class="tag green">研討會 Day 1</span></div>
+    <ul>
+      <li>09:30 開幕｜10:00 David Anderson Keynote｜14:00 Brett Williams Keynote｜15:40 Justin Hunter Keynote（<span class="tag blue">線上</span>）</li>
+      <li>地點：北投會場，建議統一安排飯店 → 會場接送；Justin 場次需事先測試連線</li>
+    </ul>
+  </div>
+
+  <div class="day">
+    <div class="day-title"><span class="day-date">10/3（六）</span><span class="tag green">研討會 Day 2</span></div>
+    <ul>
+      <li>09:40 David Anderson｜10:00 Justin Hunter（<span class="tag blue">線上</span>）｜10:40 Brett Williams｜11:00 Kenneth Foong Keynote</li>
+      <li>11:20 Jack 個人議程「Protecting the Protectors」｜11:40 Panel Discussion（Justin 視訊連線加入）</li>
+      <li>14:00 Kenneth Foong 主持學術發表開場致詞</li>
+      <li>建議：Day2 晚間安排三人共同晚宴（因 David、Kenneth 隔日即離台，這是最後一次齊聚的機會）</li>
+    </ul>
+  </div>
+
+  <div class="day conflict">
+    <div class="day-title"><span class="day-date">10/4（日）</span><span class="tag red">複雜日：退房＋送機＋南下</span></div>
+    <ul>
+      <li>上午：飯店退房（3位講者皆於此日退房）</li>
+      <li>14:35　David Anderson 離境（CI-915）→ 需於約 11:30-12:00 前出發前往機場，上午時段幾乎排不出其他活動</li>
+      <li>Brett Williams：退房後搭高鐵直接南下高雄</li>
+      <li>20:00　Kenneth Foong 離境（CI755）→ 白天仍可安排半日活動，傍晚送機</li>
+    </ul>
+    <div class="note critical">
+      <b>排程衝突：</b>David 中午前送機、Brett 退房南下、Kenneth 白天活動＋晚間送機，三條線同一天早上到中午之間會同時發生，人力恐無法一人兼顧，建議明確分工由誰負責 David 送機、誰負責 Kenneth 白天陪同與晚間送機。
+    </div>
+  </div>
+
+  <div class="day">
+    <div class="day-title"><span class="day-date">10/5（一）</span><span class="tag amber">高醫行程・已確認</span></div>
+    <ul>
+      <li>上午：高醫外傷及重症外科＋高雄市消防局十全分隊 交流</li>
+      <li>下午：高雄市特種搜救大隊（含搜救犬隊）</li>
+    </ul>
+  </div>
+
+  <div class="day">
+    <div class="day-title"><span class="day-date">10/6（二）</span><span class="tag amber">高雄自由行程</span></div>
+    <ul>
+      <li>白天：自由行程</li>
+      <li>晚間：高雄市區晚宴</li>
+    </ul>
+  </div>
+
+  <div class="day">
+    <div class="day-title"><span class="day-date">10/7（三）</span><span class="tag amber">高醫國際研討會</span></div>
+    <ul>
+      <li>全天：高醫國際研討會</li>
+    </ul>
+  </div>
+
+  <div class="day">
+    <div class="day-title"><span class="day-date">10/8（四）</span><span class="tag blue">北上・抵台北</span></div>
+    <ul>
+      <li>Brett 北上返回台北（建議搭高鐵）</li>
+      <li>入住台北飯店（需另訂 10/8 這晚，1間房）</li>
+      <li>晚間：餞行晚宴 @ 莫宰羊</li>
+    </ul>
+  </div>
+
+  <div class="day">
+    <div class="day-title"><span class="day-date">10/9（五）</span><span class="tag gray">送機日</span></div>
+    <ul>
+      <li>上午：退房，前往貓空龍門客棧（喝茶／用餐，欣賞貓空風光）</li>
+      <li>其餘時段彈性安排</li>
+      <li>19:40　Brett Williams 離境（EY0899）→ 需於約 16:40 前抵達機場，建議 15:30 左右從市區出發</li>
+    </ul>
+  </div>
+
+  <h2>三、北投會館場地與住宿確認</h2>
+  <div class="card">
+    <p class="flag">報價單日期 2026/4/1・訂單編號 #104033、#146219・申請人：張育通</p>
+
+    <h3>場地租借（與研討會議程比對）</h3>
+    <table>
+      <tr><th>日期</th><th>時段</th><th>場地</th><th>金額</th><th>比對議程</th></tr>
+      <tr><td rowspan="3">2026/10/2（五）</td><td>上午 08:00-12:00</td><td>大型教室＋大型綜合教室</td><td>7,800元</td><td rowspan="3"><span class="tag green">吻合</span> Day1 全天議程 09:30-17:00</td></tr>
+      <tr><td>下午 13:30-17:30</td><td>大型教室＋大型綜合教室</td><td>7,800元</td></tr>
+      <tr><td>夜間 18:00-22:00</td><td>大型教室＋大型綜合教室</td><td>7,800元</td></tr>
+      <tr><td rowspan="3">2026/10/3（六）</td><td>上午 08:00-12:00</td><td>大型教室＋大型綜合教室</td><td>7,800元</td><td rowspan="3"><span class="tag green">吻合</span> Day2 議程 09:40-16:00</td></tr>
+      <tr><td>下午 13:30-17:30</td><td>大型教室＋大型綜合教室</td><td>7,800元</td></tr>
+      <tr><td>12:00-14:00</td><td>一般教室（30人）</td><td>1,000元</td></tr>
+      <tr><td colspan="3" style="text-align:right"><b>場地小計</b></td><td colspan="2"><b>40,000元</b>（應付訂金 12,000元）</td></tr>
+    </table>
+    <div class="note">
+      <span class="tag green">確認</span> 10/2、10/3 全天場地（含 10/2 夜間時段）已涵蓋研討會兩天完整議程，時段安排沒有問題。10/2 夜間場地若不需要使用（例如歡迎晚宴改在館外），可考慮向會館確認是否能取消以節省費用。Justin 改線上後，場地需求不變，但需加測視訊設備。
+    </div>
+
+    <h3>旅館住宿</h3>
+    <table>
+      <tr><th>入住期間</th><th>天數</th><th>房型</th><th>間數</th><th>金額</th></tr>
+      <tr><td>2026-10-01 至 2026-10-02</td><td>1晚</td><td>主題大床房（2人）</td><td>4間</td><td>8,720元</td></tr>
+      <tr><td>2026-10-02 至 2026-10-04</td><td>2晚</td><td>主題大床房（2人）</td><td>4間</td><td>23,040元</td></tr>
+      <tr><td colspan="4" style="text-align:right"><b>住宿小計</b></td><td><b>31,760元</b>（應付訂金 9,528元）</td></tr>
+    </table>
+
+    <table>
+      <tr><th>講者</th><th>需要住宿夜數</th><th>目前訂房是否涵蓋</th></tr>
+      <tr><td>David Anderson</td><td>9/30、10/1、10/2、10/3（10/4 退房）</td><td>吻合（已加訂 9/30）</td></tr>
+      <tr><td>Kenneth Foong</td><td>10/1、10/2、10/3（10/4 退房）</td><td><span class="tag green">完全吻合</span></td></tr>
+      <tr><td>Brett Williams</td><td>10/1、10/2、10/3（10/4 退房後南下高雄）</td><td><span class="tag green">完全吻合</span></td></tr>
+      <tr><td>Sascha Jennson</td><td>10/1、10/2、10/3（10/4 退房，沿用原 Justin 訂房）</td><td><span class="tag green">已有房間可用</span> 無需加訂</td></tr>
+    </table>
+
+    <div class="note">
+      <b>訂房異動：</b>原本 Justin Hunter 那 1 間房不需取消，直接轉給新增貴賓 Sascha Jennson（10/1-10/4），4 間房、3 晚的訂房內容維持不變，不會產生退訂或額外費用。
+    </div>
+    <div class="note critical">
+      <b>需另外訂房：</b>Brett 10/8 從高雄北返台北，當晚需要在台北過夜（10/8 入住、10/9 退房，1 晚 1 間房），這不在目前北投會館的訂房內，需另外安排（可續訂北投會館或改訂市區其他飯店，視晚宴地點「莫宰羊」的位置決定較方便的住宿點）。
+    </div>
+  </div>
+
+  <h2>四、接送機總表</h2>
+  <div class="card">
+    <table>
+      <tr><th>日期</th><th>類型</th><th>對象</th><th>航班／時間</th><th>建議抵達機場時間</th><th>安排狀態</th></tr>
+      <tr><td>9/30（三）</td><td>接機</td><td>David Anderson</td><td>3U3783・17:55</td><td>17:35 前到場等候（預估 18:30 左右可接到人）</td><td><span class="tag green">已安排</span> KKday 舉牌接機</td></tr>
+      <tr><td>10/1（四）</td><td>接機</td><td>Brett Williams</td><td>EY898・10:00</td><td>09:40 前到場等候（預估 10:40 左右可接到人）</td><td><span class="tag green">已安排</span> KKday 舉牌接機</td></tr>
+      <tr><td>10/1（四）</td><td>接機</td><td>Kenneth Foong</td><td>CI754・18:35</td><td>18:15 前到場等候（預估 19:15 左右可接到人）</td><td><span class="tag green">已安排</span> KKday 舉牌接機</td></tr>
+      <tr><td>10/4（日）</td><td>送機</td><td>David Anderson</td><td>CI-915・14:35</td><td>11:35 前（起飛前3小時）</td><td><span class="tag red">尚未安排</span></td></tr>
+      <tr><td>10/4（日）</td><td>送機</td><td>Kenneth Foong</td><td>CI755・20:00</td><td>17:00 前（起飛前3小時）</td><td><span class="tag red">尚未安排</span></td></tr>
+      <tr><td>10/9（五）</td><td>送機</td><td>Brett Williams</td><td>EY0899・19:40</td><td>16:40 前（起飛前3小時）</td><td><span class="tag red">尚未安排</span></td></tr>
+    </table>
+    <div class="note">
+      接機三位講者皆已透過 KKday 安排舉牌接機服務，無需再另外派人。送機部分尚未安排，需另外決定方式（例如同樣透過 KKday 訂送機服務，或自行派車）。
+    </div>
+    <div class="note">
+      接機時間抓「降落前 20 分鐘」到場等候，並預留降落後約 40-45 分鐘的入境通關／提領行李時間才會出關。送機時間則以國際線「起飛前 3 小時」抓算抵達機場，實際出發時間還需再扣掉市區到機場的車程（一般約 50-60 分鐘，視交通狀況）。Justin Hunter 改線上參與，無需接送機安排。
+    </div>
+  </div>
+
+  <h2>五、待確認事項</h2>
+  <div class="card">
+    <ul>
+      <li><span class="tag red">高優先</span> 取得 Sascha Jennson 的航班資訊與研討會角色，才能安排接機與議程</li>
+      <li><span class="tag red">高優先</span> 確認並預訂 Brett 10/8-10/9 在台北的住宿（1晚1間房）</li>
+      <li><span class="tag red">高優先</span> 安排 David、Kenneth、Brett、Sascha 的送機方式（可比照接機用 KKday，或自行派車）</li>
+      <li><span class="tag amber">中優先</span> 北投會場視訊設備確認，供 Justin Hunter 10/2、10/3 線上參與 Keynote 與 Panel Discussion 使用</li>
+      <li><span class="tag amber">中優先</span> Brett 南下高雄的高鐵確切班次，以及 10/8 北返高鐵班次（需配合莫宰羊晚宴時段）</li>
+      <li><span class="tag green">低優先</span> 貓空龍門客棧是否需要事先訂位（10/9 上午）</li>
+    </ul>
+  </div>
+
+  <footer>PERIC 2026 行程規劃草稿 v2・後續請確認住宿調整與視訊設備事宜</footer>
+</div>
+</body>
+</html>
