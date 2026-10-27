@@ -129,10 +129,36 @@ dl.cols dt { font-family: var(--font-mono); color: var(--accent) } dl.cols dd { 
 .dag .n.y rect { fill: var(--signal-soft); stroke: var(--signal) }
 .dag .e { stroke: var(--muted); stroke-width: 1.4; fill: none }
 
+
+/* indicators */
+.inds { display: grid; gap: 14px; margin-bottom: 30px }
+.ind { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; min-width: 0 }
+.ind header { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; margin-bottom: 6px }
+.ind header b { font-size: 17px } .ind header i { font-style: normal; color: var(--muted); font-size: 13px }
+.ind .def { margin: 0 0 10px; max-width: 72ch }
+.formula { font-family: var(--font-mono); font-size: 13px; background: var(--accent-soft); color: var(--ink); border-radius: 6px; padding: 8px 12px; margin: 0 0 12px; overflow-x: auto; white-space: pre-wrap }
+.ind dl { display: grid; grid-template-columns: 6.5em minmax(0, 1fr); gap: 6px 12px; margin: 0; font-size: 14px }
+.ind dt { color: var(--muted); font-weight: 700; font-size: 13px; padding-top: 1px }
+.ind dd { margin: 0 }
+.ind dd.ex { color: var(--signal) }
+.ind .wks { font-size: 12.5px; color: var(--muted); margin-top: 8px }
+.studio { background: var(--surface); border: 1px dashed var(--accent); border-radius: 10px; padding: 14px 18px; margin-bottom: 26px }
+.studio h3 { font-size: 15px; margin-bottom: 6px; color: var(--accent) }
+.studio ol { margin: 0; padding-left: 1.3em }
+.studio code, .note code, p code, li code { font-family: var(--font-mono); font-size: .92em; background: var(--accent-soft); padding: 0 4px; border-radius: 4px }
+.tryit { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line) }
+.tryit b { color: var(--signal) }
+pre.code { margin: 0; background: var(--code-bg); color: var(--code-ink); border-radius: 10px; padding: 14px 16px; font-family: var(--font-mono); font-size: 13px; line-height: 1.6; overflow-x: auto; white-space: pre; tab-size: 2 }
+pre.code .cm { color: #8fb3a8 }
+.glo-cat { margin-top: 28px }
+kbd { font-family: var(--font-mono); font-size: 12px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; background: var(--surface) }
+.dl { display: inline-block; padding: 8px 14px; border-radius: 8px; background: var(--accent); color: #fff; text-decoration: none; font-weight: 500 }
+
 @media (max-width: 860px) {
   .shell { grid-template-columns: minmax(0, 1fr) }
   .side { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--line); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
   .menu-btn { display: inline-block }
+  .ind dl { grid-template-columns: minmax(0, 1fr) } .ind dt { padding-top: 6px }
   .side .navwrap { display: none } .side.open .navwrap { display: block }
   .sidehead { display: flex; justify-content: space-between; align-items: center; gap: 10px }
   .brand { margin-bottom: 0 }
@@ -154,26 +180,24 @@ dl.cols dt { font-family: var(--font-mono); color: var(--accent) } dl.cols dd { 
   </aside>
   <main>
     <div class="wrap">
-      <div class="statusbar"><span class="pill" id="rpill"><span class="dot"></span><span id="rstat">R 未啟動（按「執行」時載入）</span></span></div>
       <div id="view" class="view"></div>
     </div>
   </main>
 </div>
 
 <script src="weeks.js"></script>
+<script src="indicators.js"></script>
 <script src="outputs.js"></script>
 <script>
 (function () {
-  const C = window.COURSE, D = window.DATASETS, CODE = window.WEEK_CODE || {};
+  const C = window.COURSE, D = window.DATASETS, IND = window.INDICATORS || [], CODE = window.WEEK_CODE || {};
   const pad = n => String(n).padStart(2, "0");
   const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-  const qs = new URLSearchParams(location.search);
-  // R 引擎（webR 0.6.0）預設從網站自己的 webr/ 資料夾載入；加 ?webr=cdn 改用 jsDelivr
-  const WEBR_BASE = qs.get("webr") === "cdn" ? "https://cdn.jsdelivr.net/npm/webr@0.6.0/dist/" : new URL("./webr/", location.href).href;
+  const ZIP = "epi-ems-rstudio.zip";
 
   // ---------- navigation ----------
   const navtop = document.getElementById("navtop"), nav = document.getElementById("nav");
-  navtop.innerHTML = [["home", "課程首頁"], ["data", "資料與變項說明"], ["reports", "年報與 Utstein 報告"], ["setup", "怎麼跑 R"]]
+  navtop.innerHTML = [["home", "課程首頁"], ["setup", "RStudio 準備"], ["glossary", "指標辭典"], ["data", "資料與變項說明"], ["reports", "年報與 Utstein 報告"]]
     .map(([h, t]) => `<a href="#${h}" data-h="${h}">${t}</a>`).join("");
   nav.innerHTML = C.phases.map(p => `<div class="phase"><h4>${p.name} · ${p.range}</h4>` +
     C.weeks.filter(w => w.phase === p.id).map(w =>
@@ -191,43 +215,95 @@ dl.cols dt { font-family: var(--font-mono); color: var(--accent) } dl.cols dd { 
     else if (h === "data") renderData();
     else if (h === "reports") renderReports();
     else if (h === "setup") renderSetup();
+    else if (h === "glossary") renderGlossary();
     else renderHome();
+    view.querySelectorAll("[data-copy]").forEach(b => b.addEventListener("click", onCopy));
     window.scrollTo(0, 0);
   }
   window.addEventListener("hashchange", route);
+  const weekLink = n => `<a href="#w${pad(n)}">W${pad(n)}</a>`;
 
   function renderHome() {
-    const next = C.weeks[0];
     view.innerHTML = `
       <div class="home-hero">
         <div class="eyebrow">健康科技學院碩士班 · 選修 · 115 學年度第 2 學期</div>
         <h1>流行病學方法論<br>EMS 與災難數據版</h1>
-        <p class="lede">同一套流行病學方法，換成救護出勤、OHCA 登錄、創傷登錄與災後調查的數據來練習。每週先讀一份真實年報，再用虛構城市「北濱市」的模擬資料，親手算出同一個指標。</p>
+        <p class="lede">同一套流行病學方法，換成救護出勤、OHCA 登錄、創傷登錄與災後調查的數據來練習。每週先弄懂指標的定義與用途，再讀一份真實年報，最後在 RStudio 用虛構城市「北濱市」的模擬資料親手算一次。</p>
         <p class="note">${esc(C.meta)}</p>
+        <p><a class="dl" href="${ZIP}" download>下載 R 專案（資料＋每週程式）</a>　<a href="#setup">第一次使用請先看 RStudio 準備 →</a></p>
       </div>
       <div class="arc">${C.phases.map(p => {
         const first = C.weeks.find(w => w.phase === p.id);
         return `<a href="#w${pad(first.n)}"><span class="r">${p.range}</span><b>${p.name}</b><span class="d">${esc(p.desc)}</span></a>`}).join("")}</div>
       <h2 class="sec">18 週進度</h2>
       <div class="tbl"><table>
-        <thead><tr><th>週</th><th>日期</th><th>單元</th><th>年報對照</th></tr></thead>
+        <thead><tr><th>週</th><th>日期</th><th>單元</th><th>本週指標</th></tr></thead>
         <tbody>${C.weeks.map(w => `<tr><td class="num"><a href="#w${pad(w.n)}">W${pad(w.n)}</a></td><td class="num">${w.date}</td>
-          <td>${esc(w.title)}</td><td>${w.report ? esc(w.report.name) : "—"}</td></tr>`).join("")}</tbody></table></div>
+          <td>${esc(w.title)}</td><td>${IND.filter(x => x.weeks[0] === w.n).map(x => esc(x.zh)).join("、") || "—"}</td></tr>`).join("")}</tbody></table></div>
       <p class="note">日期依 2027/2/25 開課推算，以學校公告校曆為準。所有資料皆為教學用模擬資料，不代表任何真實個人、機構或地區。</p>`;
   }
 
-  function weekLink(n) { return `<a href="#w${pad(n)}">W${pad(n)}</a>` }
+  function renderSetup() {
+    view.innerHTML = `<div class="eyebrow">SETUP · 第一週上課前完成</div><h1 class="wtitle">RStudio 準備</h1>
+      <p class="lede">整學期都用同一個 R 專案：開一次專案，之後每週只要打開當週的程式檔逐段執行。</p>
+      <h2 class="sec">一次性設定</h2>
+      <div class="studio"><ol>
+        <li>安裝 R（<a href="https://cran.r-project.org/" target="_blank" rel="noopener">CRAN</a>），再安裝 RStudio Desktop（<a href="https://posit.co/download/rstudio-desktop/" target="_blank" rel="noopener">Posit</a>）。順序不能顛倒。</li>
+        <li>下載 <a href="${ZIP}" download><code>${ZIP}</code></a>，解壓縮到<strong>沒有中文與空白</strong>的路徑，例如 <code>C:\\R\\epi-ems</code> 或 <code>~/R/epi-ems</code>。</li>
+        <li>雙擊資料夾裡的 <code>epi-ems.Rproj</code>。RStudio 會把工作目錄自動設在專案資料夾，程式中的 <code>data/ohca.csv</code> 就找得到。</li>
+        <li>在 Console 執行一次 <code>install.packages("survival")</code>（第 7、13 週用到；其他週只用 R 內建函式）。</li>
+        <li>打開 <code>R/weeks/w01.R</code>，按 <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Enter</kbd>（Mac：<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>Enter</kbd>）整份執行。看到 <code>36499 10</code> 就代表設定完成。</li>
+      </ol></div>
+      <h2 class="sec">每週上課怎麼跟</h2>
+      <div class="studio"><ol>
+        <li>開啟 <code>epi-ems.Rproj</code> → 右下 Files 窗格進入 <code>R/weeks/</code> → 打開當週檔案，例如 <code>w05.R</code>。</li>
+        <li>每個 <code>## ----</code> 是一段。游標放在該段，按 <kbd>Ctrl</kbd>+<kbd>Enter</kbd> 逐行執行，一邊對照網站上的「參考輸出」。</li>
+        <li>按 <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>O</kbd> 可開啟文件大綱，直接跳到某一段。</li>
+        <li>每週頁面最後有「動手改一改」：改一個參數再跑一次，把結果寫進課堂筆記。</li>
+      </ol></div>
+      <h2 class="sec">常見問題</h2>
+      <div class="tbl"><table><thead><tr><th>訊息</th><th>原因與解法</th></tr></thead><tbody>
+        <tr><td><code>cannot open file 'data/ohca.csv'</code></td><td>沒有從 <code>epi-ems.Rproj</code> 開啟，工作目錄不對。關掉 RStudio，改雙擊 <code>.Rproj</code>；或 Session → Set Working Directory → To Project Directory。</td></tr>
+        <tr><td><code>object 'ohca' not found</code></td><td>跳著執行。請從該週第一段依序往下跑。</td></tr>
+        <tr><td><code>there is no package called 'survival'</code></td><td>執行 <code>install.packages("survival")</code>。</td></tr>
+        <tr><td>程式中的中文變亂碼</td><td>File → Reopen with Encoding → UTF-8；並在 Tools → Global Options → Code → Saving 把預設編碼設為 UTF-8。</td></tr>
+        <tr><td>圖的中文字變方塊</td><td>課程的圖都使用英文標籤；自己加中文標籤時，Windows 可加 <code>par(family = "Microsoft JhengHei")</code>。</td></tr>
+      </tbody></table></div>`;
+  }
+
+  function indCard(x, showWeeks) {
+    return `<article class="ind" id="ind-${x.id}">
+      <header><b>${esc(x.zh)}</b><i>${esc(x.en)}</i></header>
+      <p class="def">${esc(x.def)}</p>
+      <div class="formula">${esc(x.formula)}</div>
+      <dl><dt>為什麼用</dt><dd>${esc(x.why)}</dd><dt>怎麼解讀</dt><dd>${esc(x.how)}</dd>
+      <dt>常見錯誤</dt><dd>${esc(x.pitfall)}</dd><dt>北濱市</dt><dd class="ex">${esc(x.ex)}</dd></dl>
+      ${showWeeks ? `<div class="wks">出現週次：${x.weeks.map(weekLink).join(" ")}</div>` : ""}
+    </article>`;
+  }
+
+  function renderGlossary() {
+    const cats = [...new Set(IND.map(x => x.cat))];
+    view.innerHTML = `<div class="eyebrow">GLOSSARY · ${IND.length} 個指標</div><h1 class="wtitle">指標辭典</h1>
+      <p class="lede">每個指標都回答五件事：它是什麼、怎麼算、什麼時候該用、數字怎麼讀、最常犯的錯。考試與報告請以這裡的定義為準。</p>
+      <div class="tbl"><table><thead><tr><th>分類</th><th>指標</th></tr></thead><tbody>
+      ${cats.map(c => `<tr><td><b>${esc(c)}</b></td><td>${IND.filter(x => x.cat === c).map(x => `<a href="#glossary" data-jump="ind-${x.id}">${esc(x.zh)}</a>`).join("、")}</td></tr>`).join("")}
+      </tbody></table></div>
+      ${cats.map(c => `<h2 class="sec glo-cat">${esc(c)}</h2><div class="inds">${IND.filter(x => x.cat === c).map(x => indCard(x, true)).join("")}</div>`).join("")}`;
+    view.querySelectorAll("[data-jump]").forEach(a => a.addEventListener("click", e => {
+      e.preventDefault(); document.getElementById(a.dataset.jump).scrollIntoView({ behavior: "smooth", block: "start" }) }));
+  }
 
   function renderData() {
     view.innerHTML = `<div class="eyebrow">DATA · 北濱市（虛構）</div><h1 class="wtitle">資料與變項說明</h1>
-      <p class="lede">15 份 CSV，由同一支 R 程式 <code>sim_data.R</code>（固定亂數種子）產生；全班拿到的資料完全相同。</p>
+      <p class="lede">15 份 CSV 都在 R 專案的 <code>data/</code> 資料夾，由 <code>R/sim_data.R</code>（固定亂數種子）產生；全班拿到的資料完全相同。</p>
+      <p><a class="dl" href="${ZIP}" download>下載 R 專案</a></p>
       <div class="tbl"><table><thead><tr><th>檔案</th><th>內容</th><th>筆數</th><th>週次</th></tr></thead><tbody>
       ${D.map(d => `<tr id="ds-${d.file}"><td><a class="chip" href="data/${d.file}" download>${d.file}</a></td>
         <td><b>${esc(d.name)}</b><br><span class="note">${esc(d.desc)}</span>
         <details><summary>欄位說明</summary><dl class="cols">${Object.entries(d.cols).map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")}</dl></details></td>
         <td class="num">${d.rows.toLocaleString()}</td><td class="num">${d.weeks.map(weekLink).join(" ")}</td></tr>`).join("")}
-      </tbody></table></div>
-      <p class="note">在 claude.ai 預覽中下載連結可能無作用；請從課程的 GitHub 網站或教學平台下載整包資料。</p>`;
+      </tbody></table></div>`;
   }
 
   function renderReports() {
@@ -237,23 +313,11 @@ dl.cols dt { font-family: var(--font-mono); color: var(--accent) } dl.cols dd { 
       if (!seen.get(r.url).weeks.includes(w.n)) seen.get(r.url).weeks.push(w.n);
     }));
     view.innerHTML = `<div class="eyebrow">REPORTS</div><h1 class="wtitle">年報與 Utstein 報告</h1>
-      <p class="lede">每週的「年報對照」都從這些報告出題：先在真實報告裡找到指標，再用模擬資料重算一次。</p>
+      <p class="lede">每週的「年報對照」都從這些報告出題：先在真實報告裡找到指標，確認它的分子與分母，再用模擬資料重算一次。</p>
       <div class="tbl"><table><thead><tr><th>報告</th><th>週次</th></tr></thead><tbody>
       ${[...seen.values()].map(r => `<tr><td><a href="${r.url}" target="_blank" rel="noopener">${esc(r.name)}</a></td><td class="num">${r.weeks.map(weekLink).join(" ")}</td></tr>`).join("")}
       </tbody></table></div>
       <p class="note">台灣目前沒有全國統一的 OHCA 與創傷登錄年報；這個缺口本身就是第 2 週與第 18 週的討論題。</p>`;
-  }
-
-  function renderSetup() {
-    view.innerHTML = `<div class="eyebrow">SETUP</div><h1 class="wtitle">怎麼跑 R</h1>
-      <p class="lede">三種方式擇一，程式碼完全相同。</p>
-      <div class="grid2">
-        <div class="box"><h3>1 · 直接在網頁執行</h3>每個程式區塊都可以修改後按「執行」。第一次會下載約 20 MB 的 R 引擎（webR），之後同一頁不必重載。部分環境（例如 claude.ai 預覽）會封鎖引擎，這時請看「參考輸出」或改用下面兩種方式。</div>
-        <div class="box"><h3>2 · 自己電腦的 RStudio</h3>安裝 R 與 RStudio，下載整包課程資料，把工作目錄設在含 <code>data/</code> 的資料夾，再開啟 <code>R/weeks/w01.R</code> 逐段執行。</div>
-        <div class="box"><h3>3 · Posit Cloud</h3>免安裝的雲端 RStudio。新增專案後上傳 <code>data/</code> 與 <code>R/</code> 兩個資料夾即可。</div>
-      </div>
-      <h2 class="sec">只用 base R</h2>
-      <p class="note">所有範例只用 R 內建函式，第 7、13 週的 Cox 與條件式羅吉斯迴歸另需 <code>survival</code> 套件（RStudio 內建；網頁版會嘗試自動安裝）。圖的標籤使用英文，避免中文字型在不同電腦顯示成方塊。</p>`;
   }
 
   function haddonTable() {
@@ -286,10 +350,20 @@ dl.cols dt { font-family: var(--font-mono); color: var(--accent) } dl.cols dd { 
       <p class="note">指引全文見 <a href="https://www.equator-network.org/" target="_blank" rel="noopener">EQUATOR Network</a>。導讀當日繳交 PDF。</p>`;
   }
 
+  function studioBox(w, hasCode) {
+    if (!hasCode) return "";
+    return `<div class="studio"><h3>在 RStudio 跟著做</h3><ol>
+      <li>開啟 <code>epi-ems.Rproj</code>，再打開 <code>R/weeks/w${pad(w.n)}.R</code>。</li>
+      <li>由上往下逐段執行（<kbd>Ctrl</kbd>+<kbd>Enter</kbd>），每段跑完對照下方「參考輸出」。數字不同時，先檢查是不是跳過了前面的段落。</li>
+      <li>把每段輸出用自己的話寫成一句結論，例如「Hill 區粗率較高，主要是年齡結構造成」。</li>
+    </ol>${w.tryit ? `<div class="tryit"><b>動手改一改：</b>${esc(w.tryit)}</div>` : ""}</div>`;
+  }
+
   function renderWeek(n) {
     const w = C.weeks.find(x => x.n === n); if (!w) return renderHome();
     const chunks = CODE["w" + pad(n)] || [];
     const phase = C.phases.find(p => p.id === w.phase);
+    const inds = IND.filter(x => x.weeks.includes(n));
     const prev = C.weeks.find(x => x.n === n - 1), next = C.weeks.find(x => x.n === n + 1);
     view.innerHTML = `
       <div class="eyebrow">W${pad(n)} · ${w.date} · ${phase.name}${w.exam ? " · 考試" : ""}${w.flexible ? " · 彈性教學" : ""}</div>
@@ -301,111 +375,36 @@ dl.cols dt { font-family: var(--font-mono); color: var(--accent) } dl.cols dd { 
         ${w.report ? `<div class="box report"><h3>年報對照</h3><a href="${w.report.url}" target="_blank" rel="noopener">${esc(w.report.name)}</a>
           <p class="q">${esc(w.report.task)}</p>${w.extraReport ? `<p class="q note">延伸：<a href="${w.extraReport.url}" target="_blank" rel="noopener">${esc(w.extraReport.name)}</a></p>` : ""}</div>` : ""}
       </div>
-      ${w.data.length ? `<div class="box" style="margin-bottom:28px"><h3>本週資料</h3><div class="chips">${w.data.map(f => `<a class="chip" href="#data">${f}</a>`).join("")}</div></div>` : ""}
+      ${inds.length ? `<h2 class="sec">${w.exam ? "考試範圍指標" : "本週指標"}</h2><div class="inds">${inds.map(x => indCard(x, false)).join("")}</div>` : ""}
       ${w.haddon ? haddonTable() : ""}${w.dag ? dagSvg() : ""}${w.checklist ? checklistTable() : ""}
-      ${chunks.length ? `<h2 class="sec">R 範例</h2><div class="chunks">${chunks.map((c, i) => chunkHtml(n, c, i)).join("")}</div>` : ""}
+      ${w.data.length ? `<div class="box" style="margin-bottom:22px"><h3>本週資料</h3><div class="chips">${w.data.map(f => `<a class="chip" href="#data">${f}</a>`).join("")}</div></div>` : ""}
+      ${chunks.length ? `<h2 class="sec">R 實作</h2>${studioBox(w, true)}<div class="chunks">${chunks.map((c, i) => chunkHtml(n, c, i)).join("")}</div>` : ""}
       <div class="bar" style="margin-top:36px;justify-content:space-between">
         ${prev ? `<a href="#w${pad(prev.n)}">← W${pad(prev.n)} ${esc(prev.title)}</a>` : "<span></span>"}
         ${next ? `<a href="#w${pad(next.n)}">W${pad(next.n)} ${esc(next.title)} →</a>` : ""}
       </div>`;
-    view.querySelectorAll("textarea").forEach(autosize);
-    view.querySelectorAll("[data-act]").forEach(b => b.addEventListener("click", onAct));
   }
 
+  function hl(code) { return esc(code).split("\n").map(l => l.replace(/(^|\s)(#.*)$/, '$1<span class="cm">$2</span>')).join("\n") }
   function chunkHtml(n, c, i) {
     const id = `w${pad(n)}-${i}`;
     return `<section class="chunk" id="${id}">
       <h2><span class="k">${pad(i + 1)}</span>${esc(c.title)}</h2>
       ${c.text ? `<p class="ex">${esc(c.text)}</p>` : ""}
-      <div class="editor"><textarea id="code-${id}" spellcheck="false" aria-label="R 程式碼：${esc(c.title)}">${esc(c.code)}</textarea></div>
-      <div class="bar">
-        <button class="run" data-act="run" data-w="${n}" data-i="${i}">執行</button>
-        <button data-act="copy" data-id="${id}">複製程式</button>
-        <button data-act="reset" data-w="${n}" data-i="${i}">還原</button>
-      </div>
+      <pre class="code" id="code-${id}">${hl(c.code)}</pre>
+      <div class="bar"><button data-copy="${id}">複製這段</button></div>
       <div class="out">
-        <div class="live" id="live-${id}" hidden></div>
         ${c.output || c.plot ? `<div class="lab">參考輸出</div>` : ""}
         ${c.output ? `<pre class="res">${esc(c.output)}</pre>` : ""}
         ${c.plot ? `<div class="fig"><img src="${c.plot}" alt="${esc(c.title)} 的圖" loading="lazy"></div>` : ""}
       </div>
     </section>`;
   }
-  function autosize(t) { t.style.height = "auto"; t.style.height = (t.scrollHeight + 4) + "px"; t.addEventListener("input", () => { t.style.height = "auto"; t.style.height = (t.scrollHeight + 4) + "px" }) }
-
-  async function onAct(e) {
-    const b = e.currentTarget, act = b.dataset.act;
-    if (act === "copy") {
-      const t = document.getElementById("code-" + b.dataset.id);
-      try { await navigator.clipboard.writeText(t.value); b.textContent = "已複製" } catch { t.select(); b.textContent = "已選取，請按 Ctrl+C" }
-      setTimeout(() => b.textContent = "複製程式", 1600);
-    } else if (act === "reset") {
-      const id = `w${pad(+b.dataset.w)}-${b.dataset.i}`, t = document.getElementById("code-" + id);
-      t.value = CODE["w" + pad(+b.dataset.w)][+b.dataset.i].code; autosize(t);
-    } else if (act === "run") runChunk(+b.dataset.w, +b.dataset.i, b);
-  }
-
-  // ---------- webR ----------
-  let webR = null, starting = null; const loadedFiles = new Set(); const ranUpTo = {};
-  const pill = document.getElementById("rpill"), rstat = document.getElementById("rstat");
-  function setStat(cls, txt) { pill.className = "pill " + cls; rstat.textContent = txt }
-  async function ensureR() {
-    if (webR) return webR;
-    if (!starting) starting = (async () => {
-      setStat("loading", "正在載入 R 引擎（約 20 MB）…");
-      const mod = await import(WEBR_BASE + "webr.js");
-      const w = new mod.WebR({ baseUrl: WEBR_BASE, interactive: false });
-      await w.init();
-      await w.FS.mkdir("/home/web_user/data").catch(() => {});
-      webR = w; setStat("ready", "R 已就緒"); return w;
-    })().catch(err => { starting = null; setStat("fail", "此環境無法載入 R，請看參考輸出"); throw err });
-    return starting;
-  }
-  async function ensureFiles(code) {
-    const files = [...new Set([...code.matchAll(/data\/([\w.-]+\.csv)/g)].map(m => m[1]))];
-    for (const f of files) {
-      if (loadedFiles.has(f)) continue;
-      const r = await fetch("data/" + f); if (!r.ok) throw new Error("讀不到資料檔 " + f);
-      await webR.FS.writeFile("/home/web_user/data/" + f, new Uint8Array(await r.arrayBuffer()));
-      loadedFiles.add(f);
-    }
-  }
-  async function ensurePkgs(code) {
-    if (/library\(survival\)|clogit|coxph|survdiff/.test(code)) {
-      const has = await webR.evalRBoolean('requireNamespace("survival", quietly = TRUE)');
-      if (!has) { setStat("loading", "正在安裝 survival 套件…"); await webR.installPackages(["survival"], { quiet: true }); setStat("ready", "R 已就緒") }
-    }
-  }
-  async function exec(code, target) {
-    await ensureFiles(code); await ensurePkgs(code);
-    const shelter = await new webR.Shelter();
-    try {
-      const cap = await shelter.captureR(code, { withAutoprint: true, captureStreams: true, captureConditions: false,
-        captureGraphics: { width: 720, height: 450 } });
-      const text = cap.output.filter(o => o.type === "stdout" || o.type === "stderr").map(o => o.data).join("\n");
-      let html = `<div class="lab">你的輸出</div>`;
-      if (text.trim()) html += `<pre class="res">${esc(text)}</pre>`;
-      target.innerHTML = html;
-      cap.images.forEach(img => { const fig = document.createElement("div"); fig.className = "fig"; const cv = document.createElement("canvas");
-        cv.width = img.width; cv.height = img.height; cv.getContext("2d").drawImage(img, 0, 0); fig.appendChild(cv); target.appendChild(fig) });
-      if (!text.trim() && !cap.images.length) target.innerHTML += `<pre class="res">（執行完成，沒有輸出）</pre>`;
-    } finally { await shelter.purge() }
-  }
-  async function runChunk(n, i, btn) {
-    const key = "w" + pad(n), live = document.getElementById(`live-${key}-${i}`);
-    live.hidden = false; btn.disabled = true; btn.textContent = "執行中…";
-    try {
-      await ensureR();
-      const start = (ranUpTo[key] ?? -1) + 1;
-      for (let j = start; j < i; j++) {   // 先補跑前面尚未執行的區塊
-        const t = document.getElementById(`code-${key}-${j}`).value;
-        const lj = document.getElementById(`live-${key}-${j}`); lj.hidden = false; await exec(t, lj); ranUpTo[key] = j;
-      }
-      await exec(document.getElementById(`code-${key}-${i}`).value, live);
-      ranUpTo[key] = Math.max(ranUpTo[key] ?? -1, i);
-    } catch (err) {
-      live.innerHTML = `<div class="lab">你的輸出</div><pre class="res err">${esc(err && err.message ? err.message : String(err))}</pre>`;
-    } finally { btn.disabled = false; btn.textContent = "執行" }
+  async function onCopy(e) {
+    const b = e.currentTarget, pre = document.getElementById("code-" + b.dataset.copy);
+    try { await navigator.clipboard.writeText(pre.textContent); b.textContent = "已複製" }
+    catch { const r = document.createRange(); r.selectNodeContents(pre); const s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = "已選取，請按 Ctrl+C" }
+    setTimeout(() => b.textContent = "複製這段", 1600);
   }
 
   route();
