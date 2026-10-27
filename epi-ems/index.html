@@ -1,0 +1,414 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style></head><body>
+<title>流行病學方法論 EMS 版</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: registry-report shell — fixed week index on the left (grouped by course phase), one week per view on the right; collapses to a top drawer on phones. */
+:root {
+  --bg: #f4f6f7;
+  --surface: #ffffff;
+  --ink: #142028;
+  --muted: #5b6b74;
+  --line: #d9e1e4;
+  --accent: #0d6b6e;
+  --accent-soft: #e2f0ef;
+  --signal: #b4641a;
+  --signal-soft: #f8ecdf;
+  --code-bg: #0f1d24;
+  --code-ink: #dbe7ea;
+  --ok: #2f7d4b;
+  --bad: #b03a2e;
+  --font-display: "Noto Serif TC", "Songti TC", serif;
+  --font-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --side: 272px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0e171c; --surface: #15232a; --ink: #e3ecef; --muted: #93a6ae; --line: #26363e;
+  --accent: #4fb3b0; --accent-soft: #173a3c; --signal: #e0a160; --signal-soft: #3a2a19;
+  --code-bg: #091216; --code-ink: #d6e3e6; --ok: #6cc08a; --bad: #e57d70; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0e171c; --surface: #15232a; --ink: #e3ecef; --muted: #93a6ae; --line: #26363e;
+  --accent: #4fb3b0; --accent-soft: #173a3c; --signal: #e0a160; --signal-soft: #3a2a19;
+  --code-bg: #091216; --code-ink: #d6e3e6; --ok: #6cc08a; --bad: #e57d70; color-scheme: dark }
+
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.7; }
+a { color: var(--accent) }
+a:focus-visible, button:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px }
+h1, h2, h3 { text-wrap: balance; line-height: 1.3; margin: 0 }
+.shell { display: grid; grid-template-columns: var(--side) minmax(0, 1fr); min-height: 100vh }
+
+/* sidebar */
+.side { border-right: 1px solid var(--line); background: var(--surface); position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  padding-block: 20px 32px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: 16px }
+.brand { display: grid; gap: 2px; margin-bottom: 18px; text-decoration: none; color: var(--ink) }
+.brand b { font-family: var(--font-display); font-size: 20px; letter-spacing: .02em }
+.brand span { font-size: 12px; color: var(--muted) }
+.navtop { display: grid; gap: 2px; margin-bottom: 18px }
+.navtop a, .wk { display: flex; gap: 10px; align-items: baseline; padding: 5px 8px; border-radius: 6px; text-decoration: none; color: var(--ink); font-size: 14px }
+.navtop a:hover, .wk:hover { background: var(--accent-soft) }
+.navtop a.on, .wk.on { background: var(--accent); color: #fff }
+.phase { margin-top: 14px }
+.phase h4 { margin: 0 0 4px 8px; font-size: 11px; letter-spacing: .14em; color: var(--muted); font-weight: 700 }
+.wk .no { font-family: var(--font-mono); font-size: 12px; color: var(--muted); min-width: 30px; font-variant-numeric: tabular-nums }
+.wk.on .no { color: #d8f0ef }
+.wk .t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.menu-btn { display: none }
+
+/* main */
+main { min-width: 0; padding-block: 28px 64px; padding-left: clamp(16px, 4vw, 48px); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+.wrap { max-width: 880px }
+.statusbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: flex-end; margin-bottom: 18px; font-size: 13px; color: var(--muted) }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); font-size: 12.5px }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted) }
+.pill.ready .dot { background: var(--ok) } .pill.loading .dot { background: var(--signal) } .pill.fail .dot { background: var(--bad) }
+
+.eyebrow { font-family: var(--font-mono); font-size: 12.5px; letter-spacing: .08em; color: var(--signal); font-variant-numeric: tabular-nums }
+.wtitle { font-family: var(--font-display); font-size: clamp(24px, 3.4vw, 32px); margin: 4px 0 10px }
+.lede { font-size: 17px; max-width: 62ch; margin: 0 0 22px }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-bottom: 28px }
+.box { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; min-width: 0 }
+.box h3 { font-size: 13px; letter-spacing: .1em; color: var(--muted); font-weight: 700; margin-bottom: 6px }
+.box ul { margin: 0; padding-left: 1.2em }
+.report { background: var(--signal-soft); border-color: transparent }
+.report h3 { color: var(--signal) }
+.report .q { margin: 6px 0 0 }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px }
+.chip { font-family: var(--font-mono); font-size: 12.5px; padding: 2px 8px; border-radius: 6px; background: var(--accent-soft); color: var(--accent); text-decoration: none }
+
+/* code chunks */
+.chunks { display: grid; gap: 26px }
+.chunk h2 { font-size: 18px; font-weight: 700; display: flex; gap: 10px; align-items: baseline }
+.chunk h2 .k { font-family: var(--font-mono); font-size: 13px; color: var(--muted); font-weight: 400 }
+.chunk p.ex { margin: 6px 0 10px; max-width: 68ch; white-space: pre-line }
+.editor { position: relative; border-radius: 10px; overflow: hidden; background: var(--code-bg) }
+.editor textarea { display: block; width: 100%; border: 0; resize: vertical; background: transparent; color: var(--code-ink);
+  font-family: var(--font-mono); font-size: 13px; line-height: 1.6; padding: 14px 16px; tab-size: 2; white-space: pre; overflow-x: auto; min-height: 60px }
+.bar { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; align-items: center }
+button { font: inherit; font-size: 13.5px; border-radius: 7px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); padding: 5px 12px; cursor: pointer }
+button.run { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 500 }
+button:disabled { opacity: .55; cursor: progress }
+.out { margin-top: 10px; display: grid; gap: 8px }
+.out .lab { font-size: 12px; letter-spacing: .1em; color: var(--muted); font-weight: 700 }
+pre.res { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; font-family: var(--font-mono);
+  font-size: 12.5px; line-height: 1.55; overflow-x: auto; white-space: pre; font-variant-numeric: tabular-nums }
+pre.res.err { border-color: var(--bad); color: var(--bad) }
+.fig { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 6px; max-width: 640px }
+.fig img, .fig canvas { display: block; width: 100%; height: auto }
+.live { border-left: 3px solid var(--accent); padding-left: 10px }
+
+/* tables */
+.tbl { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface) }
+table { border-collapse: collapse; width: 100%; font-size: 14px }
+th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: top }
+th { font-size: 12.5px; color: var(--muted); font-weight: 700; letter-spacing: .04em; background: var(--bg) }
+tr:last-child td { border-bottom: 0 }
+td.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap }
+details { margin-top: 4px } summary { cursor: pointer; color: var(--accent); font-size: 13px }
+dl.cols { display: grid; grid-template-columns: max-content 1fr; gap: 2px 14px; margin: 8px 0 0; font-size: 13px }
+dl.cols dt { font-family: var(--font-mono); color: var(--accent) } dl.cols dd { margin: 0 }
+
+.home-hero { display: grid; gap: 10px; margin-bottom: 26px }
+.home-hero h1 { font-family: var(--font-display); font-size: clamp(28px, 4.4vw, 40px) }
+.arc { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; margin: 8px 0 28px; background: var(--surface) }
+.arc a { padding: 14px 16px; text-decoration: none; color: var(--ink); border-right: 1px solid var(--line); display: grid; gap: 2px }
+.arc a:last-child { border-right: 0 }
+.arc b { font-family: var(--font-display); font-size: 20px } .arc .r { font-family: var(--font-mono); font-size: 12px; color: var(--signal) }
+.arc span.d { font-size: 13px; color: var(--muted) }
+.sec { margin: 30px 0 12px; font-family: var(--font-display); font-size: 21px }
+.note { font-size: 13.5px; color: var(--muted); max-width: 70ch }
+.matrix td, .matrix th { min-width: 120px }
+.dag { max-width: 620px }
+.dag text { fill: var(--ink); font-family: var(--font-body); font-size: 13px }
+.dag .n rect { fill: var(--surface); stroke: var(--line) }
+.dag .n.x rect { fill: var(--accent-soft); stroke: var(--accent) }
+.dag .n.y rect { fill: var(--signal-soft); stroke: var(--signal) }
+.dag .e { stroke: var(--muted); stroke-width: 1.4; fill: none }
+
+@media (max-width: 860px) {
+  .shell { grid-template-columns: minmax(0, 1fr) }
+  .side { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--line); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+  .menu-btn { display: inline-block }
+  .side .navwrap { display: none } .side.open .navwrap { display: block }
+  .sidehead { display: flex; justify-content: space-between; align-items: center; gap: 10px }
+  .brand { margin-bottom: 0 }
+  .arc { grid-template-columns: minmax(0, 1fr) } .arc a { border-right: 0; border-bottom: 1px solid var(--line) }
+}
+@media (prefers-reduced-motion: no-preference) { .view { animation: fade .18s ease-out } @keyframes fade { from { opacity: .4 } to { opacity: 1 } } }
+</style>
+
+<div class="shell">
+  <aside class="side" id="side">
+    <div class="sidehead">
+      <a class="brand" href="#home"><b>流行病學方法論</b><span>EMS 與災難數據版 · 115-2</span></a>
+      <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="side">週次</button>
+    </div>
+    <div class="navwrap">
+      <nav class="navtop" id="navtop"></nav>
+      <nav id="nav"></nav>
+    </div>
+  </aside>
+  <main>
+    <div class="wrap">
+      <div class="statusbar"><span class="pill" id="rpill"><span class="dot"></span><span id="rstat">R 未啟動（按「執行」時載入）</span></span></div>
+      <div id="view" class="view"></div>
+    </div>
+  </main>
+</div>
+
+<script src="weeks.js"></script>
+<script src="outputs.js"></script>
+<script>
+(function () {
+  const C = window.COURSE, D = window.DATASETS, CODE = window.WEEK_CODE || {};
+  const pad = n => String(n).padStart(2, "0");
+  const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const qs = new URLSearchParams(location.search);
+  // R 引擎（webR 0.6.0）預設從網站自己的 webr/ 資料夾載入；加 ?webr=cdn 改用 jsDelivr
+  const WEBR_BASE = qs.get("webr") === "cdn" ? "https://cdn.jsdelivr.net/npm/webr@0.6.0/dist/" : new URL("./webr/", location.href).href;
+
+  // ---------- navigation ----------
+  const navtop = document.getElementById("navtop"), nav = document.getElementById("nav");
+  navtop.innerHTML = [["home", "課程首頁"], ["data", "資料與變項說明"], ["reports", "年報與 Utstein 報告"], ["setup", "怎麼跑 R"]]
+    .map(([h, t]) => `<a href="#${h}" data-h="${h}">${t}</a>`).join("");
+  nav.innerHTML = C.phases.map(p => `<div class="phase"><h4>${p.name} · ${p.range}</h4>` +
+    C.weeks.filter(w => w.phase === p.id).map(w =>
+      `<a class="wk" href="#w${pad(w.n)}" data-h="w${pad(w.n)}"><span class="no">W${pad(w.n)}</span><span class="t">${esc(w.title)}</span></a>`).join("") + "</div>").join("");
+  const side = document.getElementById("side"), menuBtn = document.getElementById("menuBtn");
+  menuBtn.addEventListener("click", () => { const o = side.classList.toggle("open"); menuBtn.setAttribute("aria-expanded", o) });
+
+  // ---------- views ----------
+  const view = document.getElementById("view");
+  function route() {
+    const h = (location.hash || "#home").slice(1);
+    document.querySelectorAll("[data-h]").forEach(a => a.classList.toggle("on", a.dataset.h === h));
+    side.classList.remove("open"); menuBtn.setAttribute("aria-expanded", "false");
+    if (/^w\d\d$/.test(h)) renderWeek(+h.slice(1));
+    else if (h === "data") renderData();
+    else if (h === "reports") renderReports();
+    else if (h === "setup") renderSetup();
+    else renderHome();
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener("hashchange", route);
+
+  function renderHome() {
+    const next = C.weeks[0];
+    view.innerHTML = `
+      <div class="home-hero">
+        <div class="eyebrow">健康科技學院碩士班 · 選修 · 115 學年度第 2 學期</div>
+        <h1>流行病學方法論<br>EMS 與災難數據版</h1>
+        <p class="lede">同一套流行病學方法，換成救護出勤、OHCA 登錄、創傷登錄與災後調查的數據來練習。每週先讀一份真實年報，再用虛構城市「北濱市」的模擬資料，親手算出同一個指標。</p>
+        <p class="note">${esc(C.meta)}</p>
+      </div>
+      <div class="arc">${C.phases.map(p => {
+        const first = C.weeks.find(w => w.phase === p.id);
+        return `<a href="#w${pad(first.n)}"><span class="r">${p.range}</span><b>${p.name}</b><span class="d">${esc(p.desc)}</span></a>`}).join("")}</div>
+      <h2 class="sec">18 週進度</h2>
+      <div class="tbl"><table>
+        <thead><tr><th>週</th><th>日期</th><th>單元</th><th>年報對照</th></tr></thead>
+        <tbody>${C.weeks.map(w => `<tr><td class="num"><a href="#w${pad(w.n)}">W${pad(w.n)}</a></td><td class="num">${w.date}</td>
+          <td>${esc(w.title)}</td><td>${w.report ? esc(w.report.name) : "—"}</td></tr>`).join("")}</tbody></table></div>
+      <p class="note">日期依 2027/2/25 開課推算，以學校公告校曆為準。所有資料皆為教學用模擬資料，不代表任何真實個人、機構或地區。</p>`;
+  }
+
+  function weekLink(n) { return `<a href="#w${pad(n)}">W${pad(n)}</a>` }
+
+  function renderData() {
+    view.innerHTML = `<div class="eyebrow">DATA · 北濱市（虛構）</div><h1 class="wtitle">資料與變項說明</h1>
+      <p class="lede">15 份 CSV，由同一支 R 程式 <code>sim_data.R</code>（固定亂數種子）產生；全班拿到的資料完全相同。</p>
+      <div class="tbl"><table><thead><tr><th>檔案</th><th>內容</th><th>筆數</th><th>週次</th></tr></thead><tbody>
+      ${D.map(d => `<tr id="ds-${d.file}"><td><a class="chip" href="data/${d.file}" download>${d.file}</a></td>
+        <td><b>${esc(d.name)}</b><br><span class="note">${esc(d.desc)}</span>
+        <details><summary>欄位說明</summary><dl class="cols">${Object.entries(d.cols).map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")}</dl></details></td>
+        <td class="num">${d.rows.toLocaleString()}</td><td class="num">${d.weeks.map(weekLink).join(" ")}</td></tr>`).join("")}
+      </tbody></table></div>
+      <p class="note">在 claude.ai 預覽中下載連結可能無作用；請從課程的 GitHub 網站或教學平台下載整包資料。</p>`;
+  }
+
+  function renderReports() {
+    const seen = new Map();
+    C.weeks.forEach(w => [w.report, w.extraReport].filter(Boolean).forEach(r => {
+      if (!seen.has(r.url)) seen.set(r.url, { name: r.name.split("：")[0], url: r.url, weeks: [] });
+      if (!seen.get(r.url).weeks.includes(w.n)) seen.get(r.url).weeks.push(w.n);
+    }));
+    view.innerHTML = `<div class="eyebrow">REPORTS</div><h1 class="wtitle">年報與 Utstein 報告</h1>
+      <p class="lede">每週的「年報對照」都從這些報告出題：先在真實報告裡找到指標，再用模擬資料重算一次。</p>
+      <div class="tbl"><table><thead><tr><th>報告</th><th>週次</th></tr></thead><tbody>
+      ${[...seen.values()].map(r => `<tr><td><a href="${r.url}" target="_blank" rel="noopener">${esc(r.name)}</a></td><td class="num">${r.weeks.map(weekLink).join(" ")}</td></tr>`).join("")}
+      </tbody></table></div>
+      <p class="note">台灣目前沒有全國統一的 OHCA 與創傷登錄年報；這個缺口本身就是第 2 週與第 18 週的討論題。</p>`;
+  }
+
+  function renderSetup() {
+    view.innerHTML = `<div class="eyebrow">SETUP</div><h1 class="wtitle">怎麼跑 R</h1>
+      <p class="lede">三種方式擇一，程式碼完全相同。</p>
+      <div class="grid2">
+        <div class="box"><h3>1 · 直接在網頁執行</h3>每個程式區塊都可以修改後按「執行」。第一次會下載約 20 MB 的 R 引擎（webR），之後同一頁不必重載。部分環境（例如 claude.ai 預覽）會封鎖引擎，這時請看「參考輸出」或改用下面兩種方式。</div>
+        <div class="box"><h3>2 · 自己電腦的 RStudio</h3>安裝 R 與 RStudio，下載整包課程資料，把工作目錄設在含 <code>data/</code> 的資料夾，再開啟 <code>R/weeks/w01.R</code> 逐段執行。</div>
+        <div class="box"><h3>3 · Posit Cloud</h3>免安裝的雲端 RStudio。新增專案後上傳 <code>data/</code> 與 <code>R/</code> 兩個資料夾即可。</div>
+      </div>
+      <h2 class="sec">只用 base R</h2>
+      <p class="note">所有範例只用 R 內建函式，第 7、13 週的 Cox 與條件式羅吉斯迴歸另需 <code>survival</code> 套件（RStudio 內建；網頁版會嘗試自動安裝）。圖的標籤使用英文，避免中文字型在不同電腦顯示成方塊。</p>`;
+  }
+
+  function haddonTable() {
+    const rows = ["事前（Pre-event）", "事中（Event）", "事後（Post-event）"], cols = ["宿主（人）", "媒介／載具", "物理環境", "社會環境"];
+    return `<h2 class="sec">課堂實作：Haddon 矩陣</h2><p class="note">以「夜間機車自撞」為例，每格寫一個可介入的因子，並標出屬於初段、次段或末段預防。</p>
+      <div class="tbl"><table class="matrix"><thead><tr><th></th>${cols.map(c => `<th>${c}</th>`).join("")}</tr></thead><tbody>
+      ${rows.map((r, i) => `<tr><th>${r}</th>${cols.map((c, j) => `<td>${i === 0 && j === 0 ? "酒後駕駛、疲勞" : i === 1 && j === 1 ? "安全帽品質" : i === 2 && j === 3 ? "旁觀者止血與報案" : ""}</td>`).join("")}</tr>`).join("")}
+      </tbody></table></div>`;
+  }
+
+  function dagSvg() {
+    const N = [["rural", "鄉村區", 40, 30, ""], ["age", "年齡", 260, 30, ""], ["resp", "反應時間", 40, 150, "x"], ["cpr", "旁觀者 CPR", 260, 100, ""],
+               ["rhythm", "初始心律", 260, 200, ""], ["surv", "存活出院", 480, 150, "y"]];
+    const pos = Object.fromEntries(N.map(n => [n[0], [n[2] + 55, n[3] + 18]]));
+    const E = [["rural", "resp"], ["rural", "cpr"], ["rural", "age"], ["age", "surv"], ["cpr", "surv"], ["resp", "rhythm"], ["rhythm", "surv"], ["resp", "surv"], ["cpr", "rhythm"]];
+    const line = ([a, b]) => { const [x1, y1] = pos[a], [x2, y2] = pos[b]; const dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy);
+      const s = 34 / L, t = (L - 40) / L; return `<line class="e" x1="${x1 + dx * s}" y1="${y1 + dy * s}" x2="${x1 + dx * t}" y2="${y1 + dy * t}" marker-end="url(#ah)"/>` };
+    return `<h2 class="sec">本週 DAG</h2><div class="tbl" style="padding:10px"><svg class="dag" viewBox="0 0 600 250" role="img" aria-label="反應時間與存活的有向無環圖">
+      <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" style="color:var(--muted)"/></marker></defs>
+      ${E.map(line).join("")}
+      ${N.map(n => `<g class="n ${n[4]}"><rect x="${n[2]}" y="${n[3]}" width="110" height="36" rx="8"/><text x="${n[2] + 55}" y="${n[3] + 23}" text-anchor="middle">${n[1]}</text></g>`).join("")}
+      </svg></div><p class="note">要估反應時間的「總效應」：調整鄉村區（打斷後門路徑），不調整初始心律（中介）。程式中的三個模型就是這三種選擇。</p>`;
+  }
+
+  function checklistTable() {
+    const rows = [["OHCA 登錄研究", "Utstein 2024", "流程圖、Utstein 比較組、核心時間點"], ["觀察性研究（世代、病例對照、橫斷）", "STROBE", "研究對象選取、偏誤處理、遺漏值"],
+      ["例行收集資料（登錄、健保、救護紀錄）", "RECORD", "資料連結與代碼定義"], ["診斷／檢傷工具準確度", "STARD", "參考標準、2×2 表、不確定結果"], ["隨機試驗", "CONSORT", "CONSORT 流程圖、ITT、主要結果"]];
+    return `<h2 class="sec">報告指引對照</h2><div class="tbl"><table><thead><tr><th>文章類型</th><th>指引</th><th>導讀時至少檢查</th></tr></thead><tbody>
+      ${rows.map(r => `<tr><td>${r[0]}</td><td><b>${r[1]}</b></td><td>${r[2]}</td></tr>`).join("")}</tbody></table></div>
+      <p class="note">指引全文見 <a href="https://www.equator-network.org/" target="_blank" rel="noopener">EQUATOR Network</a>。導讀當日繳交 PDF。</p>`;
+  }
+
+  function renderWeek(n) {
+    const w = C.weeks.find(x => x.n === n); if (!w) return renderHome();
+    const chunks = CODE["w" + pad(n)] || [];
+    const phase = C.phases.find(p => p.id === w.phase);
+    const prev = C.weeks.find(x => x.n === n - 1), next = C.weeks.find(x => x.n === n + 1);
+    view.innerHTML = `
+      <div class="eyebrow">W${pad(n)} · ${w.date} · ${phase.name}${w.exam ? " · 考試" : ""}${w.flexible ? " · 彈性教學" : ""}</div>
+      <h1 class="wtitle">${esc(w.title)}</h1>
+      <p class="lede">${esc(w.lede)}</p>
+      <div class="grid2">
+        <div class="box"><h3>學習目標</h3><ul>${w.goals.map(g => `<li>${esc(g)}</li>`).join("")}</ul>
+          ${w.flexible ? `<p class="note" style="margin:8px 0 0">形式：${esc(w.flexible)}</p>` : ""}</div>
+        ${w.report ? `<div class="box report"><h3>年報對照</h3><a href="${w.report.url}" target="_blank" rel="noopener">${esc(w.report.name)}</a>
+          <p class="q">${esc(w.report.task)}</p>${w.extraReport ? `<p class="q note">延伸：<a href="${w.extraReport.url}" target="_blank" rel="noopener">${esc(w.extraReport.name)}</a></p>` : ""}</div>` : ""}
+      </div>
+      ${w.data.length ? `<div class="box" style="margin-bottom:28px"><h3>本週資料</h3><div class="chips">${w.data.map(f => `<a class="chip" href="#data">${f}</a>`).join("")}</div></div>` : ""}
+      ${w.haddon ? haddonTable() : ""}${w.dag ? dagSvg() : ""}${w.checklist ? checklistTable() : ""}
+      ${chunks.length ? `<h2 class="sec">R 範例</h2><div class="chunks">${chunks.map((c, i) => chunkHtml(n, c, i)).join("")}</div>` : ""}
+      <div class="bar" style="margin-top:36px;justify-content:space-between">
+        ${prev ? `<a href="#w${pad(prev.n)}">← W${pad(prev.n)} ${esc(prev.title)}</a>` : "<span></span>"}
+        ${next ? `<a href="#w${pad(next.n)}">W${pad(next.n)} ${esc(next.title)} →</a>` : ""}
+      </div>`;
+    view.querySelectorAll("textarea").forEach(autosize);
+    view.querySelectorAll("[data-act]").forEach(b => b.addEventListener("click", onAct));
+  }
+
+  function chunkHtml(n, c, i) {
+    const id = `w${pad(n)}-${i}`;
+    return `<section class="chunk" id="${id}">
+      <h2><span class="k">${pad(i + 1)}</span>${esc(c.title)}</h2>
+      ${c.text ? `<p class="ex">${esc(c.text)}</p>` : ""}
+      <div class="editor"><textarea id="code-${id}" spellcheck="false" aria-label="R 程式碼：${esc(c.title)}">${esc(c.code)}</textarea></div>
+      <div class="bar">
+        <button class="run" data-act="run" data-w="${n}" data-i="${i}">執行</button>
+        <button data-act="copy" data-id="${id}">複製程式</button>
+        <button data-act="reset" data-w="${n}" data-i="${i}">還原</button>
+      </div>
+      <div class="out">
+        <div class="live" id="live-${id}" hidden></div>
+        ${c.output || c.plot ? `<div class="lab">參考輸出</div>` : ""}
+        ${c.output ? `<pre class="res">${esc(c.output)}</pre>` : ""}
+        ${c.plot ? `<div class="fig"><img src="${c.plot}" alt="${esc(c.title)} 的圖" loading="lazy"></div>` : ""}
+      </div>
+    </section>`;
+  }
+  function autosize(t) { t.style.height = "auto"; t.style.height = (t.scrollHeight + 4) + "px"; t.addEventListener("input", () => { t.style.height = "auto"; t.style.height = (t.scrollHeight + 4) + "px" }) }
+
+  async function onAct(e) {
+    const b = e.currentTarget, act = b.dataset.act;
+    if (act === "copy") {
+      const t = document.getElementById("code-" + b.dataset.id);
+      try { await navigator.clipboard.writeText(t.value); b.textContent = "已複製" } catch { t.select(); b.textContent = "已選取，請按 Ctrl+C" }
+      setTimeout(() => b.textContent = "複製程式", 1600);
+    } else if (act === "reset") {
+      const id = `w${pad(+b.dataset.w)}-${b.dataset.i}`, t = document.getElementById("code-" + id);
+      t.value = CODE["w" + pad(+b.dataset.w)][+b.dataset.i].code; autosize(t);
+    } else if (act === "run") runChunk(+b.dataset.w, +b.dataset.i, b);
+  }
+
+  // ---------- webR ----------
+  let webR = null, starting = null; const loadedFiles = new Set(); const ranUpTo = {};
+  const pill = document.getElementById("rpill"), rstat = document.getElementById("rstat");
+  function setStat(cls, txt) { pill.className = "pill " + cls; rstat.textContent = txt }
+  async function ensureR() {
+    if (webR) return webR;
+    if (!starting) starting = (async () => {
+      setStat("loading", "正在載入 R 引擎（約 20 MB）…");
+      const mod = await import(WEBR_BASE + "webr.js");
+      const w = new mod.WebR({ baseUrl: WEBR_BASE, interactive: false });
+      await w.init();
+      await w.FS.mkdir("/home/web_user/data").catch(() => {});
+      webR = w; setStat("ready", "R 已就緒"); return w;
+    })().catch(err => { starting = null; setStat("fail", "此環境無法載入 R，請看參考輸出"); throw err });
+    return starting;
+  }
+  async function ensureFiles(code) {
+    const files = [...new Set([...code.matchAll(/data\/([\w.-]+\.csv)/g)].map(m => m[1]))];
+    for (const f of files) {
+      if (loadedFiles.has(f)) continue;
+      const r = await fetch("data/" + f); if (!r.ok) throw new Error("讀不到資料檔 " + f);
+      await webR.FS.writeFile("/home/web_user/data/" + f, new Uint8Array(await r.arrayBuffer()));
+      loadedFiles.add(f);
+    }
+  }
+  async function ensurePkgs(code) {
+    if (/library\(survival\)|clogit|coxph|survdiff/.test(code)) {
+      const has = await webR.evalRBoolean('requireNamespace("survival", quietly = TRUE)');
+      if (!has) { setStat("loading", "正在安裝 survival 套件…"); await webR.installPackages(["survival"], { quiet: true }); setStat("ready", "R 已就緒") }
+    }
+  }
+  async function exec(code, target) {
+    await ensureFiles(code); await ensurePkgs(code);
+    const shelter = await new webR.Shelter();
+    try {
+      const cap = await shelter.captureR(code, { withAutoprint: true, captureStreams: true, captureConditions: false,
+        captureGraphics: { width: 720, height: 450 } });
+      const text = cap.output.filter(o => o.type === "stdout" || o.type === "stderr").map(o => o.data).join("\n");
+      let html = `<div class="lab">你的輸出</div>`;
+      if (text.trim()) html += `<pre class="res">${esc(text)}</pre>`;
+      target.innerHTML = html;
+      cap.images.forEach(img => { const fig = document.createElement("div"); fig.className = "fig"; const cv = document.createElement("canvas");
+        cv.width = img.width; cv.height = img.height; cv.getContext("2d").drawImage(img, 0, 0); fig.appendChild(cv); target.appendChild(fig) });
+      if (!text.trim() && !cap.images.length) target.innerHTML += `<pre class="res">（執行完成，沒有輸出）</pre>`;
+    } finally { await shelter.purge() }
+  }
+  async function runChunk(n, i, btn) {
+    const key = "w" + pad(n), live = document.getElementById(`live-${key}-${i}`);
+    live.hidden = false; btn.disabled = true; btn.textContent = "執行中…";
+    try {
+      await ensureR();
+      const start = (ranUpTo[key] ?? -1) + 1;
+      for (let j = start; j < i; j++) {   // 先補跑前面尚未執行的區塊
+        const t = document.getElementById(`code-${key}-${j}`).value;
+        const lj = document.getElementById(`live-${key}-${j}`); lj.hidden = false; await exec(t, lj); ranUpTo[key] = j;
+      }
+      await exec(document.getElementById(`code-${key}-${i}`).value, live);
+      ranUpTo[key] = Math.max(ranUpTo[key] ?? -1, i);
+    } catch (err) {
+      live.innerHTML = `<div class="lab">你的輸出</div><pre class="res err">${esc(err && err.message ? err.message : String(err))}</pre>`;
+    } finally { btn.disabled = false; btn.textContent = "執行" }
+  }
+
+  route();
+})();
+</script>
+</body></html>

@@ -1,5 +1,13 @@
 [
   {
+    "id": "epi-ems",
+    "title_zh": "流行病學方法論（EMS 與災難數據版）",
+    "title_en": "Epidemiology Methods: EMS & Disaster Data",
+    "desc_zh": "國立臺北護理健康大學 健康科技學院碩士班。以救護出勤、OHCA 與創傷登錄、災後調查的模擬資料練習流行病學方法，每週對照 Utstein 報告與救護年報，R 範例可直接在網頁上執行。",
+    "desc_en": "Graduate course at NTUNHS College of Health Technology. Teaches epidemiological methods with simulated EMS, OHCA, trauma-registry and disaster data, benchmarked against Utstein and ambulance annual reports, with R examples that run in the browser.",
+    "url": "https://drjackchang.org/epi-ems/"
+  },
+  {
     "id": "advstat",
     "title_zh": "進階應用統計學",
     "title_en": "Advanced Applied Statistics",
@@ -31,4 +39,4 @@
     "desc_en": "NTUNHS graduate seminar exploring how AI, GIS, wearables, and digital collaboration platforms empower disaster response, with a weekly open-access SCI paper and short guided reading.",
     "url": "https://drjackchang.github.io/Restech/"
   }
-  ]
+]
