@@ -1,21 +1,10 @@
-# 流行病學方法論（EMS／災難數據版）課程網站
+# 流行病學方法論（EMS 與災難數據版）課程網站
 
-## 部署到 GitHub Pages
-1. 在 GitHub 建立新 repo（例如 `epi-ems`），把本資料夾所有內容（含 `webr/`、`.nojekyll`）上傳到 main 分支根目錄。
-2. Settings → Pages → Source 選 `Deploy from a branch`，Branch 選 `main` / `(root)`。
-3. 網址為 `https://<帳號>.github.io/epi-ems/`。
-
-## 資料夾
 - `index.html`：網站本體
-- `weeks.js`：每週文字、年報連結、資料說明（改這個檔就能改網站內容）
-- `data/`：15 份模擬資料 CSV（由 `R/sim_data.R` 以固定種子產生）
-- `R/weeks/wNN.R`：每週範例程式；`R/build_outputs.R`：重新執行範例並產生 `outputs.js` 與 `img/`
-- `webr/`：瀏覽器內執行 R 的引擎（webR 0.6.0），讓學生免安裝即可跑程式
+- `weeks.js`：每週文字、年報連結、動手改一改、資料說明
+- `indicators.js`：指標辭典（定義、公式、為什麼用、怎麼解讀、常見錯誤、北濱市範例）
+- `outputs.js`、`img/`：每週 R 範例與參考輸出（由 `R/build_outputs.R` 產生）
+- `data/`：15 份模擬資料 CSV
+- `epi-ems-rstudio.zip`：學生下載的 R 專案（epi-ems.Rproj、data/、R/weeks/）
 
-## 修改範例後重建
-在 repo 根目錄執行：
-
-```
-Rscript R/sim_data.R        # 重新產生資料（通常不需要）
-Rscript R/build_outputs.R   # 重新產生參考輸出與圖
-```
+修改 R 範例後，在開發資料夾執行 `Rscript R/build_outputs.R` 與 `./build_gh.sh`，再把 gh/ 的內容覆蓋到這裡。
