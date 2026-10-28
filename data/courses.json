@@ -1,5 +1,13 @@
 [
   {
+    "id": "ecg",
+    "title_zh": "到院前救護必備：心電圖概念與應用",
+    "title_en": "Prehospital ECG: Concepts and Interpretation",
+    "desc_zh": "從離子通道、動作電位到傳導系統，理解每個波形從哪裡來；再用六步驟系統化判讀竇性、心房、交界與心室心律。內含互動動畫、引導式判讀練習（可無限產生模擬心律條）與快問快答。",
+    "desc_en": "From ion channels and action potentials to the conduction system, learn where every ECG wave comes from, then interpret sinus, atrial, junctional and ventricular rhythms with a six-step method. Includes interactive animations, guided practice on unlimited simulated strips, and a quick quiz.",
+    "url": "https://drjackchang.org/ecg/"
+  },
+  {
     "id": "epi-ems",
     "title_zh": "流行病學方法論（EMS 與災難數據版）",
     "title_en": "Epidemiology Methods: EMS & Disaster Data",

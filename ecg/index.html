@@ -1,0 +1,1237 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="到院前救護心電圖課程互動網站：離子與動作電位、傳導與波形、六步驟判讀練習">
+<title>心電圖概念與應用</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>
+/* Layout: ECG paper is the hero of every view. Sticky tab bar; one 1120px column; tools sit in two-column grids that stack to one column on phones. */
+:root{
+  --bg:#f2f4f7; --surface:#ffffff; --surface-2:#eaeef2; --ink:#142029; --muted:#55636f; --line:#d6dde4;
+  --accent:#c81d3a; --accent-ink:#ffffff; --accent-soft:#fbe4e8;
+  --paper:#fffafa; --grid-mi:#f3ccd2; --grid-ma:#e0959f; --trace:#16191e; --trace-dim:#c3b2b6;
+  --na:#dc8a22; --k:#2c6fbd; --ca:#1f8f64; --if:#a8551c; --pump:#7a5cc0;
+  --dep:#f2bf45; --rep:#ec8494; --chamber:#e6ebf0; --cs:#97a4b1; --hl:#ffd3da;
+  --ok:#1b7a51; --ok-soft:#ddf2e7; --bad:#b0202b; --bad-soft:#fbe1e3;
+  --f-body:'Noto Sans TC','PingFang TC','Microsoft JhengHei',system-ui,sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,'SFMono-Regular',Menlo,monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0d1317; --surface:#141c22; --surface-2:#1a242b; --ink:#e2e9ee; --muted:#93a2af; --line:#283540;
+  --accent:#ff5d75; --accent-ink:#1c0a0e; --accent-soft:#3b1821;
+  --paper:#0a1115; --grid-mi:#142629; --grid-ma:#22434a; --trace:#5fe5b7; --trace-dim:#2a5248;
+  --na:#f0a641; --k:#62a0e6; --ca:#44c58f; --if:#e08a4d; --pump:#a68cf0;
+  --dep:#c7952b; --rep:#c25262; --chamber:#22303a; --cs:#53646f; --hl:#4b2431;
+  --ok:#53d39c; --ok-soft:#11301f; --bad:#ff7c87; --bad-soft:#3a161b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d1317; --surface:#141c22; --surface-2:#1a242b; --ink:#e2e9ee; --muted:#93a2af; --line:#283540;
+  --accent:#ff5d75; --accent-ink:#1c0a0e; --accent-soft:#3b1821;
+  --paper:#0a1115; --grid-mi:#142629; --grid-ma:#22434a; --trace:#5fe5b7; --trace-dim:#2a5248;
+  --na:#f0a641; --k:#62a0e6; --ca:#44c58f; --if:#e08a4d; --pump:#a68cf0;
+  --dep:#c7952b; --rep:#c25262; --chamber:#22303a; --cs:#53646f; --hl:#4b2431;
+  --ok:#53d39c; --ok-soft:#11301f; --bad:#ff7c87; --bad-soft:#3a161b; color-scheme:dark}
+
+html{font-size:16px}
+html.big{font-size:19px}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:1rem;line-height:1.7;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+h1,h2,h3{line-height:1.25;text-wrap:balance;margin:0}
+h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:900;letter-spacing:-.01em}
+h2{font-size:1.7rem;font-weight:900}
+h3{font-size:1.12rem;font-weight:700}
+p{margin:0}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.eyebrow{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+a{color:var(--accent)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.top-in{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;align-items:center;gap:16px}
+.brand{font-weight:900;white-space:nowrap;display:flex;align-items:center;gap:8px;padding-block:10px}
+.brand svg{width:34px;height:18px}
+.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}
+.tabs::-webkit-scrollbar{display:none}
+.tabs a{white-space:nowrap;text-decoration:none;color:var(--muted);padding:14px 12px;border-bottom:3px solid transparent;font-weight:500;font-size:.95rem}
+.tabs a .n{font-family:var(--f-mono);font-size:.75rem;margin-right:5px;opacity:.7}
+.tabs a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
+.iconbtn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:5px 10px;cursor:pointer;font-size:.85rem;white-space:nowrap}
+
+main{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+section.view{display:flex;flex-direction:column;gap:22px}
+.lede{max-width:44em;color:var(--muted);font-size:1.05rem}
+.head{display:flex;flex-direction:column;gap:8px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.grid2{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:18px;align-items:start}
+.grid2 > *{min-width:0}
+@media (max-width:860px){.grid2{grid-template-columns:1fr}}
+
+/* paper strips */
+.paper{background:var(--paper);border:1px solid var(--grid-ma);border-radius:6px;overflow:hidden;position:relative}
+.paper canvas{display:block;width:100%}
+.stripbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 13px;cursor:pointer;font-size:.92rem;font-weight:500}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;flex-wrap:wrap}
+.seg button{border:0;background:var(--surface);padding:7px 12px;cursor:pointer;font-size:.9rem;border-right:1px solid var(--line)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
+select.sel{font:inherit;font-size:.92rem;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);max-width:100%}
+.readout{font-family:var(--f-mono);font-size:.88rem;color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
+.monitor{position:relative}
+.monitor .hr{position:absolute;right:12px;top:8px;font-family:var(--f-mono);font-weight:600;color:var(--accent);font-size:1.4rem;line-height:1}
+.monitor .hr small{display:block;font-size:.65rem;color:var(--muted);letter-spacing:.08em}
+.flow{display:grid;gap:0;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--surface)}
+.flow a{display:grid;grid-template-columns:7.5em minmax(0,1fr) auto;gap:14px;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line);text-decoration:none;color:var(--ink)}
+.flow a:last-child{border-bottom:0}
+.flow a:hover{background:var(--surface-2)}
+.flow .time{font-family:var(--f-mono);font-size:.9rem;color:var(--accent);font-variant-numeric:tabular-nums}
+.flow .go{color:var(--muted);font-size:.85rem;white-space:nowrap}
+@media (max-width:560px){.flow a{grid-template-columns:1fr}.flow .go{display:none}}
+.takeaway{display:flex;flex-wrap:wrap;gap:8px}
+.takeaway span{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 12px;font-size:.92rem}
+.takeaway b{font-family:var(--f-mono);color:var(--accent);margin-right:6px}
+
+/* ion */
+.memwrap{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.memwrap canvas{display:block;width:100%}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:.86rem;color:var(--muted);padding:10px 14px;border-top:1px solid var(--line)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.phasebadge{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-weight:600;font-size:.85rem;background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:2px 9px}
+dl.facts{display:grid;grid-template-columns:6.5em minmax(0,1fr);gap:8px 12px;margin:12px 0 0}
+dl.facts dt{color:var(--muted);font-size:.9rem}
+dl.facts dd{margin:0}
+.mv{font-family:var(--f-mono);font-size:2rem;font-weight:600;font-variant-numeric:tabular-nums;line-height:1}
+.note{background:var(--surface-2);border-radius:8px;padding:12px 14px;font-size:.93rem}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+
+/* heart svg */
+.heart{width:100%;height:auto;max-width:360px;display:block;margin:0 auto}
+.heart .ch{fill:var(--chamber);stroke:var(--line);stroke-width:1.5;transition:fill .25s}
+.heart .ch.dep{fill:var(--dep)}
+.heart .ch.rep{fill:var(--rep)}
+.heart .ch.hl{fill:var(--hl)}
+.heart .cs{fill:none;stroke:var(--cs);stroke-width:3;stroke-linecap:round;transition:stroke .2s}
+.heart .cs.on{stroke:var(--accent);stroke-width:4.5}
+.heart .node{fill:var(--cs);stroke:var(--surface);stroke-width:2}
+.heart .node.on{fill:var(--accent)}
+.heart .ecto{fill:none;stroke:var(--accent);stroke-width:3;stroke-dasharray:3 3}
+.heart .fib{stroke:var(--muted);stroke-width:2;stroke-dasharray:2 4}
+.heart .axis{stroke:var(--muted);stroke-width:1.2;stroke-dasharray:5 5;opacity:.6}
+.heart text{font-family:var(--f-mono);font-size:11px;fill:var(--muted)}
+.heart text.ch-l{font-size:12px;font-weight:600;fill:var(--ink);opacity:.55}
+.heart text.sign{font-size:16px;font-weight:600;fill:var(--ink)}
+.heart .vec{stroke:var(--ink);stroke-width:3.5;fill:none}
+.heart .vec.rep{stroke:var(--ca);stroke-dasharray:6 4}
+.heart .ah{fill:var(--ink)}
+.heart .ah.rep{fill:var(--ca)}
+.phasechips{display:flex;flex-wrap:wrap;gap:6px}
+.phasechips button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:3px 11px;cursor:pointer;font-size:.86rem}
+.phasechips button.cur{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+
+/* method */
+table.t{border-collapse:collapse;width:100%;font-size:.95rem}
+table.t th,table.t td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+table.t th{font-size:.82rem;color:var(--muted);font-weight:500}
+table.t tr.row{cursor:pointer}
+table.t tr.row:hover td,table.t tr.row.sel td{background:var(--surface-2)}
+table.t td.num{font-family:var(--f-mono);font-weight:600;color:var(--accent)}
+.tscroll{overflow-x:auto}
+.ladder{display:grid;gap:6px}
+.ladder div{display:flex;justify-content:space-between;gap:10px;border-left:4px solid var(--accent);background:var(--surface-2);padding:6px 12px;border-radius:0 6px 6px 0}
+.ladder div:nth-child(2){border-color:var(--na)}
+.ladder div:nth-child(3){border-color:var(--k)}
+.tools3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:760px){.tools3{grid-template-columns:1fr}}
+.tree{display:grid;gap:10px}
+.tree .q{font-weight:700}
+.tree .br{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.tree .leaf{border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--surface);font-size:.92rem}
+.tree .leaf b{display:block;color:var(--accent)}
+
+/* practice */
+.steps{display:flex;flex-direction:column;gap:10px}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.step.locked{opacity:.5}
+.step .sh{display:flex;gap:12px;align-items:baseline;padding:12px 16px}
+.step .sn{font-family:var(--f-mono);font-weight:600;color:var(--accent);font-size:1.1rem;min-width:1.4em}
+.step .st{font-weight:700}
+.step .sa{color:var(--muted);font-size:.9rem}
+.step .stat{margin-left:auto;font-family:var(--f-mono);font-size:.8rem;color:var(--muted);white-space:nowrap}
+.step.done .stat{color:var(--ok)}
+.step .sb{padding:0 16px 16px;display:flex;flex-direction:column;gap:14px}
+.step .hint{font-size:.92rem;color:var(--muted);border-left:3px solid var(--line);padding-left:10px}
+.qblock{display:flex;flex-direction:column;gap:8px}
+.qp{font-weight:500}
+.opts{display:flex;flex-wrap:wrap;gap:6px}
+.opt{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 12px;cursor:pointer;font-size:.93rem;text-align:left}
+.opt:hover:not([disabled]){border-color:var(--ink)}
+.opt[disabled]{cursor:default}
+.opt.right{background:var(--ok-soft);border-color:var(--ok);color:var(--ok);font-weight:700}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad);color:var(--bad);text-decoration:line-through}
+.fb{border-radius:8px;padding:10px 12px;font-size:.94rem}
+.fb.ok{background:var(--ok-soft)}
+.fb.no{background:var(--bad-soft)}
+.fb strong{display:block;margin-bottom:2px}
+.fb.ok strong{color:var(--ok)}
+.fb.no strong{color:var(--bad)}
+.rec{width:100%;border-collapse:collapse;font-size:.9rem}
+.rec td{padding:6px 4px;border-bottom:1px solid var(--line);vertical-align:top}
+.rec td:first-child{color:var(--muted);white-space:nowrap;width:5.5em}
+.rec .y{color:var(--ok)}
+.rec .x{color:var(--bad)}
+.rcard{border:2px solid var(--accent);border-radius:var(--r);padding:16px;background:var(--surface);display:flex;flex-direction:column;gap:12px}
+.rcard .nm{font-size:1.4rem;font-weight:900}
+.rcard .en{font-family:var(--f-mono);color:var(--muted);font-size:.85rem}
+.side{display:flex;flex-direction:column;gap:14px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 64px)}
+@media (max-width:860px){.side{position:static}}
+.sidecap{font-size:.88rem;color:var(--muted);text-align:center}
+
+/* quiz */
+.qopts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:560px){.qopts{grid-template-columns:1fr}}
+.qopts .opt{padding:12px 14px;font-size:1rem}
+.score{font-family:var(--f-mono);font-size:1rem}
+.foot{color:var(--muted);font-size:.85rem;border-top:1px solid var(--line);padding-top:16px;margin-top:20px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand"><svg viewBox="0 0 34 18" aria-hidden="true"><path d="M0 11h9l2-3 2 3h3l2-10 3 15 2-5h11" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" style="color:var(--accent)"/></svg><span>心電圖</span></div>
+    <nav class="tabs" aria-label="課程章節">
+      <a href="#map"><span class="n">00</span>課程地圖</a>
+      <a href="#ion"><span class="n">01</span>離子與動作電位</a>
+      <a href="#conduction"><span class="n">02</span>傳導與波形</a>
+      <a href="#method"><span class="n">03</span>六步驟</a>
+      <a href="#practice"><span class="n">04</span>判讀練習</a>
+      <a href="#quiz"><span class="n">05</span>快問快答</a>
+    </nav>
+    <button class="iconbtn" id="bigBtn" aria-pressed="false" title="放大字級，適合投影">投影字級</button>
+  </div>
+</header>
+
+<main>
+<!-- ============ 00 MAP ============ -->
+<section class="view" id="v-map" data-view="map">
+  <div class="hero">
+    <div class="head">
+      <span class="eyebrow">到院前救護必備 · 張育通</span>
+      <h1>心電圖概念與應用</h1>
+      <p class="lede">不背圖形，用原理推導。每一個波都是電流走到心臟某一段的紀錄；每一個判讀步驟，都在檢查傳導系統的其中一段。</p>
+    </div>
+    <div class="paper monitor"><canvas id="heroCv" aria-label="模擬 Lead II 心電圖監視畫面"></canvas><div class="hr" id="heroHr"><small>HR</small>—</div></div>
+  </div>
+  <div class="head"><h2>這堂課怎麼走（90 分鐘）</h2></div>
+  <div class="flow">
+    <a href="#quiz"><span class="time">00–10</span><span><b>開場：先猜一條</b><br><span class="muted">快問快答抽一題，先讓大家卡住，課尾再回來解。</span></span><span class="go">開啟 →</span></a>
+    <a href="#ion"><span class="time">10–25</span><span><b>離子與動作電位</b><br><span class="muted">Na⁺、Ca²⁺、K⁺ 何時進出；第 0–4 期對應心電圖哪一段；ARP 與 RRP。</span></span><span class="go">開啟 →</span></a>
+    <a href="#conduction"><span class="time">25–40</span><span><b>傳導系統與波形</b><br><span class="muted">電流走到哪，哪個波就出現；起點一換，波形怎麼變。</span></span><span class="go">開啟 →</span></a>
+    <a href="#method"><span class="time">40–50</span><span><b>六步驟＝六個生理問題</b><br><span class="muted">學生要帶走的工具：每一步檢查傳導系統的一段。</span></span><span class="go">開啟 →</span></a>
+    <a href="#practice"><span class="time">50–80</span><span><b>判讀練習</b><br><span class="muted">老師示範 NSR → 全班判讀竇性變化 → 學生自己判讀心房、交界、心室心律。</span></span><span class="go">開啟 →</span></a>
+    <a href="#quiz"><span class="time">80–90</span><span><b>快問快答與致命心律</b><br><span class="muted">VF、VT、Asystole 的辨識與第一步處置；回頭解開場那一題。</span></span><span class="go">開啟 →</span></a>
+  </div>
+  <div class="head"><h3>學生帶走的六個問題</h3></div>
+  <div class="takeaway">
+    <span><b>1</b>誰在當 pacemaker？</span>
+    <span><b>2</b>主導權穩定嗎？</span>
+    <span><b>3</b>心房從 SA node 開始？有傳下去嗎？</span>
+    <span><b>4</b>AV node 延遲正常嗎？</span>
+    <span><b>5</b>心室走正常路徑嗎？</span>
+    <span><b>6</b>起點在哪？哪段出錯？</span>
+  </div>
+</section>
+
+<!-- ============ 01 ION ============ -->
+<section class="view" id="v-ion" data-view="ion" hidden>
+  <div class="head">
+    <span class="eyebrow">單元 2 · 心臟電生理</span>
+    <h2>離子與動作電位</h2>
+    <p class="lede">心電圖量到的，是成千上萬個細胞同時進出離子所累積的電流。先看單一細胞：哪個通道打開，電位就往哪裡走。</p>
+  </div>
+  <div class="controls">
+    <div class="seg" id="ionType" role="group" aria-label="細胞種類">
+      <button aria-pressed="true" data-v="myo">心室肌細胞</button>
+      <button aria-pressed="false" data-v="pm">SA node pacemaker 細胞</button>
+    </div>
+    <button class="btn" id="ionPlay" aria-pressed="true">暫停</button>
+    <div class="seg" id="ionSpeed" role="group" aria-label="播放速度">
+      <button aria-pressed="false" data-v="0.125">⅛×</button>
+      <button aria-pressed="true" data-v="0.25">¼×</button>
+      <button aria-pressed="false" data-v="0.5">½×</button>
+    </div>
+  </div>
+  <div class="memwrap">
+    <canvas id="memCv" aria-label="細胞膜離子通道動畫"></canvas>
+    <div class="legend"><span><i style="background:var(--na)"></i>Na⁺ 鈉</span><span><i style="background:var(--k)"></i>K⁺ 鉀</span><span><i style="background:var(--ca)"></i>Ca²⁺ 鈣</span><span>通道發亮＝打開；箭頭方向＝離子流向</span></div>
+  </div>
+  <div class="grid2">
+    <div class="card" style="padding:12px">
+      <canvas id="apCv" style="width:100%;display:block" aria-label="動作電位曲線"></canvas>
+    </div>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap">
+        <span class="phasebadge" id="ionBadge">第 4 期</span>
+        <span class="mv" id="ionMv">−90 mV</span>
+      </div>
+      <h3 id="ionTitle" style="margin-top:10px">靜止膜電位</h3>
+      <dl class="facts">
+        <dt>離子流動</dt><dd id="ionIons"></dd>
+        <dt>細胞狀態</dt><dd id="ionState"></dd>
+        <dt>對應心電圖</dt><dd id="ionEcg"></dd>
+      </dl>
+      <div style="margin-top:14px" class="phasechips" id="ionPhases" aria-label="跳到某一期"></div>
+    </div>
+  </div>
+  <div class="card" id="autoCard" hidden>
+    <div class="controls" style="justify-content:space-between">
+      <h3>自主神經：油門與剎車</h3>
+      <div class="seg" id="ionAuto" role="group" aria-label="自主神經狀態">
+        <button aria-pressed="false" data-v="pns">副交感（迷走）</button>
+        <button aria-pressed="true" data-v="norm">平衡</button>
+        <button aria-pressed="false" data-v="sns">交感</button>
+      </div>
+    </div>
+    <p style="margin-top:10px" id="autoTxt"></p>
+  </div>
+  <div class="note"><b>為什麼要懂這個？</b> 心律不整的「規則」就藏在這裡：第 4 期的斜率決定誰當 pacemaker（自發性）；相對不反應期（RRP）是異常電流最容易插隊的時間點；β-blocker 與鈣離子阻斷劑，就是在調整這些通道。</div>
+</section>
+
+<!-- ============ 02 CONDUCTION ============ -->
+<section class="view" id="v-conduction" data-view="conduction" hidden>
+  <div class="head">
+    <span class="eyebrow">單元 1、3 · 傳導系統與心電圖波形</span>
+    <h2>電流走到哪，哪個波就出現</h2>
+    <p class="lede">Lead II 的負極在右上（RA）、正極在左下（LL）。去極化朝正極前進畫成向上的波，遠離正極畫成向下的波；再極化則相反。換一個起點，看波形怎麼變。</p>
+  </div>
+  <div class="controls">
+    <div class="seg" id="cdOrigin" role="group" aria-label="去極化起點">
+      <button aria-pressed="true" data-v="sa">SA node（正常）</button>
+      <button aria-pressed="false" data-v="la">心房下方</button>
+      <button aria-pressed="false" data-v="jx">AV junction</button>
+      <button aria-pressed="false" data-v="vx">心室</button>
+    </div>
+    <button class="btn" id="cdPlay" aria-pressed="true">暫停</button>
+    <div class="seg" id="cdSpeed" role="group" aria-label="播放速度">
+      <button aria-pressed="false" data-v="0.1">慢</button>
+      <button aria-pressed="true" data-v="0.2">中</button>
+      <button aria-pressed="false" data-v="0.5">快</button>
+    </div>
+  </div>
+  <div class="grid2">
+    <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
+      <div class="paper"><canvas id="cdCv" aria-label="單一心跳的心電圖"></canvas></div>
+      <div class="phasechips" id="cdChips"></div>
+      <div class="card">
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span class="phasebadge" id="cdBadge">P 波</span><span class="muted" id="cdAp"></span></div>
+        <p id="cdText" style="margin-top:8px"></p>
+      </div>
+    </div>
+    <div class="card">
+      <div id="cdHeart"></div>
+      <p class="sidecap">黃＝去極化　紅＝再極化　黑箭頭＝去極化向量　綠虛線＝再極化方向</p>
+    </div>
+  </div>
+  <div class="note"><b>關鍵的那一條線：</b>房室之間有一層纖維絕緣層，AV node 是電流唯一的通道。所以 PR interval 量的是「AV node 的延遲」，而 QRS 的寬窄告訴你「心室有沒有走 His–Purkinje 快速通道」。</div>
+</section>
+
+<!-- ============ 03 METHOD ============ -->
+<section class="view" id="v-method" data-view="method" hidden>
+  <div class="head">
+    <span class="eyebrow">單元 4 · 心電圖的判讀</span>
+    <h2>六步驟，其實是六個生理問題</h2>
+    <p class="lede">每一步都在檢查傳導系統的一段。點選表格的任一列，右邊會標出這一步檢查的位置。</p>
+  </div>
+  <div class="grid2">
+    <div class="card tscroll" style="padding:6px 6px">
+      <table class="t" id="mtTable">
+        <thead><tr><th>步驟</th><th>看什麼</th><th>其實在問</th><th>正常</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="side">
+      <div class="card"><div id="mtHeart"></div><p class="sidecap" id="mtCap">點選左側步驟</p></div>
+      <div class="card">
+        <h3>Pacemaker 的固有速率</h3>
+        <div class="ladder" style="margin-top:10px">
+          <div><span>SA node</span><span class="mono">60–100</span></div>
+          <div><span>AV junction</span><span class="mono">40–60</span></div>
+          <div><span>心室（Purkinje）</span><span class="mono">20–40</span></div>
+        </div>
+        <p class="muted" style="font-size:.88rem;margin-top:8px">上層失職，下層就以自己的速率接手（逸搏）。所以速率本身就是起點的線索。</p>
+      </div>
+    </div>
+  </div>
+  <div class="head"><h3>量尺與工具</h3></div>
+  <div class="tools3">
+    <div class="card"><h3>心電圖紙</h3><p style="margin-top:6px">1 小格 = <span class="mono">0.04 秒</span>、<span class="mono">0.1 mV</span><br>1 大格 = <span class="mono">0.20 秒</span><br>5 大格 = <span class="mono">1 秒</span>（走紙 25 mm/s）</p></div>
+    <div class="card"><h3>算心率</h3><p style="margin-top:6px"><b>六秒法</b>：6 秒內 QRS 數 × 10，所有心律都適用。<br><b>300 / 1500 法</b>：300 ÷ RR 大格數，或 1500 ÷ RR 小格數，只適用規則心律。</p></div>
+    <div class="card"><h3>看規律性</h3><p style="margin-top:6px">卡尺（或白紙）量一個 RR，拿去比對其他 RR。差距超過 2 小格（0.08 秒）就算不規則。</p></div>
+  </div>
+  <div class="card">
+    <h3>起點決策樹：步驟 6 的捷徑</h3>
+    <div class="tree" style="margin-top:12px">
+      <div class="q">QRS 是寬還是窄？</div>
+      <div class="br">
+        <div class="leaf"><b>寬（≥ 0.12 秒）＋前面沒有 P</b>起點在心室：PVC、VT、VF、AIVR</div>
+        <div class="leaf"><b>窄（&lt; 0.12 秒）</b>起點在心室以上，接著看 P 波 ↓</div>
+      </div>
+      <div class="q">QRS 窄時，P 波長什麼樣？</div>
+      <div class="br">
+        <div class="leaf"><b>正常、1:1、PR 正常</b>SA node：用速率和規律性命名</div>
+        <div class="leaf"><b>P′ 形狀不同、F 波、f 波</b>心房：PAC、Atrial flutter、AF</div>
+        <div class="leaf"><b>P′ 倒置／在後面／看不到，PR 短</b>AV junction：PJC、逸搏、頻脈、SVT</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>判讀紀錄卡（與講義「判斷條件」表同一套欄位）</h3>
+    <div class="tscroll" style="margin-top:8px">
+      <table class="t">
+        <thead><tr><th>欄位</th><th>步驟</th><th>要寫下的</th></tr></thead>
+        <tbody>
+          <tr><td>速率</td><td class="num">1</td><td>心室率（QRS）；能數的話也寫心房率（P 或 F）</td></tr>
+          <tr><td>規律性（PP、RR）</td><td class="num">2</td><td>規則／週期性／提早／停頓／完全不規則</td></tr>
+          <tr><td>P wave</td><td class="num">3</td><td>形狀、方向、位置</td></tr>
+          <tr><td>P:QRS 比例</td><td class="num">3</td><td>1:1？P 多？QRS 多？</td></tr>
+          <tr><td>PR interval</td><td class="num">4</td><td>秒數、是否固定</td></tr>
+          <tr><td>QRS complex</td><td class="num">5</td><td>秒數、寬或窄</td></tr>
+          <tr><td>去極化起點 → 判讀</td><td class="num">6</td><td>SA／心房／AV junction／心室 → 心律名稱</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 PRACTICE ============ -->
+<section class="view" id="v-practice" data-view="practice" hidden>
+  <div class="head">
+    <span class="eyebrow">單元 5–8 · 引導式判讀</span>
+    <h2 id="prTitle">這是什麼心律？</h2>
+    <p class="lede">每一條都是程式產生的模擬 Lead II（6 秒，25 mm/s）。用卡尺量，照六步驟作答，每一步都會告訴你「為什麼」。</p>
+  </div>
+  <div class="stripbar">
+    <select class="sel" id="prSel" aria-label="選擇心律"></select>
+    <button class="btn primary" id="prNew">換一條</button>
+    <button class="btn" id="prCal" aria-pressed="false">卡尺</button>
+    <button class="btn" id="prSec" aria-pressed="true">秒數</button>
+    <button class="btn" id="prMk" aria-pressed="false">標出 P / R</button>
+  </div>
+  <div class="paper"><canvas id="prCv" aria-label="練習用心律條"></canvas></div>
+  <div class="readout" id="prRead">開啟「卡尺」，在心律條上點兩下，量出兩點之間的時間。</div>
+  <div class="grid2">
+    <div class="steps" id="prSteps"></div>
+    <div class="side">
+      <div class="card"><div id="prHeart"></div><p class="sidecap" id="prCap">這一步檢查的位置</p></div>
+      <div class="card"><h3>判讀紀錄</h3><table class="rec" id="prRec" style="margin-top:8px"></table></div>
+    </div>
+  </div>
+  <div id="prResult"></div>
+</section>
+
+<!-- ============ 05 QUIZ ============ -->
+<section class="view" id="v-quiz" data-view="quiz" hidden>
+  <div class="head">
+    <span class="eyebrow">快問快答</span>
+    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap">
+      <h2 id="qzH">第 1 題</h2>
+      <span class="score" id="qzScore">0 / 0</span>
+    </div>
+    <p class="lede">看完 6 秒，選出心律。答完會看到判讀關鍵；卡住的話，送到「判讀練習」一步一步拆。</p>
+  </div>
+  <div class="paper"><canvas id="qzCv" aria-label="快問快答心律條"></canvas></div>
+  <div class="qopts" id="qzOpts"></div>
+  <div id="qzFb"></div>
+  <div class="controls">
+    <button class="btn primary" id="qzNext" hidden>下一題</button>
+    <button class="btn" id="qzToPr" hidden>用六步驟拆解這一條</button>
+    <button class="btn" id="qzRestart">重新開始</button>
+  </div>
+</section>
+
+<p class="foot"><a href="/">← 張育通 drjackchang.org</a>　·　內容依張育通《到院前救護必備：心電圖概念與應用》講義改編。心律條為程式產生的模擬波形，用於教學，非真實病人資料。藥物與電擊處置請依所屬單位的救護協議。</p>
+</main>
+
+<script id="engine">
+/* ================= ECG ENGINE (pure) ================= */
+const FS = 500, DUR = 6;
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function G(t,m,s,a){const d=t-m;return a*Math.exp(-d*d/(2*s*s));}
+function clamp(x,a,b){return Math.max(a,Math.min(b,x));}
+function kv(v){return Array.isArray(v)?v:[v];}
+
+function addP(s,c,type){
+  if(type==='n') s.pw.push({c,a:.14,s:.019,t:'n'});
+  else if(type==='inv') s.pw.push({c,a:-.11,s:.018,t:'inv'});
+  else if(type==='bi') s.pw.push({c,a:.1,s:.013,t:'bi'});
+}
+function addQRS(s,tq,rr,wide,ect){
+  const qt=clamp(.4*Math.sqrt(rr),.28,.45);
+  const jitter=((Math.abs(tq)*7.31)%1)*.05;
+  if(wide) s.beats.push({tq,wide:true,amp:1.1+jitter,tc:tq+qt+.03,ts:.06,ta:-.34,ect:!!ect});
+  else s.beats.push({tq,wide:false,amp:1.08+jitter,tc:tq+qt-.085,ts:.042,ta:.27,ect:!!ect});
+}
+function sinusBeat(s,tq,rr,pr){addP(s,tq-(pr||.16)+.045,'n');addQRS(s,tq,rr,false);}
+function jit(rng){return 1+(rng()-.5)*.016;}
+
+function sinusRun(s,rng,lo,hi,mod){
+  const rate=lo+rng()*(hi-lo), rr=60/rate; let t=-rng()*rr;
+  while(t<DUR+.6){const r=rr*(mod?mod(t):1)*jit(rng); sinusBeat(s,t,r); t+=r;}
+  s.meta.rate=rate;
+}
+
+const RH = {
+nsr:{zh:'正常竇性心律',en:'Normal Sinus Rhythm (NSR)',fam:'o_sa',
+  k:{reg:'g_reg',p:'p_normal',pr:'pr_normal',qrs:'q_narrow',pq:'pq_same'},
+  gen(s,r){sinusRun(s,r,66,92);},
+  tbl:['60–100','規律','正常，向上圓滑','0.12–0.20 秒','規律且相等','1:1','< 0.12 秒','SA node'],
+  why:'所有條件都正常、速率 60–100。它是之後所有判讀的比較基準。',
+  ems:'摸得到脈搏才算數。心電圖正常卻摸不到脈搏＝PEA（無脈性電氣活動），立即依心跳停止流程。'},
+brady:{zh:'竇性緩脈',en:'Sinus Bradycardia',fam:'o_sa',
+  k:{reg:'g_reg',p:'p_normal',pr:'pr_normal',qrs:'q_narrow',pq:'pq_same'},
+  gen(s,r){sinusRun(s,r,38,50);},
+  tbl:['< 60','規律','正常，向上圓滑','0.12–0.20 秒','規律且相等','1:1','< 0.12 秒','SA node'],
+  why:'和 NSR 只差在速率 < 60：SA node 本身放慢了。',
+  ems:'找原因：迷走刺激、β-blocker 或鈣離子阻斷劑、毛地黃、心肌梗塞、低體溫、缺氧。看有沒有灌流不足（低血壓、意識改變、胸痛、休克）；有症狀才依緩脈流程處置。運動員的緩脈可能是正常的。'},
+tach:{zh:'竇性頻脈',en:'Sinus Tachycardia',fam:'o_sa',
+  k:{reg:'g_reg',p:'p_normal',pr:'pr_normal',qrs:'q_narrow',pq:'pq_same'},
+  gen(s,r){sinusRun(s,r,114,148);},
+  tbl:['> 100','規律','正常（太快時可能疊在 T 波上）','0.12–0.20 秒','規律且相等','1:1','< 0.12 秒','SA node'],
+  why:'和 NSR 只差在速率 > 100：SA node 被交感神經加速。速率太快時，P 波可能疊在前一個 T 波上。',
+  ems:'多半是身體的代償：疼痛、發燒、焦慮、失血或脫水、缺氧、休克早期。處理原因，而不是去壓心率。心跳快會增加心肌耗氧。'},
+sa_arr:{zh:'竇性心律不整',en:'Sinus Arrhythmia',fam:'o_sa',
+  k:{reg:'g_cyc',p:'p_normal',pr:'pr_normal',qrs:'q_narrow',pq:'pq_same'},
+  gen(s,r){const ph=r()*6.28;sinusRun(s,r,66,80,t=>1+.2*Math.sin(2*Math.PI*t/4.2+ph));},
+  tbl:['60–100','隨呼吸週期性變化','正常，向上圓滑','0.12–0.20 秒','隨呼吸規律地變長變短','1:1','< 0.12 秒','SA node'],
+  why:'P、PR、QRS 都正常，只有 RR 隨呼吸週期性變化：吸氣時迷走張力下降、心率變快；吐氣時迷走張力回升、心率變慢。',
+  ems:'常見於年輕人與孩童，是生理現象，通常不需處置。'},
+arrest:{zh:'竇性停止',en:'Sinus Arrest',fam:'o_sa',
+  k:{reg:'g_pause',p:'p_normal',pr:'pr_normal',qrs:'q_narrow',pq:'pq_same'},
+  gen(s,r){const rate=68+r()*14,rr=60/rate;let t=-r()*rr*.6,done=false;const at=1.5+r()*1.4;
+    while(t<DUR+.6){sinusBeat(s,t,rr);let nx=rr*jit(r);if(!done&&t>at){nx=rr*(2.35+r()*.3);done=true;}t+=nx;} s.meta.rate=rate;},
+  tbl:['依基本心律','基本規律，停頓時不規律','正常，向上圓滑','0.12–0.20 秒','停頓長度與 PP 不成倍數（成倍數則為 SA exit block）','1:1','< 0.12 秒','SA node'],
+  why:'基本是竇性心律，但 SA node 暫時沒有發出電流，出現一段停頓；停頓長度不是 PP 的整數倍。',
+  ems:'停頓越長越容易暈厥。原因：迷走張力增加、缺氧、高血鉀、藥物。評估灌流，處置同症狀性緩脈；停頓過久可能走向 Asystole。'},
+pac:{zh:'早期心房收縮',en:'Premature Atrial Complex (PAC)',fam:'o_atria',
+  k:{reg:'g_early',p:'p_mixed',pr:'pr_normal',qrs:'q_narrow',pq:'pq_same'},
+  gen(s,r){const rate=68+r()*16,rr=60/rate;let t=-r()*rr*.6;const w=[1.3+r()*1.2,4.1+r()*.8];let i=0;
+    while(t<DUR+.6){sinusBeat(s,t,rr);if(i<w.length&&t>w[i]){const tp=t+rr*(.6+r()*.08);addP(s,tp-.15+.045,'bi');addQRS(s,tp,rr,false,true);t=tp+rr;i++;}else t+=rr*jit(r);} s.meta.rate=rate;},
+  tbl:['依基本心律','PAC 出現時不規律','PAC 的 P′ 形狀與其他 P 不同','正常，有時 < 0.12 秒','PAC 之後常有非代償性間歇','1:1','< 0.12 秒','SA node 以外的心房'],
+  why:'提早出現、P′ 形狀不同、QRS 窄：心房其他位置的細胞搶先發電，之後仍走正常路徑下傳。',
+  ems:'健康人也會有，通常沒有症狀（交感興奮、咖啡因、壓力、缺氧）。頻繁出現可能誘發 AF、Atrial flutter 或 SVT。',
+  ovr:{pm:'提早出現的那一下，P′ 形狀和其他 P 不同：起點在心房的其他位置，電流在心房走的路線不一樣，所以 P 波長相改變。'}},
+afl:{zh:'心房撲動',en:'Atrial Flutter',fam:'o_atria',
+  k:{reg:'g_reg',p:'p_flutter',pr:'pr_na',qrs:'q_narrow',pq:'pq_pmore'},
+  gen(s,r){s.base='flutter';const ar=285+r()*30;s.fcyc=60/ar;s.f0=r()*s.fcyc;const ratio=r()<.5?2:4;s.variant=ratio+':1';s.atrialRate=ar;const rr=s.fcyc*ratio;
+    for(let k=-ratio;;k+=ratio){const tq=s.f0+k*s.fcyc+.24;if(tq>DUR+.6)break;addQRS(s,tq,rr,false);} },
+  tbl:['心房 240–360；心室約為一半或更少','通常規則','鋸齒狀 F 波','無法測量','沒有 P-P；R-R 相等','2:1、3:1、4:1（少見 1:1）','< 0.12 秒','心房內的快速回圈（re-entry）'],
+  why:'鋸齒狀 F 波約 300 次/分，AV node 只放行一部分，形成固定比例下傳。',
+  ems:'心室率剛好約 150 的規則窄 QRS 頻脈，要想到 2:1 心房撲動。心房沒有有效收縮，心輸出量可降約 25%；評估穩定度，並注意血栓、中風風險。',
+  ovr:{pq:'F 波數量是 QRS 的 2 倍或 4 倍：心房以約 300 次/分繞圈，AV node 還在不反應期，只能每 2 或 4 個放行 1 個。這就是 AV node 的保護作用。'}},
+af:{zh:'心房纖維顫動',en:'Atrial Fibrillation (AF)',fam:'o_atria',
+  k:{reg:'g_irreg',p:'p_fib',pr:'pr_na',qrs:'q_narrow',pq:'pq_na'},
+  gen(s,r){s.base='af';let t=-r()*.5;while(t<DUR+.6){const rr=.38+r()*.44;addQRS(s,t,rr,false);t+=rr;} },
+  tbl:['心房 350–600；心室未控制 > 100、已控制 < 100','完全不規則','纖維顫動 f 波','無法觀察','P-P 無法觀察；R-R 不相等','不固定','< 0.12 秒','心房各處的異常 pacemaker 細胞'],
+  why:'看不到 P 波、只有細碎的 f 波，而且 RR 完全不規則（irregularly irregular）。',
+  ems:'詢問病史與抗凝血藥物；血液在心房滯留易形成血栓，注意中風徵象。心室率太快會降低心輸出，評估穩定度。',
+  ovr:{pq:'心房以 350–600 次/分亂發，數不出 P，只有 f 波；AV node 隨機放行，所以 P:QRS 沒有固定關係。'}},
+pjc:{zh:'早期交界收縮',en:'Premature Junctional Complex (PJC)',fam:'o_junction',
+  k:{reg:'g_early',p:'p_mixed',pr:['pr_normal','pr_short'],qrs:'q_narrow',pq:'pq_same'},
+  gen(s,r){const rate=68+r()*14,rr=60/rate;s.variant=r()<.6?'after':'none';let t=-r()*rr*.6;const w=[1.4+r()*1.2,4.2+r()*.7];let i=0;
+    while(t<DUR+.6){sinusBeat(s,t,rr);if(i<w.length&&t>w[i]){const tp=t+rr*(.7+r()*.06);addQRS(s,tp,rr,false,true);if(s.variant==='after')addP(s,tp+.115,'inv');t+=2*rr;i++;}else t+=rr*jit(r);} s.meta.rate=rate;},
+  tbl:['依基本心律','PJC 出現時不規律','P′ 倒置，可能在 QRS 前、被蓋住或在後','P′R < 0.12 秒','常出現代償性間歇','1:1（P′ 被蓋住時看不到）','< 0.12 秒','AV junction'],
+  why:'提早出現、QRS 窄，但 P′ 倒置、在後面或看不到：AV junction 搶先發電，同時往上逆傳心房、往下傳心室。',
+  ems:'偶發通常沒有症狀；頻繁出現要想到毛地黃、缺氧、心衰竭、冠心病，可能誘發交界性心律不整。',
+  ovr:{pm:'提早的那一下，P′ 倒置跑到 QRS 後面（或乾脆看不到）：電流從 AV junction 發出，往上逆行傳回心房，方向遠離 Lead II 正極。',pr:'基本心律的 PR 正常；提早那一下的 P′ 在 QRS 之後（或看不到），沒有正常的 PR。兩個答案都算對。'}},
+jesc:{zh:'交界逸搏心律',en:'Junctional Escape Rhythm',fam:'o_junction',
+  k:{reg:'g_reg',p:'p_inv',pr:'pr_short',qrs:'q_narrow',pq:'pq_same'},
+  gen(s,r){const rate=40+r()*9,rr=60/rate;s.variant=r()<.5?'before':'after';let t=-r()*rr*.6;
+    while(t<DUR+.6){const rx=rr*jit(r);addQRS(s,t,rx,false);addP(s,s.variant==='before'?t-.085+.04:t+.12,'inv');t+=rx;} s.meta.rate=rate;},
+  tbl:['40–60','規則','P′ 倒置，在 QRS 前、被蓋住或在後','P′R < 0.12 秒','R-R 相等','1:1','< 0.12 秒','AV junction'],
+  why:'速率 40–60、QRS 窄、P′ 倒置或在後面：SA node 沒能按時把電流送下來，AV junction 依自己的固有速率接手。',
+  ems:'這是保護性的「備援」心律，不要去抑制它。臨床表現像竇性緩脈，依症狀性緩脈處置，並找 SA node 失職的原因。ROSC 後也可能看到。'},
+jtach:{zh:'交界性頻脈',en:'Junctional Tachycardia',fam:'o_junction',
+  k:{reg:'g_reg',p:'p_inv',pr:'pr_short',qrs:'q_narrow',pq:'pq_same'},
+  gen(s,r){const rate=114+r()*18,rr=60/rate;s.variant=r()<.5?'before':'after';let t=-r()*rr*.6;
+    while(t<DUR+.6){const rx=rr*jit(r);addQRS(s,t,rx,false);addP(s,s.variant==='before'?t-.085+.04:t+.11,'inv');t+=rx;} s.meta.rate=rate;},
+  tbl:['> 100（60–100 為加速性交界心律）','規則','P′ 倒置，在 QRS 前、被蓋住或在後','P′R < 0.12 秒','R-R 相等','1:1','< 0.12 秒','AV junction'],
+  why:'P′ 倒置或在後面、QRS 窄，但速率遠超過 AV junction 的固有速率：AV junction 的自發性異常增強。',
+  ems:'想到毛地黃中毒、低血鉀、心肌梗塞傷及 AV junction、使用腎上腺素後（ROSC 後）、缺氧。'},
+svt:{zh:'上心室頻脈',en:'Supraventricular Tachycardia (SVT)',fam:'o_junction',
+  k:{reg:'g_reg',p:'p_none',pr:'pr_na',qrs:'q_narrow',pq:'pq_na'},
+  gen(s,r){const rate=165+r()*50,rr=60/rate;let t=-r()*rr;while(t<DUR+.6){const rx=rr*jit(r);addQRS(s,t,rx,false);t+=rx;} s.meta.rate=rate;},
+  tbl:['150–250','規則','通常看不到','無法測量','R-R 相等','1:1（P 被 QRS 蓋住）','< 0.12 秒','AV junction 內的電流回圈（AVNRT／AVRT）'],
+  why:'150–250 次/分、規則、QRS 窄、看不到 P：AV junction 內形成回圈，每繞一圈就往下送一次，同時往上逆傳的 P 被 QRS 蓋住。',
+  ems:'穩定者先試迷走神經刺激（修正式 Valsalva）；無效再依流程給 adenosine。不穩定（低血壓、意識改變、胸痛、心衰竭）→ 同步電擊。'},
+pvc:{zh:'早期心室收縮',en:'Premature Ventricular Complex (PVC)',fam:'o_ventricle',
+  k:{reg:'g_early',p:'p_mixed',pr:'pr_normal',qrs:'q_mixed',pq:'pq_qmore'},
+  gen(s,r){const rate=66+r()*14,rr=60/rate;const big=r()<.45;s.variant=big?'bigeminy':'single';let t=-r()*rr*.6;const w=[1.3+r()*1.2,4+r()*.8];let i=0;
+    while(t<DUR+.6){sinusBeat(s,t,rr);const fire=big?true:(i<w.length&&t>w[i]);if(fire){addQRS(s,t+rr*(.58+r()*.05),rr,true,true);if(!big)i++;t+=2*rr;}else t+=rr*jit(r);} s.meta.rate=rate;},
+  tbl:['依基本心律','PVC 出現時不規律','基本心律正常；PVC 前沒有 P','基本心律正常','常出現代償性間歇','PVC 沒有 P','PVC > 0.12 秒，T 波與 QRS 反向','心室肌或心室內傳導系統'],
+  why:'提早出現、前面沒有 P、QRS 寬大且 T 波反向：心室細胞搶先發電，只能細胞傳細胞慢慢擴散。',
+  ems:'偶發多無害。要警覺的：頻繁出現、二聯律（bigeminy）、多形性、成對或連發、落在 T 波上（R on T）。尤其是胸痛病人，可能演變成 VT 或 VF。',
+  ovr:{pm:'基本心律的 P 正常，但提早的那一下前面沒有 P：電流不是從心房下來的。',pq:'提早的寬 QRS 前面沒有 P，所以 QRS 比 P 多：這些 QRS 是心室自己發出的。'}},
+vt:{zh:'心室頻脈',en:'Ventricular Tachycardia (VT)',fam:'o_ventricle',
+  k:{reg:'g_reg',p:'p_none',pr:'pr_na',qrs:'q_wide',pq:'pq_na'},
+  gen(s,r){const rate=150+r()*45,rr=60/rate;let t=-r()*rr;while(t<DUR+.6){const rx=rr*jit(r);addQRS(s,t,rx,true);t+=rx;} s.meta.rate=rate;},
+  tbl:['100–250（多在 150–200）','規則','通常看不到','P 與 R 無關聯','R-R 相等','房室分離（AV dissociation）','> 0.12 秒','心室肌或心室內傳導系統'],
+  why:'寬 QRS、規則、速率 > 100、看不到 P：心室取得主導權。',
+  ems:'先摸脈搏。無脈搏 → CPR、去顫，依流程給 adrenaline 與抗心律不整藥物。有脈搏 → 評估穩定度：不穩定 → 同步電擊；穩定 → 依流程給 amiodarone（規則、單形性的寬 QRS 才考慮 adenosine）。先貼好去顫貼片：右鎖骨下方＋左側心尖（左第 5 肋間、腋中線）。'},
+vf:{zh:'心室纖維顫動',en:'Ventricular Fibrillation (VF)',fam:'o_ventricle',
+  k:{reg:['g_na','g_irreg'],p:'p_na',pr:'pr_na',qrs:'q_na',pq:'pq_na'},
+  gen(s,r){s.base='vf';s.vfA=.32+r()*.22;},
+  tbl:['300–500（無法計算）','完全不規則','無法判別','無法判別','無法判別','無法判別','無法判別','心室內多個異常起點'],
+  why:'沒有可辨識的 P、QRS、T，只有混亂的波動：心室各處亂發電，心肌沒有有效收縮。',
+  ems:'沒有脈搏。立即 CPR、儘早去顫，依流程給 adrenaline 與抗心律不整藥物。貼片：右鎖骨下方＋左側心尖（左第 5 肋間、腋中線）。'},
+aivr:{zh:'加速性心室自主心律',en:'Accelerated Idioventricular Rhythm (AIVR)',fam:'o_ventricle',
+  k:{reg:'g_reg',p:'p_none',pr:'pr_na',qrs:'q_wide',pq:'pq_na'},
+  gen(s,r){const rate=52+r()*22,rr=60/rate;let t=-r()*rr;while(t<DUR+.6){const rx=rr*jit(r);addQRS(s,t,rx,true);t+=rx;} s.meta.rate=rate;},
+  tbl:['40–100','規則','通常無法判別','通常無法判別','R-R 相等','房室分離','> 0.12 秒','心室肌或心室內傳導系統'],
+  why:'寬 QRS、規則，但速率只有 40–100：心室以略高於固有速率（20–40）的速度接手。',
+  ems:'常見於心肌梗塞再灌流後或 ROSC 後，多半是暫時、保護性的。不要用抗心律不整藥物壓制它，那可能讓心臟只剩 Asystole。評估灌流；不穩定時依緩脈或心跳停止流程。'},
+asys:{zh:'心臟停止',en:'Asystole',fam:'o_none',
+  k:{reg:'g_na',p:'p_na',pr:'pr_na',qrs:'q_na',pq:'pq_na'},
+  gen(s){s.base='asys';},
+  tbl:['無法判別','無法判別','無法判別','無法判別','無法判別','無法判別','無法判別','電氣活動完全停止'],
+  why:'一條（幾乎）平直的線：從 SA node 到 Purkinje fibers 全部停止發電。',
+  ems:'先確認不是假平線：導線有沒有脫落、增益（gain）、換一個導程看。確認後 CPR＋adrenaline，不電擊；找可逆原因（Hs & Ts）。'}
+};
+const RIDS = Object.keys(RH);
+const FAMS = {o_sa:['nsr','brady','tach','sa_arr','arrest'],o_atria:['pac','afl','af'],o_junction:['pjc','jesc','jtach','svt'],o_ventricle:['pvc','vt','vf','aivr'],o_none:['asys']};
+
+function newStrip(rid,seed){
+  const rng=mulberry32(seed);
+  const s={rid,seed,beats:[],pw:[],base:'flat',ph:[rng()*6.28,rng()*6.28,rng()*6.28,rng()*6.28],variant:null,atrialRate:null,meta:{}};
+  RH[rid].gen(s,rng);
+  return s;
+}
+function baseV(s,t){
+  const p=s.ph;
+  switch(s.base){
+    case 'flutter':{let x=((t-s.f0)/s.fcyc)%1;if(x<0)x+=1;return x<.72?.08-.30*(x/.72):-.22+.30*((x-.72)/.28);}
+    case 'af':return .045*Math.sin(2*Math.PI*6.3*t+p[1])+.035*Math.sin(2*Math.PI*8.4*t+p[2])+.025*Math.sin(2*Math.PI*4.7*t+p[3])+.018*Math.sin(2*Math.PI*11.2*t+p[0]);
+    case 'vf':{const A=s.vfA*(.62+.38*Math.sin(2*Math.PI*.21*t+p[1]));return A*(Math.sin(2*Math.PI*4.8*t+p[2]+.7*Math.sin(2*Math.PI*.9*t))+.35*Math.sin(2*Math.PI*7.1*t+p[3]));}
+    case 'asys':return .02*Math.sin(2*Math.PI*.2*t+p[1]);
+    default:return 0;
+  }
+}
+function qrsV(b,t){
+  let v=0;
+  if(b.wide) v+=G(t,b.tq+.06,.03,b.amp)+G(t,b.tq+.135,.028,-.38*b.amp);
+  else v+=G(t,b.tq+.012,.007,-.09)+G(t,b.tq+.036,.0095,b.amp)+G(t,b.tq+.062,.009,-.24);
+  return v+G(t,b.tc,b.ts,b.ta);
+}
+function sampleStrip(s,dur,noise){
+  dur=dur||DUR; if(noise===undefined) noise=true;
+  const n=Math.round(dur*FS), out=new Float32Array(n), rng=mulberry32((s.seed^0x5bd1e995)>>>0);
+  for(let i=0;i<n;i++){
+    const t=i/FS;
+    let v=baseV(s,t)+(noise?.028*Math.sin(2*Math.PI*.27*t+s.ph[0]):0);
+    for(const b of s.beats){const d=t-b.tq;if(d<-.1||d>1)continue;v+=qrsV(b,t);}
+    for(const p of s.pw){const d=t-p.c;if(d<-.1||d>.12)continue;v+=G(t,p.c,p.s,p.a);if(p.t==='bi')v+=G(t,p.c+.03,.012,-p.a*.55);}
+    if(noise) v+=(rng()-.5)*.016;
+    out[i]=v;
+  }
+  return out;
+}
+function keysFor(s){
+  const R=RH[s.rid];
+  const qc=s.beats.filter(b=>b.tq>=0&&b.tq<DUR).length;
+  let rate;
+  if(s.base==='vf'||s.base==='asys') rate='v_na';
+  else {const r=qc*10; rate=r<60?'v_slow':r>100?'v_fast':'v_normal';}
+  let pq=R.k.pq;
+  if(s.rid==='pjc') pq=s.variant==='none'?'pq_qmore':'pq_same';
+  return {rate:[rate],reg:kv(R.k.reg),pm:kv(R.k.p),pq:kv(pq),pr:kv(R.k.pr),qrs:kv(R.k.qrs),origin:[R.fam],name:[s.rid],qc};
+}
+if(typeof module!=='undefined') module.exports={RH,RIDS,FAMS,newStrip,sampleStrip,keysFor,DUR,FS};
+</script>
+
+<script>
+/* ================= UI ================= */
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+function tok(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function setPressed(group,v){$$('button',group).forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===v)));}
+function fitCanvas(cv,h){const dpr=window.devicePixelRatio||1;const w=cv.clientWidth||cv.parentElement.clientWidth;cv.style.height=h+'px';cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);const c=cv.getContext('2d');c.setTransform(dpr,0,0,dpr,0,0);return {c,w,h};}
+
+/* ---------- paper drawing ---------- */
+function drawPaper(c,w,h,sx,sy,y0,dur){
+  c.fillStyle=tok('--paper');c.fillRect(0,0,w,h);
+  const mi=tok('--grid-mi'),ma=tok('--grid-ma');
+  c.lineWidth=1;
+  const nT=Math.ceil(dur/.04);
+  for(let i=0;i<=nT;i++){const x=Math.round(i*.04*sx)+.5;c.strokeStyle=i%5?mi:ma;c.beginPath();c.moveTo(x,0);c.lineTo(x,h);c.stroke();}
+  const up=Math.ceil(y0/(.1*sy)),dn=Math.ceil((h-y0)/(.1*sy));
+  for(let k=-up;k<=dn;k++){const y=Math.round(y0+k*.1*sy)+.5;c.strokeStyle=k%5?mi:ma;c.beginPath();c.moveTo(0,y);c.lineTo(w,y);c.stroke();}
+}
+function drawTrace(c,smp,sx,sy,y0,from,to,color,width){
+  const i0=Math.max(0,Math.floor(from*FS)),i1=Math.min(smp.length-1,Math.ceil(to*FS));
+  if(i1<=i0)return;
+  c.strokeStyle=color;c.lineWidth=width||1.6;c.lineJoin='round';c.beginPath();
+  for(let i=i0;i<=i1;i++){const x=i/FS*sx,y=y0-smp[i]*sy;i===i0?c.moveTo(x,y):c.lineTo(x,y);}
+  c.stroke();
+}
+/* standard 6-second strip at true paper proportions */
+function stripGeom(cv){const w=cv.clientWidth||cv.parentElement.clientWidth;const sx=w/DUR;const mm=sx/25;const h=Math.round(Math.max(150,mm*36));return {w,h,sx,sy:mm*10,y0:Math.round(h*.62)};}
+function drawStrip(cv,s,smp,o){
+  o=o||{};
+  const g=stripGeom(cv);const {c}=fitCanvas(cv,g.h);
+  drawPaper(c,g.w,g.h,g.sx,g.sy,g.y0,DUR);
+  if(o.cal&&o.cal.a!=null&&o.cal.b!=null){const a=Math.min(o.cal.a,o.cal.b)*g.sx,b=Math.max(o.cal.a,o.cal.b)*g.sx;c.fillStyle=tok('--accent-soft');c.globalAlpha=.55;c.fillRect(a,0,b-a,g.h);c.globalAlpha=1;}
+  drawTrace(c,smp,g.sx,g.sy,g.y0,0,DUR,tok('--trace'),1.7);
+  c.font='600 11px '+tok('--f-mono');
+  if(o.secs){c.fillStyle=tok('--accent');for(let i=0;i<=DUR;i++){const x=i*g.sx;c.fillRect(Math.min(x,g.w-2),0,2,10);c.fillText(String(i),Math.min(x+4,g.w-10),20);}}
+  if(o.marks){
+    c.font='600 12px '+tok('--f-mono');
+    c.fillStyle=tok('--accent');
+    for(const b of s.beats){if(b.tq<0||b.tq>=DUR)continue;const x=(b.tq+(b.wide?.06:.036))*g.sx;c.fillText('R',x-4,g.y0-1.45*g.sy);}
+    c.fillStyle=tok('--k');
+    for(const p of s.pw){if(p.c<0||p.c>=DUR)continue;c.fillText(p.a<0?'P′':'P',p.c*g.sx-4,g.y0-.45*g.sy);}
+    if(s.base==='flutter'){c.fillStyle=tok('--k');for(let t=s.f0;t<DUR;t+=s.fcyc){if(t<0)continue;c.fillText('F',t*g.sx,g.y0+.5*g.sy);}}
+  }
+  if(o.cal){
+    c.strokeStyle=tok('--accent');c.lineWidth=2;
+    for(const t of [o.cal.a,o.cal.b]){if(t==null)continue;const x=Math.round(t*g.sx)+.5;c.beginPath();c.moveTo(x,0);c.lineTo(x,g.h);c.stroke();}
+  }
+  return g;
+}
+
+/* ---------- hero monitor ---------- */
+const HERO={s:null,smp:null,t0:0};
+function heroInit(){HERO.s=newStrip('nsr',20261028);HERO.smp=sampleStrip(HERO.s);const r=Math.round(HERO.s.meta.rate);$('#heroHr').innerHTML='<small>HR</small>'+r;}
+function heroDraw(now){
+  const cv=$('#heroCv');if(!cv.clientWidth)return;
+  const g=stripGeom(cv);const {c}=fitCanvas(cv,g.h);
+  drawPaper(c,g.w,g.h,g.sx,g.sy,g.y0,DUR);
+  if(RM){drawTrace(c,HERO.smp,g.sx,g.sy,g.y0,0,DUR,tok('--trace'),1.8);return;}
+  const th=((now-HERO.t0)/1000)%DUR;
+  drawTrace(c,HERO.smp,g.sx,g.sy,g.y0,0,th,tok('--trace'),1.9);
+  drawTrace(c,HERO.smp,g.sx,g.sy,g.y0,th+.25,DUR,tok('--trace-dim'),1.4);
+  c.fillStyle=tok('--accent');c.beginPath();c.arc(th*g.sx,g.y0-HERO.smp[Math.min(HERO.smp.length-1,Math.floor(th*FS))]*g.sy,3.5,0,7);c.fill();
+}
+
+/* ---------- heart svg ---------- */
+function heartSVG(px){
+  return `<svg class="heart" viewBox="0 0 300 310" role="img" aria-label="心臟傳導系統示意圖">
+  <defs><marker id="${px}-ah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="ah" d="M0 0L10 5L0 10z"/></marker>
+  <marker id="${px}-ahr" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="ah rep" d="M0 0L10 5L0 10z"/></marker></defs>
+  <line class="axis" x1="36" y1="14" x2="214" y2="302"/>
+  <text class="sign" x="22" y="20">−</text><text class="sign" x="218" y="304">+</text><text x="226" y="292">Lead II</text>
+  <path id="${px}-ra" class="ch" d="M72 64Q66 38 98 34L146 34L146 120L84 120Q64 108 72 64Z"/>
+  <path id="${px}-la" class="ch" d="M160 34L222 34Q252 40 248 76Q246 108 232 120L160 120Z"/>
+  <path id="${px}-rv" class="ch" d="M80 130L146 130L146 246Q110 236 94 200Q76 166 80 130Z"/>
+  <path id="${px}-sep" class="ch" d="M146 130L162 130L162 258Q159 266 166 274Q150 262 146 246Z"/>
+  <path id="${px}-lv" class="ch" d="M162 130L240 130Q258 176 240 222Q216 268 166 274Q159 266 162 258Z"/>
+  <line class="fib" x1="74" y1="125" x2="246" y2="125"/>
+  <text class="ch-l" x="96" y="96">RA</text><text class="ch-l" x="200" y="88">LA</text><text class="ch-l" x="100" y="180">RV</text><text class="ch-l" x="200" y="200">LV</text>
+  <path id="${px}-inter" class="cs" d="M96 52Q118 86 147 113"/>
+  <path id="${px}-bach" class="cs" d="M103 44Q150 24 214 54"/>
+  <path id="${px}-his" class="cs" d="M151 120L155 140"/>
+  <path id="${px}-rbb" class="cs" d="M154 140L149 205Q141 228 120 238"/>
+  <path id="${px}-lbb" class="cs" d="M156 140L160 205Q164 248 176 265"/>
+  <path id="${px}-purk" class="cs" d="M120 238Q92 216 84 168M176 265Q222 252 238 205Q248 166 238 137"/>
+  <circle id="${px}-sa" class="node" cx="96" cy="48" r="7.5"/>
+  <circle id="${px}-av" class="node" cx="150" cy="116" r="7"/>
+  <text x="58" y="30">SA</text><text x="120" y="111">AV</text>
+  <circle id="${px}-ecto" class="ecto" cx="-40" cy="-40" r="11"/>
+  <line id="${px}-vec" class="vec" x1="0" y1="0" x2="0" y2="0" visibility="hidden" marker-end="url(#${px}-ah)"/>
+  </svg>`;
+}
+const HPARTS=['ra','la','rv','sep','lv','inter','bach','his','rbb','lbb','purk','sa','av'];
+function heartSet(px,st){
+  st=st||{};
+  const reg=st.reg||{},on=new Set(st.on||[]),hl=new Set(st.hl||[]);
+  for(const k of HPARTS){const el=document.getElementById(px+'-'+k);if(!el)continue;
+    el.classList.toggle('dep',reg[k]==='dep');el.classList.toggle('rep',reg[k]==='rep');el.classList.toggle('hl',hl.has(k));el.classList.toggle('on',on.has(k));}
+  const ec=document.getElementById(px+'-ecto');
+  if(ec){if(st.ecto){ec.setAttribute('cx',st.ecto[0]);ec.setAttribute('cy',st.ecto[1]);}else{ec.setAttribute('cx',-40);ec.setAttribute('cy',-40);}}
+  const v=document.getElementById(px+'-vec');
+  if(v){if(st.vec){const[x1,y1,x2,y2]=st.vec;v.setAttribute('x1',x1);v.setAttribute('y1',y1);v.setAttribute('x2',x2);v.setAttribute('y2',y2);v.setAttribute('visibility','visible');const rp=st.vecType==='rep';v.classList.toggle('rep',rp);v.setAttribute('marker-end',`url(#${px}-${rp?'ahr':'ah'})`);}else v.setAttribute('visibility','hidden');}
+}
+
+/* =============== 01 ION =============== */
+const ION={type:'myo',auto:'norm',t:0,play:!RM,speed:.25,parts:[],bg:null,last:-1};
+const AUTO={norm:{d4:600,vmin:-60},sns:{d4:290,vmin:-60},pns:{d4:900,vmin:-68}};
+const MYO_T=800;
+function ease(x){return x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;}
+function myoV(t){
+  if(t<96)return -90; if(t<100)return -90+20*((t-96)/4); if(t<103)return -70+100*((t-100)/3);
+  if(t<125){const x=(t-103)/22;return 30-28*(1-Math.pow(1-x,2));}
+  if(t<320)return 2-10*((t-125)/195);
+  if(t<430)return -8-82*ease((t-320)/110);
+  return -90;
+}
+function myoPhase(t){if(t<100)return 4;if(t<103)return 0;if(t<125)return 1;if(t<320)return 2;if(t<430)return 3;return 4;}
+function pmCyc(){return AUTO[ION.auto].d4+230;}
+function pmV(t){const a=AUTO[ION.auto];t=t%pmCyc();if(t<a.d4)return a.vmin+(-40-a.vmin)*Math.pow(t/a.d4,1.3);t-=a.d4;if(t<50){const x=t/50;return -40+50*(x*x*(3-2*x));}t-=50;return 10+(a.vmin-10)*ease(Math.min(1,t/180));}
+function pmPhase(t){const a=AUTO[ION.auto];t=t%pmCyc();if(t<a.d4)return 4;if(t<a.d4+50)return 0;return 3;}
+const PM_WIN=2400;
+function ionWin(){return ION.type==='myo'?MYO_T:PM_WIN;}
+function ionV(){return ION.type==='myo'?myoV(ION.t):pmV(ION.t);}
+function ionPh(){return ION.type==='myo'?myoPhase(ION.t):pmPhase(ION.t);}
+/* channel activity: + = into cell, intensity */
+const ACT={
+  myo:{4:{k:.22,pump:1},0:{na:1},1:{k:.55},2:{ca:.7,k:.4},3:{k:1}},
+  pm:{4:{if:.75,ca:.25,k:.12,pump:.7},0:{ca:1},3:{k:1,pump:.5}}
+};
+const TXT={
+  myo:{
+    4:['第 4 期｜靜止膜電位','K⁺ 經滲漏通道緩慢流出，維持細胞內的負電；Na⁺/K⁺ 幫浦持續把 3 個 Na⁺ 送出、2 個 K⁺ 帶回，維持濃度梯度（消耗 ATP）。','極化（polarized）：膜外正、膜內負。心肌舒張，等待下一個電流脈衝。','TP 段（基線）'],
+    0:['第 0 期｜快速去極化','電流脈衝抵達，電位升到臨界電位（約 −70 mV）後，Na⁺ 快速通道打開，大量 Na⁺ 湧入。','去極化：膜內外電性反轉，觸發收縮。進入絕對不反應期（ARP）。','QRS 波群（心室肌）；心房肌的這一期就是 P 波'],
+    1:['第 1 期｜早期再極化','Na⁺ 快速通道關閉；少量 K⁺ 短暫流出，電位從 +30 掉到約 0 mV。','開始再極化，細胞仍在收縮。','QRS 結束（J point）'],
+    2:['第 2 期｜平台期','Ca²⁺ 經 L 型鈣通道流入，同時 K⁺ 持續流出，兩者平衡，電位維持在 0 mV 附近。流入的 Ca²⁺ 觸發肌纖維收縮。','持續收縮，仍在 ARP：新的電流進不來。','ST segment（等電位線）'],
+    3:['第 3 期｜快速再極化','Ca²⁺ 通道關閉，K⁺ 大量流出，電位快速回到 −90 mV。','細胞開始舒張。後段是相對不反應期（RRP）：夠強的異常電流在這時抵達，就能提早引發去極化。','T 波']
+  },
+  pm:{
+    4:['第 4 期｜自動緩慢去極化','If（funny current）讓 Na⁺ 緩慢流入，後段 T 型 Ca²⁺ 通道加入；K⁺ 流出逐漸減少。電位不會停在固定值，而是一路往上爬。','這就是自發性（automaticity）。斜率越陡，越快到臨界電位（約 −40 mV），心率就越快。','決定下一個 P 波何時出現'],
+    0:['第 0 期｜去極化','主要是 Ca²⁺ 經 L 型通道流入，上升速度比心肌細胞的 Na⁺ 慢。','發出電流脈衝，經傳導系統送往心房與 AV node。','P 波的起點（SA node 本身太小，心電圖看不到它）'],
+    3:['第 3 期｜再極化','K⁺ 流出，電位回到最低點後，立刻開始下一次第 4 期。','沒有明顯的第 1、2 期，也沒有穩定的靜止膜電位。','—']
+  }
+};
+const AUTOTXT={
+  norm:'交感與副交感互相牽制。第 4 期斜率中等，SA node 約每分鐘 70 次。',
+  sns:'交感神經（油門）：If 與 Ca²⁺ 電流增強，第 4 期斜率變陡，更快到臨界電位 → 心率加快、傳導加快、收縮力增加。',
+  pns:'副交感神經（剎車，經迷走神經）：K⁺ 外流增加，膜電位更負、第 4 期斜率變緩 → 心率減慢。β-blocker 與鈣離子阻斷劑在藥物層面也讓這段斜率變緩。'
+};
+const JUMP={myo:{4:40,0:101,1:112,2:220,3:385},pm:()=>{const a=AUTO[ION.auto].d4;return {4:a*.45,0:a+20,3:a+130};}};
+
+function ionPhaseChips(){
+  const box=$('#ionPhases');const list=ION.type==='myo'?[4,0,1,2,3]:[4,0,3];
+  box.innerHTML='<span class="muted" style="font-size:.86rem;margin-right:4px">跳到：</span>'+list.map(p=>`<button data-p="${p}">第 ${p} 期</button>`).join('');
+  $$('button',box).forEach(b=>b.onclick=()=>{const j=ION.type==='myo'?JUMP.myo:JUMP.pm();ION.t=j[b.dataset.p];ION.play=false;syncIonPlay();ionDraw(true);});
+}
+function syncIonPlay(){const b=$('#ionPlay');b.textContent=ION.play?'暫停':'播放';b.setAttribute('aria-pressed',String(ION.play));}
+function ionText(force){
+  const ph=ionPh();
+  $('#ionMv').textContent=(ionV()<0?'−':'+')+Math.abs(Math.round(ionV()))+' mV';
+  if(ph===ION.last&&!force)return;ION.last=ph;
+  const T=TXT[ION.type][ph];
+  $('#ionBadge').textContent='第 '+ph+' 期';$('#ionTitle').textContent=T[0].split('｜')[1];
+  $('#ionIons').textContent=T[1];$('#ionState').textContent=T[2];$('#ionEcg').textContent=T[3];
+  $$('#ionPhases button').forEach(b=>b.classList.toggle('cur',+b.dataset.p===ph));
+}
+function memLayout(w){
+  const xs=ION.type==='myo'?{na:.14,ca:.36,k:.58,pump:.82}:{if:.12,ca:.33,k:.54,pump:.78};
+  return xs;
+}
+function makeBg(w,h){
+  const r=mulberry32(4242),bg=[];
+  for(let i=0;i<Math.round(w/14);i++)bg.push({x:r()*w,y:8+r()*70,c:'--na'});
+  for(let i=0;i<Math.round(w/60);i++)bg.push({x:r()*w,y:8+r()*70,c:'--ca'});
+  for(let i=0;i<Math.round(w/16);i++)bg.push({x:r()*w,y:150+r()*(h-180),c:'--k'});
+  return bg;
+}
+function ionDraw(force){
+  const cv=$('#memCv');if(!cv.clientWidth)return;
+  const H=250;const {c,w}=fitCanvas(cv,H);
+  if(!ION.bg||ION.bgw!==w){ION.bg=makeBg(w,H);ION.bgw=w;}
+  const v=ionV(),ph=ionPh(),act=ACT[ION.type][ph]||{};
+  c.fillStyle=tok('--surface');c.fillRect(0,0,w,H);
+  c.fillStyle=tok('--surface-2');c.fillRect(0,140,w,H-140);
+  c.font='500 12px '+tok('--f-body');c.fillStyle=tok('--muted');c.fillText('細胞外',10,18);c.fillText('細胞內',10,H-30);
+  for(const b of ION.bg){c.globalAlpha=.32;c.fillStyle=tok(b.c);c.beginPath();c.arc(b.x,b.y,3.2,0,7);c.fill();}
+  c.globalAlpha=1;
+  // bilayer
+  const mT=96,mB=134;c.fillStyle=tok('--chamber');c.fillRect(0,mT,w,mB-mT);
+  c.fillStyle=tok('--cs');for(let x=4;x<w;x+=9){c.beginPath();c.arc(x,mT+3,3.2,0,7);c.fill();c.beginPath();c.arc(x,mB-3,3.2,0,7);c.fill();}
+  // charges
+  const flip=v>-15;c.font='600 13px '+tok('--f-mono');
+  for(let x=24;x<w;x+=30){c.fillStyle=flip?tok('--k'):tok('--accent');c.fillText(flip?'−':'+',x,mT-6);c.fillStyle=flip?tok('--accent'):tok('--k');c.fillText(flip?'+':'−',x,mB+16);}
+  // channels
+  const xs=memLayout(w);
+  const lab={na:['Na⁺ 快速通道','--na'],ca:[ION.type==='myo'?'Ca²⁺ 通道（L 型）':'Ca²⁺ 通道','--ca'],k:['K⁺ 通道','--k'],pump:['Na⁺/K⁺ 幫浦','--pump'],if:['If 通道（Na⁺）','--if']};
+  for(const key in xs){
+    const x=xs[key]*w,a=act[key]||0,col=tok(lab[key][1]);
+    c.globalAlpha=a>0?1:.35;c.fillStyle=col;
+    if(key==='pump'){c.beginPath();c.arc(x,(mT+mB)/2,17,0,7);c.fill();}
+    else{c.fillRect(x-17,mT-4,10,mB-mT+8);c.fillRect(x+7,mT-4,10,mB-mT+8);}
+    if(a>0){c.globalAlpha=.18;c.beginPath();c.arc(x,(mT+mB)/2,30+6*a,0,7);c.fill();}
+    c.globalAlpha=1;c.fillStyle=a>0?tok('--ink'):tok('--muted');c.font=(a>0?'700 ':'400 ')+'12px '+tok('--f-body');
+    const tw=c.measureText(lab[key][0]).width;c.fillText(lab[key][0],clamp(x-tw/2,4,w-tw-4),H-8);
+    if(a>0&&key!=='pump'){const into=key!=='k';c.strokeStyle=col;c.lineWidth=2.5;const y1=into?mT-28:mB+28,y2=into?mB+28:mT-28;c.beginPath();c.moveTo(x+28,y1);c.lineTo(x+28,y2);c.stroke();c.beginPath();c.moveTo(x+22,y2+(into?-7:7));c.lineTo(x+28,y2);c.lineTo(x+34,y2+(into?-7:7));c.stroke();}
+  }
+  // particles
+  if(ION.play&&!RM){
+    for(const key in xs){const a=act[key]||0;if(!a)continue;const x=xs[key]*w;
+      if(key==='pump'){if(Math.random()<.06*a){ION.parts.push({x:x-6,y:mB+20,vy:-1.6,c:'--na'});}if(Math.random()<.04*a){ION.parts.push({x:x+6,y:mT-20,vy:1.6,c:'--k'});}continue;}
+      if(Math.random()<.5*a){const into=key!=='k';const ion=key==='na'||key==='if'?'--na':key==='ca'?'--ca':'--k';ION.parts.push({x:x+(Math.random()-.5)*12,y:into?mT-40:mB+40,vy:(into?1:-1)*(1.6+Math.random()*1.4),c:ion});}}
+  }
+  ION.parts=ION.parts.filter(p=>p.y>-10&&p.y<H-34);
+  for(const p of ION.parts){if(ION.play&&!RM)p.y+=p.vy;c.fillStyle=tok(p.c);c.beginPath();c.arc(p.x,p.y,4.2,0,7);c.fill();}
+  if(ION.parts.length>220)ION.parts.splice(0,ION.parts.length-220);
+  apDraw();ionText(force);
+}
+function apDraw(){
+  const cv=$('#apCv');if(!cv.clientWidth)return;
+  const myo=ION.type==='myo';const H=myo?300:250;const {c,w}=fitCanvas(cv,H);
+  const L=44,R=w-10,T=14,B=myo?210:225,win=ionWin();
+  const X=t=>L+(R-L)*t/win, Y=v=>T+(B-T)*(40-v)/140;
+  c.fillStyle=tok('--surface');c.fillRect(0,0,w,H);
+  if(myo){c.fillStyle=tok('--accent-soft');c.fillRect(X(100),T,X(370)-X(100),B-T);c.globalAlpha=.5;c.fillStyle=tok('--hl');c.fillRect(X(370),T,X(430)-X(370),B-T);c.globalAlpha=1;
+    c.font='600 11px '+tok('--f-mono');c.fillStyle=tok('--accent');c.fillText('ARP',X(220),T+12);c.fillText('RRP',X(375),T+12);}
+  c.font='11px '+tok('--f-mono');c.lineWidth=1;
+  const ticks=myo?[30,0,-70,-90]:[10,0,-40,-60];
+  for(const v of ticks){c.strokeStyle=tok('--line');c.setLineDash(v===-70||v===-40?[4,4]:[]);c.beginPath();c.moveTo(L,Y(v)+.5);c.lineTo(R,Y(v)+.5);c.stroke();c.setLineDash([]);c.fillStyle=tok('--muted');c.fillText((v>0?'+':'')+v,4,Y(v)+4);}
+  c.fillStyle=tok('--muted');c.fillText(myo?'臨界':'臨界',L+4,Y(myo?-70:-40)-4);
+  c.strokeStyle=tok('--ink');c.lineWidth=2.4;c.beginPath();
+  for(let t=0;t<=win;t+=2){const v=myo?myoV(t):pmV(t);t===0?c.moveTo(X(t),Y(v)):c.lineTo(X(t),Y(v));}
+  c.stroke();
+  // phase labels
+  c.font='700 13px '+tok('--f-mono');c.fillStyle=tok('--accent');
+  if(myo){[[4,40,-86],[0,88,-30],[1,108,34],[2,220,8],[3,392,-40],[4,600,-86]].forEach(([p,t,v])=>c.fillText(String(p),X(t),Y(v)));}
+  else{const a=AUTO[ION.auto];let s=0;while(s<win){c.fillText('4',X(s+a.d4*.5),Y(-55)+16);c.fillText('0',X(s+a.d4)-14,Y(-15));c.fillText('3',X(s+a.d4+120)+6,Y(-15));s+=pmCyc();}}
+  // cursor
+  const v=ionV();c.fillStyle=tok('--accent');c.beginPath();c.arc(X(ION.t),Y(v),6,0,7);c.fill();
+  c.strokeStyle=tok('--accent');c.lineWidth=1;c.beginPath();c.moveTo(X(ION.t)+.5,T);c.lineTo(X(ION.t)+.5,H-6);c.stroke();
+  if(myo){
+    const eT=232,eB=H-12,ey0=eB-18;c.fillStyle=tok('--muted');c.font='600 11px '+tok('--f-mono');c.fillText('ECG',4,ey0-8);
+    const ecg=t=>G(t,110,5,-.08)+G(t,124,7,1)+G(t,142,7,-.2)+G(t,385,34,.28);
+    c.strokeStyle=tok('--accent');c.lineWidth=1.8;c.beginPath();
+    for(let t=0;t<=win;t+=2){const y=ey0-ecg(t)*(ey0-eT);t===0?c.moveTo(X(t),y):c.lineTo(X(t),y);}c.stroke();
+    c.fillStyle=tok('--accent');c.fillText('QRS',X(128)+6,eT+8);c.fillText('ST',X(230),ey0-6);c.fillText('T',X(385)-3,eT+16);
+  } else {
+    c.font='500 12px '+tok('--f-body');c.fillStyle=tok('--muted');c.fillText('約 '+Math.round(60000/pmCyc())+' 次/分',R-90,H-8);
+  }
+}
+function ionBind(){
+  $$('#ionType button').forEach(b=>b.onclick=()=>{ION.type=b.dataset.v;setPressed($('#ionType'),ION.type);ION.t=ION.type==='myo'?40:200;ION.parts=[];ION.bg=null;ION.last=-1;$('#autoCard').hidden=ION.type!=='pm';ionPhaseChips();ionDraw(true);});
+  $('#ionPlay').onclick=()=>{ION.play=!ION.play;syncIonPlay();};
+  $$('#ionSpeed button').forEach(b=>b.onclick=()=>{ION.speed=+b.dataset.v;setPressed($('#ionSpeed'),b.dataset.v);});
+  $$('#ionAuto button').forEach(b=>b.onclick=()=>{ION.auto=b.dataset.v;setPressed($('#ionAuto'),ION.auto);$('#autoTxt').textContent=AUTOTXT[ION.auto];ionDraw(true);});
+  $('#autoTxt').textContent=AUTOTXT.norm;ionPhaseChips();syncIonPlay();
+}
+
+/* =============== 02 CONDUCTION =============== */
+const CD={origin:'sa',t:0,play:!RM,speed:.2,smp:null,last:''};
+const ECTO={la:[112,106],jx:[150,116],vx:[222,210]};
+const VEC={P:[100,58,178,112],Q:[178,170,132,176],R:[150,150,206,248],S:[226,196,214,140],T:[206,250,160,150]};
+const AP={TP:'心肌：AP 第 4 期（舒張）',P:'心房肌：AP 第 0 期',PR:'心房肌：AP 第 2 期（收縮）',Q:'心室肌：AP 第 0 期',R:'心室肌：AP 第 0 期',S:'心室肌：AP 第 0–1 期',ST:'心室肌：AP 第 2 期（平台期）',T:'心室肌：AP 第 3 期'};
+const VD={sep:'dep',rv:'dep',lv:'dep'},VR={sep:'rep',rv:'rep',lv:'rep'};
+const COMMON_V=[
+  {t0:.25,t1:.27,k:'Q',lab:'Q 波',reg:{sep:'dep',ra:'rep',la:'rep'},on:['his','lbb','rbb'],vec:VEC.Q,text:'電流進入 His bundle，心室中隔最先去極化，方向由左往右（左 bundle 較粗、較早），稍微遠離正極 → 小小的向下 Q 波。'},
+  {t0:.27,t1:.30,k:'R',lab:'R 波',reg:{...VD,ra:'rep',la:'rep'},on:['lbb','rbb','purk'],vec:VEC.R,text:'Purkinje fibers 把電流送進心室肌，從心內膜往心外膜去極化。左心室最厚，總向量朝心尖、指向 Lead II 正極 → 高大的 R 波。同時心房正在再極化，但被 QRS 蓋過。'},
+  {t0:.30,t1:.33,k:'S',lab:'S 波',reg:{...VD},on:['purk'],vec:VEC.S,text:'最後去極化的是心室基部（靠上方），向量轉朝上、遠離正極 → 小的向下 S 波。'}
+];
+const TAIL_V=(st)=>[
+  {t0:st,t1:.45,k:'ST',lab:'ST segment',reg:{...VD},on:[],text:'心室肌全部處於去極化狀態（AP 第 2 期平台期，Ca²⁺ 流入維持收縮），沒有電位差在移動 → 等電位線。心肌缺血時，這一段會抬高或壓低。'},
+  {t0:.45,t1:.67,k:'T',lab:'T 波',reg:{...VR},on:[],vec:VEC.T,vecType:'rep',text:'心室再極化（AP 第 3 期，K⁺ 大量流出）。再極化由心外膜往心內膜、由心尖往基部進行，方向遠離正極；「再極化遠離正極」畫成正向波 → 向上的 T 波。T 波頂點之後就是相對不反應期（RRP）。'},
+  {t0:.67,t1:1,k:'TP',lab:'TP（舒張期）',reg:{},on:['sa'],text:'整顆心臟回到靜止膜電位，心室舒張、充血，等待下一個來自 SA node 的電流。'}
+];
+const CDT={
+  sa:[
+    {t0:0,t1:.09,k:'TP',lab:'TP（舒張期）',reg:{},on:['sa'],text:'心肌細胞停在靜止膜電位（AP 第 4 期），心臟舒張。SA node 的 pacemaker 細胞正自動緩慢去極化，快到臨界電位了。'},
+    {t0:.09,t1:.18,k:'P',lab:'P 波',reg:{ra:'dep',la:'dep'},on:['sa','inter','bach'],vec:VEC.P,text:'SA node 到達臨界電位發出電流，經 internodal tracts 傳遍右心房、經 Bachmann bundle 傳到左心房。去極化向量朝左下、接近 Lead II 正極 → 向上的 P 波。'},
+    {t0:.18,t1:.25,k:'PR',lab:'PR segment',reg:{ra:'dep',la:'dep'},on:['av'],text:'心房已完全去極化並收縮。電流在 AV node 減速（約 0.06–0.12 秒），心電圖回到基線。這段延遲讓心房先把血擠進心室。'},
+    ...COMMON_V,...TAIL_V(.33)],
+  la:[
+    {t0:0,t1:.14,k:'TP',lab:'TP（舒張期）',reg:{},on:[],ecto:1,text:'SA node 還沒到臨界電位，心房下方靠近 AV node 的一群細胞先發電（異位起點）。'},
+    {t0:.14,t1:.23,k:'P',lab:'P′ 波（倒置）',reg:{ra:'dep',la:'dep'},on:['inter','bach'],ecto:1,vec:[116,104,128,42],text:'心房由下往上去極化，向量朝右上、遠離 Lead II 正極 → 倒置的 P′。起點不同，P 波就變形。'},
+    {t0:.23,t1:.25,k:'PR',lab:'PR segment（變短）',reg:{ra:'dep',la:'dep'},on:['av'],ecto:1,text:'起點離 AV node 很近，電流很快就抵達 → PR < 0.12 秒。過了 AV node 之後路徑完全正常，所以 QRS 不變。'},
+    ...COMMON_V,...TAIL_V(.33)],
+  jx:[
+    {t0:0,t1:.25,k:'TP',lab:'TP（舒張期）',reg:{},on:[],ecto:1,text:'SA node 沒有按時發電（或電流下不來），AV junction 以自己的固有速率（40–60）到達臨界電位。'},
+    ...COMMON_V.map(p=>({...p,on:[...p.on,'av'],ecto:1})),
+    {t0:.33,t1:.41,k:'P',lab:'P′ 波（逆行）',reg:{...VD,ra:'dep',la:'dep'},on:['inter'],ecto:1,vec:[148,110,104,52],text:'電流同時往上逆行傳到心房，心房由下往上去極化 → 倒置的 P′，落在 QRS 之後。起點偏上方時 P′ 會在 QRS 之前，位置居中時則被 QRS 蓋住。'},
+    ...TAIL_V(.41)],
+  vx:[
+    {t0:0,t1:.25,k:'TP',lab:'TP（舒張期）',reg:{},on:[],ecto:1,text:'沒有電流從上方傳下來。心室裡的一個異位起點自己發電（心室固有速率 20–40，異常增強時更快）。'},
+    {t0:.25,t1:.33,k:'QRS',lab:'寬 QRS（前段）',reg:{lv:'dep'},on:[],ecto:1,vec:[222,210,186,166],text:'電流從左心室壁出發，不經過 Purkinje 快速通道，只能細胞傳細胞，慢慢擴散。'},
+    {t0:.33,t1:.42,k:'QRS',lab:'寬 QRS（後段）',reg:{...VD},on:[],ecto:1,vec:[186,170,108,168],text:'最後才傳到中隔和右心室。整個心室去極化超過 0.12 秒 → 寬大、怪異的 QRS。前面沒有 P 波，因為心房沒有參與。'},
+    {t0:.42,t1:.56,k:'ST',lab:'ST segment',reg:{...VD},on:[],ecto:1,text:'心室全部去極化（AP 第 2 期）。'},
+    {t0:.56,t1:.80,k:'T',lab:'T 波（反向）',reg:{...VR},on:[],ecto:1,vec:[108,168,214,214],vecType:'rep',text:'去極化順序反了，再極化順序也跟著反過來 → T 波方向與 QRS 相反（向下）。看到「寬 QRS＋反向 T」，就想到起點在心室。'},
+    {t0:.80,t1:1,k:'TP',lab:'TP（舒張期）',reg:{},on:[],ecto:1,text:'沒有心房參與的一次心跳。這就是 PVC、VT、AIVR 長相的由來。'}]
+};
+AP.QRS='心室肌：AP 第 0 期（細胞傳細胞）';
+function cdBuild(){
+  const s={seed:7,beats:[],pw:[],base:'flat',ph:[0,0,0,0]};const tq=.25,rr=1;
+  if(CD.origin==='sa'){addP(s,tq-.16+.045,'n');addQRS(s,tq,rr,false);}
+  if(CD.origin==='la'){addP(s,tq-.11+.045,'inv');addQRS(s,tq,rr,false);}
+  if(CD.origin==='jx'){addQRS(s,tq,rr,false);addP(s,tq+.12,'inv');}
+  if(CD.origin==='vx'){addQRS(s,tq,rr,true);}
+  CD.smp=sampleStrip(s,1,false);
+  const box=$('#cdChips');const tl=CDT[CD.origin];
+  box.innerHTML=tl.map((p,i)=>`<button data-i="${i}">${p.lab}</button>`).join('');
+  $$('button',box).forEach(b=>b.onclick=()=>{const p=tl[+b.dataset.i];CD.t=(p.t0+p.t1)/2;CD.play=false;syncCdPlay();cdDraw();});
+  CD.last='';
+}
+function cdPhase(){const tl=CDT[CD.origin];return tl.findIndex(p=>CD.t>=p.t0&&CD.t<p.t1);}
+function syncCdPlay(){const b=$('#cdPlay');b.textContent=CD.play?'暫停':'播放';b.setAttribute('aria-pressed',String(CD.play));}
+function cdDraw(){
+  const cv=$('#cdCv');if(!cv.clientWidth)return;
+  const w=cv.clientWidth,h=Math.round(clamp(w*.36,190,270));const {c}=fitCanvas(cv,h);
+  const sx=w/1,sy=h/2.25,y0=h*.68;
+  drawPaper(c,w,h,sx,sy,y0,1);
+  const i=cdPhase(),p=CDT[CD.origin][Math.max(0,i)];
+  c.fillStyle=tok('--accent-soft');c.globalAlpha=.7;c.fillRect(p.t0*sx,0,(p.t1-p.t0)*sx,h);c.globalAlpha=1;
+  drawTrace(c,CD.smp,sx,sy,y0,0,1,tok('--trace-dim'),2);
+  drawTrace(c,CD.smp,sx,sy,y0,0,CD.t,tok('--trace'),2.6);
+  c.fillStyle=tok('--accent');c.beginPath();c.arc(CD.t*sx,y0-CD.smp[Math.min(CD.smp.length-1,Math.floor(CD.t*FS))]*sy,5,0,7);c.fill();
+  c.font='600 11px '+tok('--f-mono');c.fillStyle=tok('--muted');c.fillText('時間軸放大顯示（1 秒）',8,16);
+  const key=CD.origin+i;
+  if(key!==CD.last){CD.last=key;
+    $('#cdBadge').textContent=p.lab;$('#cdAp').textContent=AP[p.k]||'';$('#cdText').textContent=p.text;
+    $$('#cdChips button').forEach((b,j)=>b.classList.toggle('cur',j===i));
+    heartSet('cd',{reg:p.reg,on:p.on,vec:p.vec,vecType:p.vecType,ecto:p.ecto?ECTO[CD.origin]:null});
+  }
+}
+function cdBind(){
+  $('#cdHeart').innerHTML=heartSVG('cd');
+  $$('#cdOrigin button').forEach(b=>b.onclick=()=>{CD.origin=b.dataset.v;setPressed($('#cdOrigin'),CD.origin);CD.t=0;cdBuild();cdDraw();});
+  $('#cdPlay').onclick=()=>{CD.play=!CD.play;syncCdPlay();};
+  $$('#cdSpeed button').forEach(b=>b.onclick=()=>{CD.speed=+b.dataset.v;setPressed($('#cdSpeed'),b.dataset.v);});
+  cdBuild();syncCdPlay();if(RM)CD.t=.135;
+}
+
+/* =============== 03 METHOD =============== */
+const MROWS=[
+  {n:1,what:'心率（6 秒法）',ask:'現在是誰在當 pacemaker？',norm:'60–100',hl:{on:['sa','av','purk']},cap:'三層 pacemaker：SA node、AV junction、心室'},
+  {n:2,what:'規律性（PP、RR）',ask:'主導權穩定嗎？有沒有人插隊或缺席？',norm:'RR 差距 < 2 小格',hl:{on:['sa']},cap:'SA node 是否穩定發電'},
+  {n:3,what:'P 波、P:QRS 比例',ask:'心房是從 SA node 開始去極化的嗎？電流有沒有傳下去？',norm:'向上圓滑、1:1',hl:{on:['sa','inter','bach'],hl:['ra','la']},cap:'心房與心房內傳導'},
+  {n:4,what:'PR interval',ask:'AV node 的延遲正常嗎？',norm:'0.12–0.20 秒、固定',hl:{on:['av']},cap:'AV node：房室之間唯一的通道'},
+  {n:5,what:'QRS 寬度',ask:'心室是走 His–Purkinje 正常路徑去極化的嗎？',norm:'< 0.12 秒',hl:{on:['his','lbb','rbb','purk'],hl:['rv','lv','sep']},cap:'His bundle、bundle branches、Purkinje fibers'},
+  {n:6,what:'分析',ask:'起點在哪？哪一段出了問題？',norm:'—',hl:{on:['sa','av','his']},cap:'把前五步的線索組合起來'}
+];
+function mtBind(){
+  $('#mtHeart').innerHTML=heartSVG('mt');
+  const tb=$('#mtTable tbody');
+  tb.innerHTML=MROWS.map(r=>`<tr class="row" data-n="${r.n}" tabindex="0"><td class="num">${r.n}</td><td>${r.what}</td><td>${r.ask}</td><td class="mono" style="white-space:nowrap">${r.norm}</td></tr>`).join('');
+  const pick=n=>{const r=MROWS[n-1];$$('#mtTable tr.row').forEach(x=>x.classList.toggle('sel',+x.dataset.n===n));heartSet('mt',r.hl);$('#mtCap').textContent='步驟 '+n+'：'+r.cap;};
+  $$('#mtTable tr.row').forEach(x=>{x.onclick=()=>pick(+x.dataset.n);x.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pick(+x.dataset.n);}};});
+  pick(1);
+}
+
+/* =============== 04 PRACTICE =============== */
+const OPTS={
+  rate:[['v_slow','< 60 次/分'],['v_normal','60–100 次/分'],['v_fast','> 100 次/分'],['v_na','數不出 QRS']],
+  reg:[['g_reg','規則：RR 間距一致'],['g_cyc','週期性地時快時慢'],['g_early','基本規則，但有提早出現的一下'],['g_pause','基本規則，但出現一段長停頓'],['g_irreg','完全不規則'],['g_na','沒有 RR 可以比較']],
+  pm:[['p_normal','正常：向上圓滑，每個 QRS 前都有'],['p_mixed','大多正常，但提早的那一下不同（P′ 或沒有 P）'],['p_inv','P′ 倒置（在 QRS 前或後）'],['p_flutter','鋸齒狀 F 波'],['p_fib','細碎、不規則的 f 波'],['p_none','看不到 P 波'],['p_na','看不到任何可辨識的波']],
+  pq:[['pq_same','1:1，每個 P 後面都有 QRS'],['pq_pmore','P（或 F 波）比 QRS 多'],['pq_qmore','QRS 比 P 多：有些 QRS 前面沒有 P'],['pq_na','沒有可數的 P 波']],
+  pr:[['pr_normal','0.12–0.20 秒（3–5 小格），固定'],['pr_short','< 0.12 秒，或 P′ 在 QRS 之後'],['pr_na','無法測量']],
+  qrs:[['q_narrow','全部窄（< 0.12 秒）'],['q_mixed','大多窄，但提早的那一下寬大'],['q_wide','全部寬（≥ 0.12 秒）'],['q_na','沒有可辨識的 QRS']],
+  origin:[['o_sa','SA node'],['o_atria','心房（SA node 以外）'],['o_junction','AV junction'],['o_ventricle','心室'],['o_none','沒有電氣活動']]
+};
+const EXPL={
+  v_slow:'心室率 < 60。想一想：是 SA node 自己變慢（迷走、藥物、MI），還是 SA node 失職，由下層 pacemaker（AV junction 40–60、心室 20–40）接手？',
+  v_normal:'心室率 60–100，落在 SA node 的固有速率範圍。速率正常不代表起點一定是 SA node，後面幾步會確認。',
+  v_fast:'心室率 > 100：可能是 SA node 被交感神經加速，也可能是異常起點或回圈（re-entry）在主導。',
+  v_na:'看不到可以數的 QRS：心室沒有有組織的去極化（VF），或完全沒有電氣活動（Asystole）。先看病人、摸脈搏，依心跳停止流程。',
+  g_reg:'RR 間距一致：同一個 pacemaker 以固定頻率穩定發出電流。',
+  g_cyc:'RR 隨呼吸週期性地變長變短：吸氣時迷走張力下降、心率加快；吐氣時迷走張力回升、心率變慢。起點仍是 SA node。',
+  g_early:'有一下比預期早出現：SA node 以外的細胞發揮自發性（automaticity），在相對不反應期之後搶先發電。下一步看 P 波和 QRS 的形狀，就知道它來自哪裡。',
+  g_pause:'節律中間突然少了心跳：SA node 暫時沒有發出電流（sinus arrest），或發出了卻出不去（SA exit block）。停頓長度不是 PP 的整數倍 → sinus arrest；剛好整數倍 → SA exit block。',
+  g_irreg:'RR 間距毫無規則（irregularly irregular）：心房內大量異常起點亂發電，AV node 只能隨機放行一部分。',
+  g_na:'沒有可以比較的 RR 間距。',
+  p_normal:'P 波向上、圓滑：在 Lead II 上，心房去極化從右上（SA node）朝左下的正極前進 → 起點是 SA node。',
+  p_mixed:'基本心律的 P 正常，但提早出現的那一下不同。P′ 形狀改變 → 起點在心房其他位置；P′ 倒置或跑到後面 → 起點靠近 AV junction；沒有 P 且 QRS 寬大 → 起點在心室。',
+  p_inv:'P′ 倒置或出現在 QRS 之後：心房是由下往上（從 AV junction 朝 SA node）逆行去極化，方向遠離 Lead II 正極，所以向下。',
+  p_flutter:'鋸齒狀 F 波：心房內有一個快速回圈（re-entry），約每分鐘 300 次繞行，每繞一圈產生一個 F 波。',
+  p_fib:'細碎、不規則的 f 波：心房各處許多異常起點同時亂發（350–600 次/分），心房沒有有效收縮。',
+  p_none:'看不到 P 波：心房的去極化被 QRS 蓋住、與心室無關而埋在波形裡，或主導權根本不在心房。',
+  p_na:'整條心律條看不到任何可辨識的波形。',
+  pq_same:'P 和 QRS 一對一：每次心房去極化都順利通過 AV node 傳到心室。',
+  pq_pmore:'P（F）波比 QRS 多：心房發電太快，AV node 還在不反應期，只放行一部分（例如 2:1、4:1）。',
+  pq_qmore:'QRS 比 P 多：有些 QRS 不是由心房帶下來的，而是心室（或 AV junction）自己發出的。',
+  pq_na:'數不出可對應的 P 波，房室關係無法判斷；在 VT 這種情況稱為房室分離（AV dissociation）。',
+  pr_normal:'PR 0.12–0.20 秒且固定：電流在 AV node 正常延遲，讓心房有時間把血擠進心室。',
+  pr_short:'PR < 0.12 秒或 P′ 在 QRS 之後：起點離 AV junction 很近（或就在其中），幾乎沒有經過 AV node 的延遲，就同時往上（心房）和往下（心室）傳。',
+  pr_na:'沒有可對應的 P 波，就沒有 PR interval 可量。',
+  q_narrow:'QRS 窄（< 0.12 秒）：心室經由 His bundle、左右 bundle branches 和 Purkinje fibers 快速、同步地去極化 → 起點在心室以上（supraventricular）。',
+  q_mixed:'提早的那一下 QRS 寬大、T 波方向相反：電流從心室肌細胞起始，只能細胞傳細胞慢慢走，所以變寬；再極化順序也跟著顛倒。',
+  q_wide:'QRS 全部寬（≥ 0.12 秒）：去極化不是走快速傳導系統，而是從心室某處開始、細胞傳細胞擴散 → 起點在心室。',
+  q_na:'沒有有組織的 QRS。',
+  o_sa:'前面幾步都指向 SA node：P 正常、PR 正常、QRS 窄、1:1。接下來用速率和規律性決定是哪一種竇性心律。',
+  o_atria:'異常出在 P 波（P′、F 波或 f 波），AV node 以下的路徑正常，所以 QRS 窄 → 問題在 SA node 以外的心房。',
+  o_junction:'P′ 倒置、在後面或看不到，PR 很短（或量不到），QRS 窄 → 起點在 AV junction，或在其中形成回圈。',
+  o_ventricle:'QRS 寬大（或已無法辨識）、前面沒有對應的 P 波 → 起點在心室。',
+  o_none:'沒有任何去極化：從 SA node 到 Purkinje fibers 都停止了自發性。'
+};
+const STEPS=[
+  {n:1,t:'速率',a:'誰在當 pacemaker？',hint:'六秒法：數 6 秒內的 QRS × 10。規則心律也可用卡尺量一個 RR，再用 1500 ÷ 小格數。順便數數 P 波，步驟 3 會用到。',qs:['rate'],hl:{on:['sa','av','purk']},cap:'三層 pacemaker 的固有速率：60–100／40–60／20–40'},
+  {n:2,t:'規律性',a:'主導權穩定嗎？',hint:'卡尺量一個 RR，拿去比對其他 RR。差距超過 2 小格（0.08 秒）就算不規則。',qs:['reg'],hl:{on:['sa']},cap:'SA node（或主導的 pacemaker）是否穩定發電'},
+  {n:3,t:'P 波與 P:QRS',a:'心房從 SA node 開始嗎？有傳下去嗎？',hint:'Lead II 正極在左下：心房由右上往左下去極化，P 波就向上。再比較 P（或 F）的數量和 QRS 的數量。',qs:['pm','pq'],hl:{on:['sa','inter','bach'],hl:['ra','la']},cap:'心房與心房內傳導'},
+  {n:4,t:'PR interval',a:'AV node 的延遲正常嗎？',hint:'從 P 波起點量到 QRS 起點。正常 3–5 小格。',qs:['pr'],hl:{on:['av']},cap:'AV node：房室之間唯一的通道'},
+  {n:5,t:'QRS',a:'心室走正常路徑嗎？',hint:'從 QRS 起點量到終點。正常 < 3 小格。',qs:['qrs'],hl:{on:['his','lbb','rbb','purk'],hl:['rv','lv','sep']},cap:'His–Purkinje 快速傳導系統'},
+  {n:6,t:'分析',a:'起點在哪？叫什麼名字？',hint:'先決定起點（QRS 寬窄 → P 波長相），再用速率和規律性命名。',qs:['origin','name'],hl:{},cap:'起點'}
+];
+const QP={rate:'用六秒法數 QRS：心室率落在哪裡？',reg:'RR 間距規律嗎？',pm:'P 波長什麼樣？',pq:'P（或 F 波）和 QRS 的數量關係？',pr:'PR interval？',qrs:'QRS 寬度？',origin:'去極化起點（主導或異常的那一下）在哪？',name:'判讀：這是什麼心律？'};
+const ORIGIN_HL={o_sa:{on:['sa']},o_atria:{hl:['ra','la'],on:['inter','bach']},o_junction:{on:['av','his']},o_ventricle:{hl:['rv','lv','sep'],on:['purk']},o_none:{}};
+const REC=[['速率','rate'],['規律性','reg'],['P 波','pm'],['P:QRS','pq'],['PR','pr'],['QRS','qrs'],['起點','origin'],['判讀','name']];
+const PR={rid:null,seed:0,s:null,smp:null,K:null,ans:{},hidden:true,sec:true,mk:false,cal:{on:false,a:null,b:null},g:null};
+
+function optLabel(q,v){if(q==='name')return RH[v].zh;const o=OPTS[q].find(x=>x[0]===v);return o?o[1]:v;}
+function randRid(){return RIDS[Math.random()*RIDS.length|0];}
+function prLoad(rid,seed,hidden){
+  PR.rid=rid||randRid();PR.seed=seed!=null?seed:(Math.random()*1e9)>>>0;PR.hidden=hidden!==false;
+  PR.s=newStrip(PR.rid,PR.seed);PR.smp=sampleStrip(PR.s);PR.K=keysFor(PR.s);PR.ans={};PR.cal.a=PR.cal.b=null;
+  $('#prSel').value=PR.hidden?'':PR.rid;
+  prRead();prRender();prDraw();
+}
+function prDraw(){const cv=$('#prCv');if(!cv.clientWidth||!PR.s)return;PR.g=drawStrip(cv,PR.s,PR.smp,{secs:PR.sec,marks:PR.mk,cal:PR.cal.on?PR.cal:null});}
+function prRead(){
+  const a=PR.cal.a,b=PR.cal.b;
+  if(!PR.cal.on){$('#prRead').textContent='開啟「卡尺」，在心律條上點兩下，量出兩點之間的時間。';return;}
+  if(a==null){$('#prRead').textContent='卡尺：點第一個位置（例如一個 R 波頂點）。';return;}
+  if(b==null){$('#prRead').textContent='卡尺：再點第二個位置。';return;}
+  const d=Math.abs(b-a),sm=d/.04;
+  $('#prRead').textContent=`間距 ${d.toFixed(2)} 秒 ＝ ${sm.toFixed(1)} 小格（${(sm/5).toFixed(1)} 大格）　若這是 RR：1500 ÷ ${sm.toFixed(1)} ≈ ${Math.round(60/d)} 次/分　再點一下重新量`;
+}
+function stepDone(st){return st.qs.every(q=>PR.ans[q]!=null);}
+function curStep(){for(const st of STEPS){if(!stepDone(st))return st.n;}return 7;}
+function nameOpts(){
+  const fam=PR.K.origin[0];let list=[...FAMS[fam]];
+  if(list.length<3){for(const x of ['vf','aivr','vt'])if(!list.includes(x)&&list.length<3)list.push(x);}
+  return list;
+}
+function explFor(q,v){
+  const R=RH[PR.rid];
+  if(q==='name')return R.why;
+  let e=(R.ovr&&R.ovr[q])||EXPL[v];
+  if(q==='rate'&&v!=='v_na'){e=`6 秒內有 ${PR.K.qc} 個 QRS → ${PR.K.qc} × 10 ≈ ${PR.K.qc*10} 次/分。`+(PR.s.base==='flutter'?`（F 波約 ${Math.round(PR.s.atrialRate)} 次/分。）`:'')+e;}
+  if(q==='origin'&&['pac','pjc','pvc'].includes(PR.rid))e='基本心律的起點是 SA node；題目問的是提早出現的那一下。'+e;
+  return e;
+}
+function prRender(){
+  const cur=curStep();const box=$('#prSteps');
+  box.innerHTML=STEPS.map(st=>{
+    const done=stepDone(st),locked=st.n>cur;
+    let nOk=0;st.qs.forEach(q=>{if(PR.ans[q]!=null&&PR.K[q].includes(PR.ans[q]))nOk++;});
+    const stat=done?`${nOk}/${st.qs.length} 正確`:locked?'':'作答中';
+    let body='';
+    if(!locked){
+      body=`<div class="sb"><p class="hint">${st.hint}</p>`+st.qs.map(q=>{
+        const opts=q==='name'?nameOpts().map(v=>[v,RH[v].zh]):OPTS[q];
+        if(q==='name'&&PR.ans.origin==null)return '';
+        const a=PR.ans[q],ok=a!=null&&PR.K[q].includes(a);
+        const ob=opts.map(([v,l])=>{let cls='opt';if(a!=null){if(PR.K[q].includes(v)&&(v===a||!ok)&&(v===a||v===PR.K[q][0]))cls+=' right';if(v===a&&!ok)cls+=' wrong';}
+          return `<button class="${cls}" data-q="${q}" data-v="${v}" ${a!=null?'disabled':''}>${l}</button>`;}).join('');
+        let fb='';if(a!=null){fb=`<div class="fb ${ok?'ok':'no'}"><strong>${ok?'正確':'答案是「'+optLabel(q,PR.K[q][0])+'」'}</strong>${explFor(q,PR.K[q][0])}</div>`;}
+        return `<div class="qblock"><div class="qp">${QP[q]}</div><div class="opts">${ob}</div>${fb}</div>`;
+      }).join('')+'</div>';
+    }
+    return `<div class="step ${done?'done':''} ${locked?'locked':''}"><div class="sh"><span class="sn">${st.n}</span><span><span class="st">${st.t}</span>　<span class="sa">${st.a}</span></span><span class="stat">${stat}</span></div>${body}</div>`;
+  }).join('');
+  $$('.opt',box).forEach(b=>b.onclick=()=>{PR.ans[b.dataset.q]=b.dataset.v;prRender();
+    const nb=$$('#prSteps .step:not(.done):not(.locked)')[0];if(nb&&b.dataset.q!=='origin'&&stepDone(STEPS.find(s=>s.qs.includes(b.dataset.q))))nb.scrollIntoView({behavior:RM?'auto':'smooth',block:'nearest'});});
+  // heart highlight
+  const st=STEPS[Math.min(cur,6)-1];
+  let hl=st.hl,cap=st.cap;
+  if(cur>=6&&PR.ans.origin!=null){hl=ORIGIN_HL[PR.K.origin[0]];cap='起點：'+optLabel('origin',PR.K.origin[0]);}
+  heartSet('pr',hl);$('#prCap').textContent=(cur<=6?'步驟 '+Math.min(cur,6)+'：':'')+cap;
+  // record
+  $('#prRec').innerHTML=REC.map(([l,q])=>{const a=PR.ans[q];let v='<span class="muted">—</span>';if(a!=null){const ok=PR.K[q].includes(a);v=`<span class="${ok?'y':'x'}">${ok?'✓':'✗'}</span> ${optLabel(q,PR.K[q][0])}`;}return `<tr><td>${l}</td><td>${v}</td></tr>`;}).join('');
+  // title & result
+  const fin=cur===7;
+  $('#prTitle').textContent=(fin||!PR.hidden)?RH[PR.rid].zh:'這是什麼心律？';
+  const res=$('#prResult');
+  if(fin){const R=RH[PR.rid];const tot=REC.length;const ok=REC.filter(([,q])=>PR.K[q].includes(PR.ans[q])).length;
+    const F=['速率','規律性','P wave','PR interval','PP、RR interval','P:R 比例','QRS complex','去極化起點'];
+    res.innerHTML=`<div class="rcard"><div><span class="eyebrow">判讀結果 · ${ok}/${tot} 欄正確${PR.s.variant?' · 這一條：'+({'2:1':'2:1 傳導','4:1':'4:1 傳導',bigeminy:'二聯律（bigeminy）',single:'單發',after:'P′ 在 QRS 之後',none:'P′ 被蓋住',before:'P′ 在 QRS 之前'}[PR.s.variant]||PR.s.variant):''}</span>
+      <div class="nm">${R.zh}</div><div class="en">${R.en}</div></div>
+      <p>${R.why}</p>
+      <div class="tscroll"><table class="t"><thead><tr><th>判斷條件</th><th>${R.zh}</th></tr></thead><tbody>${F.map((f,i)=>`<tr><td style="white-space:nowrap">${f}</td><td>${R.tbl[i]}</td></tr>`).join('')}</tbody></table></div>
+      <div class="note"><b>到院前重點：</b>${R.ems}</div>
+      <div class="controls"><button class="btn primary" id="prAgainSame">同一種心律再一條</button><button class="btn" id="prAgainRand">隨機下一條</button></div></div>`;
+    $('#prAgainSame').onclick=()=>{prLoad(PR.rid,null,PR.hidden);window.scrollTo({top:0,behavior:RM?'auto':'smooth'});};
+    $('#prAgainRand').onclick=()=>{prLoad(null,null,true);window.scrollTo({top:0,behavior:RM?'auto':'smooth'});};
+  } else res.innerHTML='';
+}
+function prBind(){
+  $('#prHeart').innerHTML=heartSVG('pr');
+  const sel=$('#prSel');
+  const groups=[['o_sa','竇性心律'],['o_atria','心房心律不整'],['o_junction','交界性心律不整'],['o_ventricle','心室心律不整'],['o_none','心臟停止']];
+  sel.innerHTML='<option value="">隨機（隱藏名稱）</option>'+groups.map(([f,l])=>`<optgroup label="${l}">${FAMS[f].map(r=>`<option value="${r}">${RH[r].zh}</option>`).join('')}</optgroup>`).join('');
+  sel.onchange=()=>prLoad(sel.value||null,null,!sel.value);
+  $('#prNew').onclick=()=>prLoad(PR.hidden?null:PR.rid,null,PR.hidden);
+  const tg=(id,key,after)=>{$(id).onclick=()=>{const b=$(id);const v=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',String(v));after(v);prDraw();};};
+  tg('#prSec','sec',v=>PR.sec=v);tg('#prMk','mk',v=>PR.mk=v);
+  tg('#prCal','cal',v=>{PR.cal.on=v;PR.cal.a=PR.cal.b=null;$('#prCv').style.cursor=v?'crosshair':'default';prRead();});
+  $('#prCv').addEventListener('pointerdown',e=>{if(!PR.cal.on||!PR.g)return;const r=e.currentTarget.getBoundingClientRect();const t=clamp((e.clientX-r.left)/PR.g.sx,0,DUR);
+    if(PR.cal.a==null||PR.cal.b!=null){PR.cal.a=t;PR.cal.b=null;}else PR.cal.b=t;prRead();prDraw();});
+  prLoad('nsr',11,false);
+}
+
+/* =============== 05 QUIZ =============== */
+const QZ={i:0,n:10,score:0,done:0,rid:null,seed:0,s:null,smp:null,ans:null,opts:[],bag:[]};
+function qzNext(){
+  if(!QZ.bag.length)QZ.bag=[...RIDS].sort(()=>Math.random()-.5);
+  QZ.rid=QZ.bag.pop();QZ.seed=(Math.random()*1e9)>>>0;QZ.s=newStrip(QZ.rid,QZ.seed);QZ.smp=sampleStrip(QZ.s);QZ.ans=null;QZ.i++;
+  const fam=RH[QZ.rid].fam;const same=FAMS[fam].filter(r=>r!==QZ.rid).sort(()=>Math.random()-.5).slice(0,2);
+  const other=RIDS.filter(r=>r!==QZ.rid&&!same.includes(r)).sort(()=>Math.random()-.5);
+  QZ.opts=[QZ.rid,...same,...other].slice(0,4).sort(()=>Math.random()-.5);
+  qzRender();qzDraw();
+}
+function qzDraw(){const cv=$('#qzCv');if(!cv.clientWidth||!QZ.s)return;drawStrip(cv,QZ.s,QZ.smp,{secs:true});}
+function qzRender(){
+  $('#qzH').textContent=QZ.i>QZ.n?'完成':'第 '+QZ.i+' 題';
+  $('#qzScore').textContent=`${QZ.score} / ${QZ.done}`;
+  const box=$('#qzOpts');
+  box.innerHTML=QZ.opts.map(r=>{let c='opt';if(QZ.ans){if(r===QZ.rid)c+=' right';else if(r===QZ.ans)c+=' wrong';}return `<button class="${c}" data-r="${r}" ${QZ.ans?'disabled':''}>${RH[r].zh}<br><span class="mono muted" style="font-size:.8rem">${RH[r].en}</span></button>`;}).join('');
+  $$('button',box).forEach(b=>b.onclick=()=>{QZ.ans=b.dataset.r;QZ.done++;if(QZ.ans===QZ.rid)QZ.score++;qzRender();});
+  const fb=$('#qzFb');
+  if(QZ.ans){const ok=QZ.ans===QZ.rid,R=RH[QZ.rid];fb.innerHTML=`<div class="fb ${ok?'ok':'no'}"><strong>${ok?'正確':'答案是「'+R.zh+'」'}</strong>${R.why}</div>`;}else fb.innerHTML='';
+  $('#qzNext').hidden=!QZ.ans;$('#qzToPr').hidden=!QZ.ans;
+  $('#qzNext').textContent=QZ.i>=QZ.n?'看總分':'下一題';
+  if(QZ.i>QZ.n){fb.innerHTML=`<div class="fb ok"><strong>${QZ.n} 題答對 ${QZ.score} 題</strong>答錯的心律，回到「判讀練習」從下拉選單指定，用六步驟一步一步拆。</div>`;box.innerHTML='';$('#qzNext').hidden=true;$('#qzToPr').hidden=true;}
+}
+function qzBind(){
+  $('#qzNext').onclick=()=>{if(QZ.i>=QZ.n){QZ.i++;qzRender();return;}qzNext();};
+  $('#qzRestart').onclick=()=>{QZ.i=0;QZ.score=0;QZ.done=0;QZ.bag=[];qzNext();};
+  $('#qzToPr').onclick=()=>{location.hash='practice';setTimeout(()=>prLoad(QZ.rid,QZ.seed,true),30);};
+  qzNext();
+}
+
+/* =============== routing, loop, theme =============== */
+const VIEWS=['map','ion','conduction','method','practice','quiz'];let VIEW='map';
+function show(){
+  const h=location.hash.replace('#','');VIEW=VIEWS.includes(h)?h:'map';
+  $$('section.view').forEach(s=>s.hidden=s.dataset.view!==VIEW);
+  $$('.tabs a').forEach(a=>a.setAttribute('aria-current',a.getAttribute('href')==='#'+VIEW?'page':'false'));
+  const ta=$('.tabs a[aria-current="page"]');if(ta)ta.scrollIntoView({block:'nearest',inline:'nearest'});
+  requestAnimationFrame(redrawAll);
+}
+function redrawAll(){
+  if(VIEW==='map')heroDraw(performance.now());
+  if(VIEW==='ion')ionDraw(true);
+  if(VIEW==='conduction'){CD.last='';cdDraw();}
+  if(VIEW==='practice')prDraw();
+  if(VIEW==='quiz')qzDraw();
+}
+let lastTs=0;
+function loop(ts){
+  const dt=Math.min(50,ts-(lastTs||ts));lastTs=ts;
+  if(VIEW==='map'&&!RM)heroDraw(ts);
+  if(VIEW==='ion'&&ION.play){ION.t=(ION.t+dt*ION.speed)%ionWin();ionDraw(false);}
+  if(VIEW==='conduction'&&CD.play){CD.t=(CD.t+dt/1000*CD.speed)%1;cdDraw();}
+  requestAnimationFrame(loop);
+}
+function init(){
+  heroInit();ionBind();cdBind();mtBind();prBind();qzBind();
+  $('#bigBtn').onclick=()=>{const on=!document.documentElement.classList.contains('big');document.documentElement.classList.toggle('big',on);$('#bigBtn').setAttribute('aria-pressed',String(on));requestAnimationFrame(redrawAll);};
+  window.addEventListener('hashchange',show);
+  let rz;window.addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(redrawAll,80);});
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{CD.last='';redrawAll();});
+  new MutationObserver(()=>{CD.last='';redrawAll();}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+  show();requestAnimationFrame(loop);
+}
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>requestAnimationFrame(redrawAll));
+init();
+</script>
+
+</body>
+</html>
