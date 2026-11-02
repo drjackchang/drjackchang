@@ -313,5 +313,17 @@
     "doi": "10.3390/ijerph19042257",
     "source": "orcid-sync",
     "needs_review": true
+  },
+  {
+    "id": "orcid-231299100",
+    "type": "journal",
+    "authors": "",
+    "title_en": "Predatory Publishing in Paramedicine: A Longitudinal Analysis",
+    "title_zh": "",
+    "venue": "Journal of Hospital Librarianship",
+    "year": 2026,
+    "doi": "10.1080/15323269.2026.2749783",
+    "source": "orcid-sync",
+    "needs_review": true
   }
 ]
