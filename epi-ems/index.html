@@ -6,399 +6,449 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
-/* Layout: registry-report shell — fixed week index on the left (grouped by course phase), one week per view on the right; collapses to a top drawer on phones. */
+/* Layout: LMS shell — sticky top bar (course, search, download), left course menu (resources + modules with progress), main column with breadcrumb, unit header and tabbed unit content. Base type 18px for long reading sessions. */
 :root {
-  --bg: #f4f6f7;
+  --bg: #f3f5f6;
   --surface: #ffffff;
-  --ink: #142028;
-  --muted: #5b6b74;
-  --line: #d9e1e4;
-  --accent: #0d6b6e;
-  --accent-soft: #e2f0ef;
-  --signal: #b4641a;
-  --signal-soft: #f8ecdf;
+  --surface-2: #f8fafa;
+  --ink: #15212a;
+  --muted: #56666f;
+  --line: #d8e0e3;
+  --accent: #0b6a6d;
+  --accent-ink: #ffffff;
+  --accent-soft: #e1efee;
+  --signal: #a85a12;
+  --signal-soft: #f8ebdc;
   --code-bg: #0f1d24;
   --code-ink: #dbe7ea;
-  --ok: #2f7d4b;
-  --bad: #b03a2e;
+  --ok: #2c7a47;
+  --bad: #b0392d;
   --font-display: "Noto Serif TC", "Songti TC", serif;
   --font-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-  --side: 272px;
+  --side: 300px;
+  --top: 64px;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --bg: #0e171c; --surface: #15232a; --ink: #e3ecef; --muted: #93a6ae; --line: #26363e;
-  --accent: #4fb3b0; --accent-soft: #173a3c; --signal: #e0a160; --signal-soft: #3a2a19;
-  --code-bg: #091216; --code-ink: #d6e3e6; --ok: #6cc08a; --bad: #e57d70; color-scheme: dark } }
+  --bg: #0d161b; --surface: #142229; --surface-2: #182a32; --ink: #e4ecef; --muted: #9aadb5; --line: #27373f;
+  --accent: #52b6b2; --accent-ink: #062224; --accent-soft: #173a3c; --signal: #e3a466; --signal-soft: #392918;
+  --code-bg: #08121a; --code-ink: #d6e3e6; --ok: #6cc28c; --bad: #ec8274; color-scheme: dark } }
 :root[data-theme="dark"] {
-  --bg: #0e171c; --surface: #15232a; --ink: #e3ecef; --muted: #93a6ae; --line: #26363e;
-  --accent: #4fb3b0; --accent-soft: #173a3c; --signal: #e0a160; --signal-soft: #3a2a19;
-  --code-bg: #091216; --code-ink: #d6e3e6; --ok: #6cc08a; --bad: #e57d70; color-scheme: dark }
+  --bg: #0d161b; --surface: #142229; --surface-2: #182a32; --ink: #e4ecef; --muted: #9aadb5; --line: #27373f;
+  --accent: #52b6b2; --accent-ink: #062224; --accent-soft: #173a3c; --signal: #e3a466; --signal-soft: #392918;
+  --code-bg: #08121a; --code-ink: #d6e3e6; --ok: #6cc28c; --bad: #ec8274; color-scheme: dark }
 
 * { box-sizing: border-box }
-body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.7; }
+html { font-size: 18px }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 1rem; line-height: 1.85 }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--surface) }
 a { color: var(--accent) }
-a:focus-visible, button:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px }
-h1, h2, h3 { text-wrap: balance; line-height: 1.3; margin: 0 }
-.shell { display: grid; grid-template-columns: var(--side) minmax(0, 1fr); min-height: 100vh }
+:focus-visible { outline: 3px solid var(--signal); outline-offset: 2px }
+h1, h2, h3 { text-wrap: balance; line-height: 1.35; margin: 0 }
+button { font: inherit; cursor: pointer }
+code, kbd { font-family: var(--font-mono); font-size: .88em }
+p code, li code, td code, .note code { background: var(--accent-soft); padding: 1px 5px; border-radius: 4px }
+kbd { border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; padding: 0 6px; background: var(--surface) }
 
-/* sidebar */
-.side { border-right: 1px solid var(--line); background: var(--surface); position: sticky; top: 0; height: 100vh; overflow-y: auto;
-  padding-block: 20px 32px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: 16px }
-.brand { display: grid; gap: 2px; margin-bottom: 18px; text-decoration: none; color: var(--ink) }
-.brand b { font-family: var(--font-display); font-size: 20px; letter-spacing: .02em }
-.brand span { font-size: 12px; color: var(--muted) }
-.navtop { display: grid; gap: 2px; margin-bottom: 18px }
-.navtop a, .wk { display: flex; gap: 10px; align-items: baseline; padding: 5px 8px; border-radius: 6px; text-decoration: none; color: var(--ink); font-size: 14px }
-.navtop a:hover, .wk:hover { background: var(--accent-soft) }
-.navtop a.on, .wk.on { background: var(--accent); color: #fff }
-.phase { margin-top: 14px }
-.phase h4 { margin: 0 0 4px 8px; font-size: 11px; letter-spacing: .14em; color: var(--muted); font-weight: 700 }
-.wk .no { font-family: var(--font-mono); font-size: 12px; color: var(--muted); min-width: 30px; font-variant-numeric: tabular-nums }
-.wk.on .no { color: #d8f0ef }
-.wk .t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
-.menu-btn { display: none }
+/* top bar */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; height: var(--top); background: var(--surface); border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; gap: 14px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+.course { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); min-width: 0 }
+.badge { background: var(--accent); color: var(--accent-ink); font-family: var(--font-mono); font-weight: 600; font-size: 13px; padding: 4px 8px; border-radius: 6px; white-space: nowrap }
+.course b { font-family: var(--font-display); font-size: 1.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+.search { position: relative; flex: 1; max-width: 460px; margin-left: auto }
+.search input { width: 100%; font: inherit; font-size: .9rem; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface-2); color: var(--ink) }
+.results { position: absolute; top: 46px; left: 0; right: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 12px 30px rgba(0,0,0,.14); max-height: 60vh; overflow-y: auto; z-index: 25 }
+.results a { display: block; padding: 10px 14px; border-bottom: 1px solid var(--line); text-decoration: none; color: var(--ink); font-size: .92rem; line-height: 1.5 }
+.results a:last-child { border-bottom: 0 } .results a:hover, .results a:focus { background: var(--accent-soft) }
+.results small { display: block; color: var(--muted); font-size: .8rem }
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 8px; border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); text-decoration: none; font-weight: 500; font-size: .92rem; white-space: nowrap }
+.btn.ghost { background: transparent; color: var(--accent) }
+.menu-btn { display: none; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 8px; padding: 6px 12px; font-size: .9rem }
 
-/* main */
-main { min-width: 0; padding-block: 28px 64px; padding-left: clamp(16px, 4vw, 48px); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
-.wrap { max-width: 880px }
-.statusbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: flex-end; margin-bottom: 18px; font-size: 13px; color: var(--muted) }
-.pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); font-size: 12.5px }
-.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted) }
-.pill.ready .dot { background: var(--ok) } .pill.loading .dot { background: var(--signal) } .pill.fail .dot { background: var(--bad) }
+/* shell */
+.shell { display: grid; grid-template-columns: var(--side) minmax(0, 1fr); min-height: calc(100vh - var(--top)) }
+.side { background: var(--surface); border-right: 1px solid var(--line); position: sticky; top: calc(var(--top) + env(safe-area-inset-top, 0px)); height: calc(100vh - var(--top) - env(safe-area-inset-top, 0px)); overflow-y: auto;
+  padding-block: 18px 40px; padding-left: max(14px, env(safe-area-inset-left, 0px)); padding-right: 14px }
+.navgrp { margin-bottom: 18px }
+.navgrp > h4 { margin: 0 0 6px 10px; font-size: 12.5px; letter-spacing: .14em; color: var(--muted); font-weight: 700 }
+.nav a { display: flex; gap: 10px; align-items: center; padding: 7px 10px; border-radius: 8px; text-decoration: none; color: var(--ink); font-size: .92rem; line-height: 1.45 }
+.nav a:hover { background: var(--accent-soft) }
+.nav a.on { background: var(--accent); color: var(--accent-ink) }
+.nav a .no { font-family: var(--font-mono); font-size: 13px; color: var(--muted); min-width: 32px }
+.nav a.on .no { color: inherit; opacity: .85 }
+.nav a .t { flex: 1; min-width: 0 }
+.tick { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--line); flex: none }
+.tick.done { background: var(--ok); border-color: var(--ok); position: relative }
+.tick.done::after { content: ""; position: absolute; left: 4px; top: 1px; width: 5px; height: 9px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg) }
+details.mod > summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; border-radius: 8px; font-weight: 700; font-size: .95rem }
+details.mod > summary::-webkit-details-marker { display: none }
+details.mod > summary:hover { background: var(--surface-2) }
+details.mod > summary span { font-weight: 400; font-size: .8rem; color: var(--muted) }
+.prog { height: 6px; border-radius: 999px; background: var(--line); overflow: hidden }
+.prog i { display: block; height: 100%; background: var(--ok); border-radius: 999px }
 
-.eyebrow { font-family: var(--font-mono); font-size: 12.5px; letter-spacing: .08em; color: var(--signal); font-variant-numeric: tabular-nums }
-.wtitle { font-family: var(--font-display); font-size: clamp(24px, 3.4vw, 32px); margin: 4px 0 10px }
-.lede { font-size: 17px; max-width: 62ch; margin: 0 0 22px }
-.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-bottom: 28px }
-.box { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; min-width: 0 }
-.box h3 { font-size: 13px; letter-spacing: .1em; color: var(--muted); font-weight: 700; margin-bottom: 6px }
-.box ul { margin: 0; padding-left: 1.2em }
-.report { background: var(--signal-soft); border-color: transparent }
-.report h3 { color: var(--signal) }
-.report .q { margin: 6px 0 0 }
-.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px }
-.chip { font-family: var(--font-mono); font-size: 12.5px; padding: 2px 8px; border-radius: 6px; background: var(--accent-soft); color: var(--accent); text-decoration: none }
+main { min-width: 0; padding-block: 26px 80px; padding-left: clamp(16px, 4vw, 56px); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+.wrap { max-width: 980px }
+.crumb { font-size: .85rem; color: var(--muted); margin-bottom: 14px; display: flex; flex-wrap: wrap; gap: 6px }
+.crumb a { color: var(--muted) }
+.eyebrow { font-family: var(--font-mono); font-size: .82rem; letter-spacing: .06em; color: var(--signal) }
+.h1 { font-family: var(--font-display); font-size: clamp(1.6rem, 3.2vw, 2.15rem); margin: 6px 0 10px }
+.lede { font-size: 1.1rem; max-width: 60ch; margin: 0 0 16px }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px }
+.chip { font-size: .82rem; padding: 3px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); text-decoration: none; line-height: 1.6 }
+.chip.mono { font-family: var(--font-mono) }
 
-/* code chunks */
-.chunks { display: grid; gap: 26px }
-.chunk h2 { font-size: 18px; font-weight: 700; display: flex; gap: 10px; align-items: baseline }
-.chunk h2 .k { font-family: var(--font-mono); font-size: 13px; color: var(--muted); font-weight: 400 }
-.chunk p.ex { margin: 6px 0 10px; max-width: 68ch; white-space: pre-line }
-.editor { position: relative; border-radius: 10px; overflow: hidden; background: var(--code-bg) }
-.editor textarea { display: block; width: 100%; border: 0; resize: vertical; background: transparent; color: var(--code-ink);
-  font-family: var(--font-mono); font-size: 13px; line-height: 1.6; padding: 14px 16px; tab-size: 2; white-space: pre; overflow-x: auto; min-height: 60px }
-.bar { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; align-items: center }
-button { font: inherit; font-size: 13.5px; border-radius: 7px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); padding: 5px 12px; cursor: pointer }
-button.run { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 500 }
-button:disabled { opacity: .55; cursor: progress }
-.out { margin-top: 10px; display: grid; gap: 8px }
-.out .lab { font-size: 12px; letter-spacing: .1em; color: var(--muted); font-weight: 700 }
-pre.res { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; font-family: var(--font-mono);
-  font-size: 12.5px; line-height: 1.55; overflow-x: auto; white-space: pre; font-variant-numeric: tabular-nums }
-pre.res.err { border-color: var(--bad); color: var(--bad) }
-.fig { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 6px; max-width: 640px }
-.fig img, .fig canvas { display: block; width: 100%; height: auto }
-.live { border-left: 3px solid var(--accent); padding-left: 10px }
+/* tabs */
+.tabs { display: flex; gap: 4px; border-bottom: 2px solid var(--line); margin: 8px 0 24px; overflow-x: auto; scrollbar-width: thin }
+.tabs a { padding: 10px 16px; text-decoration: none; color: var(--muted); font-weight: 500; white-space: nowrap; border-bottom: 3px solid transparent; margin-bottom: -2px; font-size: .95rem }
+.tabs a:hover { color: var(--ink) }
+.tabs a.on { color: var(--accent); border-bottom-color: var(--accent) }
+.tabs a .n { font-size: .78rem; background: var(--surface-2); border: 1px solid var(--line); border-radius: 999px; padding: 0 7px; margin-left: 6px; color: var(--muted) }
 
-/* tables */
-.tbl { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface) }
-table { border-collapse: collapse; width: 100%; font-size: 14px }
-th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: top }
-th { font-size: 12.5px; color: var(--muted); font-weight: 700; letter-spacing: .04em; background: var(--bg) }
-tr:last-child td { border-bottom: 0 }
-td.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap }
-details { margin-top: 4px } summary { cursor: pointer; color: var(--accent); font-size: 13px }
-dl.cols { display: grid; grid-template-columns: max-content 1fr; gap: 2px 14px; margin: 8px 0 0; font-size: 13px }
-dl.cols dt { font-family: var(--font-mono); color: var(--accent) } dl.cols dd { margin: 0 }
+/* blocks */
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-bottom: 24px }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; min-width: 0 }
+.card h3 { font-size: .85rem; letter-spacing: .1em; color: var(--muted); font-weight: 700; margin-bottom: 8px }
+.card ul, .card ol { margin: 0; padding-left: 1.3em }
+.card.report { background: var(--signal-soft); border-color: transparent } .card.report h3 { color: var(--signal) }
+.steps { counter-reset: s; list-style: none; padding: 0 !important; display: grid; gap: 8px }
+.steps li { counter-increment: s; display: flex; gap: 12px; align-items: flex-start }
+.steps li::before { content: counter(s); flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-weight: 700; display: grid; place-items: center; font-size: .85rem; margin-top: 3px }
+.sec { font-family: var(--font-display); font-size: 1.35rem; margin: 34px 0 14px }
+.note { font-size: .88rem; color: var(--muted); max-width: 72ch }
 
-.home-hero { display: grid; gap: 10px; margin-bottom: 26px }
-.home-hero h1 { font-family: var(--font-display); font-size: clamp(28px, 4.4vw, 40px) }
-.arc { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; margin: 8px 0 28px; background: var(--surface) }
-.arc a { padding: 14px 16px; text-decoration: none; color: var(--ink); border-right: 1px solid var(--line); display: grid; gap: 2px }
-.arc a:last-child { border-right: 0 }
-.arc b { font-family: var(--font-display); font-size: 20px } .arc .r { font-family: var(--font-mono); font-size: 12px; color: var(--signal) }
-.arc span.d { font-size: 13px; color: var(--muted) }
-.sec { margin: 30px 0 12px; font-family: var(--font-display); font-size: 21px }
-.note { font-size: 13.5px; color: var(--muted); max-width: 70ch }
-.matrix td, .matrix th { min-width: 120px }
-.dag { max-width: 620px }
-.dag text { fill: var(--ink); font-family: var(--font-body); font-size: 13px }
-.dag .n rect { fill: var(--surface); stroke: var(--line) }
-.dag .n.x rect { fill: var(--accent-soft); stroke: var(--accent) }
-.dag .n.y rect { fill: var(--signal-soft); stroke: var(--signal) }
-.dag .e { stroke: var(--muted); stroke-width: 1.4; fill: none }
-
+/* terms */
+.terms { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px }
+.term { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; min-width: 0 }
+.term header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin-bottom: 6px }
+.term header b { font-size: 1.08rem } .term header i { font-style: normal; color: var(--muted); font-size: .82rem }
+.term p { margin: 0 }
+.term .ex { margin-top: 8px; font-size: .9rem; color: var(--signal); padding-left: 10px; border-left: 3px solid var(--signal-soft) }
+.term .go { display: inline-block; margin-top: 8px; font-size: .85rem }
 
 /* indicators */
-.inds { display: grid; gap: 14px; margin-bottom: 30px }
-.ind { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; min-width: 0 }
+.inds { display: grid; gap: 16px }
+.ind { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px 22px; min-width: 0 }
 .ind header { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; margin-bottom: 6px }
-.ind header b { font-size: 17px } .ind header i { font-style: normal; color: var(--muted); font-size: 13px }
+.ind header b { font-size: 1.15rem } .ind header i { font-style: normal; color: var(--muted); font-size: .85rem }
 .ind .def { margin: 0 0 10px; max-width: 72ch }
-.formula { font-family: var(--font-mono); font-size: 13px; background: var(--accent-soft); color: var(--ink); border-radius: 6px; padding: 8px 12px; margin: 0 0 12px; overflow-x: auto; white-space: pre-wrap }
-.ind dl { display: grid; grid-template-columns: 6.5em minmax(0, 1fr); gap: 6px 12px; margin: 0; font-size: 14px }
-.ind dt { color: var(--muted); font-weight: 700; font-size: 13px; padding-top: 1px }
-.ind dd { margin: 0 }
-.ind dd.ex { color: var(--signal) }
-.ind .wks { font-size: 12.5px; color: var(--muted); margin-top: 8px }
-.studio { background: var(--surface); border: 1px dashed var(--accent); border-radius: 10px; padding: 14px 18px; margin-bottom: 26px }
-.studio h3 { font-size: 15px; margin-bottom: 6px; color: var(--accent) }
-.studio ol { margin: 0; padding-left: 1.3em }
-.studio code, .note code, p code, li code { font-family: var(--font-mono); font-size: .92em; background: var(--accent-soft); padding: 0 4px; border-radius: 4px }
-.tryit { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line) }
-.tryit b { color: var(--signal) }
-pre.code { margin: 0; background: var(--code-bg); color: var(--code-ink); border-radius: 10px; padding: 14px 16px; font-family: var(--font-mono); font-size: 13px; line-height: 1.6; overflow-x: auto; white-space: pre; tab-size: 2 }
-pre.code .cm { color: #8fb3a8 }
-.glo-cat { margin-top: 28px }
-kbd { font-family: var(--font-mono); font-size: 12px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; background: var(--surface) }
-.dl { display: inline-block; padding: 8px 14px; border-radius: 8px; background: var(--accent); color: #fff; text-decoration: none; font-weight: 500 }
+.formula { font-family: var(--font-mono); font-size: .88rem; background: var(--accent-soft); border-radius: 8px; padding: 10px 14px; margin: 0 0 12px; overflow-x: auto; white-space: pre-wrap }
+.ind dl { display: grid; grid-template-columns: 6.5em minmax(0, 1fr); gap: 8px 14px; margin: 0; font-size: .95rem }
+.ind dt { color: var(--muted); font-weight: 700; font-size: .85rem; padding-top: 2px } .ind dd { margin: 0 } .ind dd.ex { color: var(--signal) }
+.ind .wks { font-size: .82rem; color: var(--muted); margin-top: 10px }
 
+/* animations */
+.anim { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; margin-bottom: 22px; min-width: 0 }
+.anim h3 { font-size: 1.15rem; margin-bottom: 6px } .anim > p { margin: 0 0 12px; color: var(--muted); font-size: .95rem; max-width: 72ch }
+.anim-svg { width: 100%; height: auto; max-width: 680px; display: block }
+.anim-svg .lbl { fill: var(--ink); font-size: 13px; font-family: var(--font-body) }
+.anim-svg .lbl.inv { fill: #fff; font-size: 12px }
+.anim-svg .big { fill: var(--ink); font-size: 17px; font-weight: 700; font-family: var(--font-body) }
+.anim-svg .mk { fill: var(--bad); font-size: 16px; font-weight: 700 }
+.anim-ctl { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center; margin: 12px 0 }
+.anim-ctl label { display: flex; flex-direction: column; gap: 2px; font-size: .9rem; min-width: 200px }
+.anim-ctl label.chk { flex-direction: row; align-items: center; gap: 8px; min-width: 0 }
+.anim-ctl input[type=range] { width: 220px; max-width: 100%; accent-color: var(--accent) }
+.anim-btn { border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); border-radius: 8px; padding: 7px 16px; font-size: .9rem }
+.anim-btn.ghost { background: transparent; color: var(--accent) }
+.anim-btn:disabled { opacity: .5; cursor: default }
+.anim-out { background: var(--surface-2); border-radius: 10px; padding: 12px 16px; font-size: .95rem; line-height: 1.75; font-variant-numeric: tabular-nums }
+.legend { font-size: .85rem; color: var(--muted); margin: 4px 0 8px }
+.sw { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -1px; margin-right: 3px }
+.sw.ok { background: var(--ok) } .sw.bad { background: var(--bad) } .sw.sig { background: var(--signal) } .sw.mu { background: var(--line) }
+.dots { display: grid; grid-template-columns: repeat(50, 1fr); gap: 2px; max-width: 600px }
+.dots i { aspect-ratio: 1; border-radius: 50%; background: var(--line); transition: background .25s }
+.dots i.ok { background: var(--ok) } .dots i.bad { background: var(--bad) } .dots i.sig { background: var(--signal) }
+.grid15 { display: grid; grid-template-columns: repeat(15, 1fr); gap: 3px; max-width: 520px }
+.grid15 span { aspect-ratio: 1; border-radius: 3px; background: color-mix(in srgb, var(--accent) calc(var(--p) * 100%), var(--surface-2)); border: 2px solid transparent }
+.grid15 span.pick { border-color: var(--signal) }
+.kv { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px }
+.kv div { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; display: grid }
+.kv span { font-size: .8rem; color: var(--muted) } .kv b { font-size: 1.25rem; font-variant-numeric: tabular-nums } .kv small { font-size: .78rem; color: var(--muted) }
+table.mini input { width: 90px; font: inherit; padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface-2); color: var(--ink) }
+
+/* code */
+.chunks { display: grid; gap: 30px }
+.chunk h3 { font-size: 1.1rem; display: flex; gap: 10px; align-items: baseline }
+.chunk h3 .k { font-family: var(--font-mono); font-size: .85rem; color: var(--muted); font-weight: 400 }
+.chunk p.ex { margin: 6px 0 10px; max-width: 70ch; white-space: pre-line }
+pre.code { margin: 0; background: var(--code-bg); color: var(--code-ink); border-radius: 10px; padding: 16px 18px; font-family: var(--font-mono); font-size: .84rem; line-height: 1.65; overflow-x: auto; white-space: pre }
+pre.code .cm { color: #8fb3a8 }
+.bar { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; align-items: center }
+.bar button { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 8px; padding: 5px 14px; font-size: .88rem }
+.out { margin-top: 10px; display: grid; gap: 8px }
+.out .lab { font-size: .78rem; letter-spacing: .1em; color: var(--muted); font-weight: 700 }
+pre.res { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; font-family: var(--font-mono); font-size: .8rem; line-height: 1.55; overflow-x: auto; white-space: pre; font-variant-numeric: tabular-nums }
+.fig { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 6px; max-width: 680px } .fig img { display: block; width: 100%; height: auto }
+.studio { background: var(--surface); border: 2px dashed var(--accent); border-radius: 12px; padding: 16px 20px; margin-bottom: 24px }
+.studio h3 { font-size: 1rem; color: var(--accent); margin-bottom: 6px } .studio ol { margin: 0; padding-left: 1.3em }
+.tryit { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line) } .tryit b { color: var(--signal) }
+
+/* tables */
+.tblwrap, .tbl { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--surface) }
+table { border-collapse: collapse; width: 100%; font-size: .92rem }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top }
+th { font-size: .82rem; color: var(--muted); font-weight: 700; background: var(--surface-2) }
+tr:last-child td { border-bottom: 0 }
+td.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap }
+details.cols summary { cursor: pointer; color: var(--accent); font-size: .85rem }
+dl.cols { display: grid; grid-template-columns: max-content 1fr; gap: 2px 14px; margin: 8px 0 0; font-size: .85rem } dl.cols dt { font-family: var(--font-mono); color: var(--accent) } dl.cols dd { margin: 0 }
+.refs { display: grid; gap: 12px; padding: 0; list-style: none }
+.refs li { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 18px }
+.refs .u { display: block; margin-top: 6px; font-size: .9rem; color: var(--muted) }
+.tb { display: grid; grid-template-columns: 5.5em minmax(0, 1fr); gap: 6px 14px; margin: 0 } .tb dt { color: var(--muted); font-weight: 700; font-size: .88rem } .tb dd { margin: 0 }
+
+/* home */
+.dash { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 16px; margin: 18px 0 26px }
+.next { background: var(--accent); color: var(--accent-ink); border-radius: 14px; padding: 22px 24px; display: grid; gap: 6px; text-decoration: none; align-content: start }
+.next .eyebrow { color: inherit; opacity: .85 } .next b { font-family: var(--font-display); font-size: 1.4rem; line-height: 1.35 } .next span { opacity: .9 }
+.mods { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px }
+.mod-card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; display: grid; gap: 8px; align-content: start }
+.mod-card h3 { font-family: var(--font-display); font-size: 1.2rem } .mod-card .r { font-family: var(--font-mono); font-size: .8rem; color: var(--signal) }
+.mod-card ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px }
+.mod-card li a { display: flex; gap: 8px; align-items: center; text-decoration: none; color: var(--ink); font-size: .9rem; padding: 3px 0 }
+.unitbar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: center; margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--line) }
+.donebtn { border: 2px solid var(--ok); background: transparent; color: var(--ok); border-radius: 999px; padding: 8px 18px; font-weight: 700 }
+.donebtn.done { background: var(--ok); color: #fff }
+.filter { width: 100%; max-width: 420px; font: inherit; padding: 8px 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); margin-bottom: 16px }
+.matrix td, .matrix th { min-width: 120px }
+
+@media (max-width: 980px) { .dash { grid-template-columns: minmax(0, 1fr) } .mods { grid-template-columns: minmax(0, 1fr) } }
 @media (max-width: 860px) {
+  html { font-size: 17px }
   .shell { grid-template-columns: minmax(0, 1fr) }
-  .side { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--line); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+  .side { position: fixed; inset: calc(var(--top) + env(safe-area-inset-top, 0px)) 0 0 0; height: auto; z-index: 15; display: none; padding-right: max(14px, env(safe-area-inset-right, 0px)) }
+  .side.open { display: block }
   .menu-btn { display: inline-block }
-  .ind dl { grid-template-columns: minmax(0, 1fr) } .ind dt { padding-top: 6px }
-  .side .navwrap { display: none } .side.open .navwrap { display: block }
-  .sidehead { display: flex; justify-content: space-between; align-items: center; gap: 10px }
-  .brand { margin-bottom: 0 }
-  .arc { grid-template-columns: minmax(0, 1fr) } .arc a { border-right: 0; border-bottom: 1px solid var(--line) }
+  .top .btn { display: none }
+  .search { max-width: none }
+  .course b { display: none }
+  .ind dl, .tb { grid-template-columns: minmax(0, 1fr) }
+  .grid2, .terms { grid-template-columns: minmax(0, 1fr) }
 }
-@media (prefers-reduced-motion: no-preference) { .view { animation: fade .18s ease-out } @keyframes fade { from { opacity: .4 } to { opacity: 1 } } }
+@media (prefers-reduced-motion: no-preference) { .view { animation: fade .2s ease-out } @keyframes fade { from { opacity: .5 } to { opacity: 1 } } }
 </style>
 
+<header class="top">
+  <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="side">選單</button>
+  <a class="course" href="#home"><span class="badge">EPI-EMS 115-2</span><b>流行病學方法論</b></a>
+  <div class="search"><input id="q" type="search" placeholder="搜尋名詞、指標或單元（例如：SMR、設限）" autocomplete="off" aria-label="搜尋"><div class="results" id="qres" hidden></div></div>
+  <a class="btn" href="epi-ems-rstudio.zip" download>下載 R 專案</a>
+</header>
 <div class="shell">
-  <aside class="side" id="side">
-    <div class="sidehead">
-      <a class="brand" href="#home"><b>流行病學方法論</b><span>EMS 與災難數據版 · 115-2</span></a>
-      <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="side">週次</button>
-    </div>
-    <div class="navwrap">
-      <nav class="navtop" id="navtop"></nav>
-      <nav id="nav"></nav>
-    </div>
-  </aside>
-  <main>
-    <div class="wrap">
-      <div id="view" class="view"></div>
-    </div>
-  </main>
+  <aside class="side" id="side"><nav class="nav" id="nav"></nav></aside>
+  <main><div class="wrap"><div id="view" class="view"></div></div></main>
 </div>
 
 <script src="weeks.js"></script>
+<script src="terms.js"></script>
 <script src="indicators.js"></script>
+<script src="refs.js"></script>
+<script src="anim_data.js"></script>
+<script src="anim.js"></script>
 <script src="outputs.js"></script>
 <script>
 (function () {
-  const C = window.COURSE, D = window.DATASETS, IND = window.INDICATORS || [], CODE = window.WEEK_CODE || {};
+  const C = window.COURSE, D = window.DATASETS, IND = window.INDICATORS || [], T = window.TERMS || {}, R = window.WEEK_REFS || {}, TB = window.TEXTBOOKS || {}, AN = window.ANIM || {}, CODE = window.WEEK_CODE || {};
   const pad = n => String(n).padStart(2, "0");
   const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const ZIP = "epi-ems-rstudio.zip";
+  const PH = { measure: "單元一 測量", infer: "單元二 推論", apply: "單元三 整合" };
 
-  // ---------- navigation ----------
-  const navtop = document.getElementById("navtop"), nav = document.getElementById("nav");
-  navtop.innerHTML = [["home", "課程首頁"], ["setup", "RStudio 準備"], ["glossary", "指標辭典"], ["data", "資料與變項說明"], ["reports", "年報與 Utstein 報告"]]
-    .map(([h, t]) => `<a href="#${h}" data-h="${h}">${t}</a>`).join("");
-  nav.innerHTML = C.phases.map(p => `<div class="phase"><h4>${p.name} · ${p.range}</h4>` +
-    C.weeks.filter(w => w.phase === p.id).map(w =>
-      `<a class="wk" href="#w${pad(w.n)}" data-h="w${pad(w.n)}"><span class="no">W${pad(w.n)}</span><span class="t">${esc(w.title)}</span></a>`).join("") + "</div>").join("");
-  const side = document.getElementById("side"), menuBtn = document.getElementById("menuBtn");
+  const KEY = "epi-ems-done";
+  const getDone = () => { try { return new Set(JSON.parse(localStorage.getItem(KEY) || "[]")) } catch { return new Set() } };
+  const setDone = s => { try { localStorage.setItem(KEY, JSON.stringify([...s])) } catch {} };
+  let done = getDone();
+
+  const nav = document.getElementById("nav"), side = document.getElementById("side"), menuBtn = document.getElementById("menuBtn");
+  function renderNav() {
+    const open = (() => { try { return JSON.parse(localStorage.getItem("epi-ems-open") || "null") } catch { return null } })() || ["measure", "infer", "apply"];
+    nav.innerHTML = `
+      <div class="navgrp"><h4>課程</h4>
+        <a href="#home" data-h="home">課程首頁</a><a href="#setup" data-h="setup">RStudio 準備</a><a href="#textbook" data-h="textbook">教科書對照</a></div>
+      <div class="navgrp"><h4>學習資源</h4>
+        <a href="#terms" data-h="terms">名詞索引</a><a href="#glossary" data-h="glossary">指標辭典</a><a href="#data" data-h="data">資料與變項</a><a href="#reports" data-h="reports">年報與文獻</a></div>
+      <div class="navgrp"><h4>單元與週次</h4>
+      ${C.phases.map(p => { const ws = C.weeks.filter(w => w.phase === p.id), d = ws.filter(w => done.has(w.n)).length;
+        return `<details class="mod" data-p="${p.id}" ${open.includes(p.id) ? "open" : ""}><summary>${PH[p.id]}<span>${d}/${ws.length}</span></summary>
+          ${ws.map(w => `<a href="#w${pad(w.n)}" data-h="w${pad(w.n)}"><span class="no">W${pad(w.n)}</span><span class="t">${esc(w.title)}</span><span class="tick ${done.has(w.n) ? "done" : ""}"></span></a>`).join("")}</details>` }).join("")}
+      </div>`;
+    nav.querySelectorAll("details.mod").forEach(d => d.addEventListener("toggle", () => {
+      try { localStorage.setItem("epi-ems-open", JSON.stringify([...nav.querySelectorAll("details.mod[open]")].map(x => x.dataset.p))) } catch {} }));
+    markNav();
+  }
+  function markNav() { const h = (location.hash || "#home").slice(1).split("-")[0]; nav.querySelectorAll("[data-h]").forEach(a => a.classList.toggle("on", a.dataset.h === h)) }
   menuBtn.addEventListener("click", () => { const o = side.classList.toggle("open"); menuBtn.setAttribute("aria-expanded", o) });
 
-  // ---------- views ----------
+  const q = document.getElementById("q"), qres = document.getElementById("qres");
+  const INDEX = [];
+  C.weeks.forEach(w => INDEX.push({ k: "單元", t: `W${pad(w.n)} ${w.title}`, s: w.lede, h: `w${pad(w.n)}`, hay: (w.title + w.lede).toLowerCase() }));
+  Object.entries(T).forEach(([n, arr]) => arr.forEach(x => INDEX.push({ k: "名詞", t: `${x.t}（${x.en}）`, s: x.d, h: `w${pad(+n)}-terms`, hay: (x.t + x.en + x.d).toLowerCase() })));
+  IND.forEach(x => INDEX.push({ k: "指標", t: `${x.zh}（${x.en}）`, s: x.def, h: `w${pad(x.weeks[0])}-ind`, hay: (x.zh + x.en + x.def).toLowerCase() }));
+  q.addEventListener("input", () => {
+    const s = q.value.trim().toLowerCase(); if (!s) { qres.hidden = true; return }
+    const hits = INDEX.filter(x => x.hay.includes(s)).slice(0, 12);
+    qres.innerHTML = hits.length ? hits.map(x => `<a href="#${x.h}"><b>${esc(x.t)}</b><small>${x.k} · ${esc(x.s.slice(0, 60))}…</small></a>`).join("") : `<a href="#terms">找不到「${esc(q.value)}」，到名詞索引看看</a>`;
+    qres.hidden = false;
+  });
+  qres.addEventListener("click", () => { qres.hidden = true; q.value = "" });
+  document.addEventListener("click", e => { if (!e.target.closest(".search")) qres.hidden = true });
+
   const view = document.getElementById("view");
   function route() {
     const h = (location.hash || "#home").slice(1);
-    document.querySelectorAll("[data-h]").forEach(a => a.classList.toggle("on", a.dataset.h === h));
-    side.classList.remove("open"); menuBtn.setAttribute("aria-expanded", "false");
-    if (/^w\d\d$/.test(h)) renderWeek(+h.slice(1));
-    else if (h === "data") renderData();
-    else if (h === "reports") renderReports();
-    else if (h === "setup") renderSetup();
-    else if (h === "glossary") renderGlossary();
+    side.classList.remove("open"); menuBtn.setAttribute("aria-expanded", "false"); markNav();
+    const m = h.match(/^w(\d\d)(?:-(\w+))?$/);
+    if (m) renderWeek(+m[1], m[2] || "ov");
+    else if (h === "data") renderData(); else if (h === "reports") renderReports(); else if (h === "setup") renderSetup();
+    else if (h === "glossary") renderGlossary(); else if (h === "terms") renderTerms(); else if (h === "textbook") renderTextbook();
     else renderHome();
     view.querySelectorAll("[data-copy]").forEach(b => b.addEventListener("click", onCopy));
     window.scrollTo(0, 0);
   }
   window.addEventListener("hashchange", route);
-  const weekLink = n => `<a href="#w${pad(n)}">W${pad(n)}</a>`;
+  const wl = n => `<a href="#w${pad(n)}">W${pad(n)}</a>`;
+  const crumb = items => `<nav class="crumb" aria-label="路徑">${items.map((x, i) => i < items.length - 1 ? `<a href="${x[1]}">${esc(x[0])}</a><span>›</span>` : `<span>${esc(x[0])}</span>`).join("")}</nav>`;
+  const contentWeeks = C.weeks.filter(w => !w.exam);
 
   function renderHome() {
+    const nextW = C.weeks.find(w => !done.has(w.n)) || C.weeks[0];
+    const nd = contentWeeks.filter(w => done.has(w.n)).length;
     view.innerHTML = `
-      <div class="home-hero">
-        <div class="eyebrow">健康科技學院碩士班 · 選修 · 115 學年度第 2 學期</div>
-        <h1>流行病學方法論<br>EMS 與災難數據版</h1>
-        <p class="lede">同一套流行病學方法，換成救護出勤、OHCA 登錄、創傷登錄與災後調查的數據來練習。每週先弄懂指標的定義與用途，再讀一份真實年報，最後在 RStudio 用虛構城市「北濱市」的模擬資料親手算一次。</p>
-        <p class="note">${esc(C.meta)}</p>
-        <p><a class="dl" href="${ZIP}" download>下載 R 專案（資料＋每週程式）</a>　<a href="#setup">第一次使用請先看 RStudio 準備 →</a></p>
+      <div class="eyebrow">健康科技學院碩士班 · 選修 · 115 學年度第 2 學期</div>
+      <h1 class="h1">流行病學方法論（EMS 與災難數據版）</h1>
+      <p class="lede">每週依同一個流程學習：先弄懂名詞，再操作動畫理解指標，接著讀一份真實年報，最後在 RStudio 用虛構城市「北濱市」的模擬資料親手算一次。</p>
+      <div class="dash">
+        <a class="next" href="#w${pad(nextW.n)}"><span class="eyebrow">繼續學習 · W${pad(nextW.n)} · ${nextW.date}</span><b>${esc(nextW.title)}</b><span>${esc(nextW.lede)}</span></a>
+        <div class="card"><h3>我的進度</h3><div style="font-size:1.6rem;font-weight:700">${nd} / ${contentWeeks.length} 週</div>
+          <div class="prog" style="margin:8px 0 12px"><i style="width:${nd / contentWeeks.length * 100}%"></i></div>
+          <p class="note" style="margin:0">每週頁面底部按「標記本週已完成」。進度只存在你這台裝置的瀏覽器。</p>
+          <p style="margin:12px 0 0;display:flex;gap:8px;flex-wrap:wrap"><a class="btn" href="${ZIP}" download>下載 R 專案</a><a class="btn ghost" href="#setup">RStudio 準備</a></p></div>
       </div>
-      <div class="arc">${C.phases.map(p => {
-        const first = C.weeks.find(w => w.phase === p.id);
-        return `<a href="#w${pad(first.n)}"><span class="r">${p.range}</span><b>${p.name}</b><span class="d">${esc(p.desc)}</span></a>`}).join("")}</div>
-      <h2 class="sec">18 週進度</h2>
-      <div class="tbl"><table>
-        <thead><tr><th>週</th><th>日期</th><th>單元</th><th>本週指標</th></tr></thead>
-        <tbody>${C.weeks.map(w => `<tr><td class="num"><a href="#w${pad(w.n)}">W${pad(w.n)}</a></td><td class="num">${w.date}</td>
-          <td>${esc(w.title)}</td><td>${IND.filter(x => x.weeks[0] === w.n).map(x => esc(x.zh)).join("、") || "—"}</td></tr>`).join("")}</tbody></table></div>
-      <p class="note">日期依 2027/2/25 開課推算，以學校公告校曆為準。所有資料皆為教學用模擬資料，不代表任何真實個人、機構或地區。</p>`;
+      <div class="mods">${C.phases.map(p => { const ws = C.weeks.filter(w => w.phase === p.id);
+        return `<div class="mod-card"><span class="r">${p.range}</span><h3>${PH[p.id]}</h3><p class="note" style="margin:0">${esc(p.desc)}</p>
+          <ul>${ws.map(w => `<li><a href="#w${pad(w.n)}"><span class="tick ${done.has(w.n) ? "done" : ""}"></span>W${pad(w.n)} ${esc(w.title)}</a></li>`).join("")}</ul></div>` }).join("")}</div>
+      <h2 class="sec">學習資源</h2>
+      <div class="grid2">
+        <a class="card" href="#terms" style="text-decoration:none;color:inherit"><h3>名詞索引</h3>${Object.values(T).reduce((s, a) => s + a.length, 0)} 個名詞，每個都有白話定義與救護例子。</a>
+        <a class="card" href="#glossary" style="text-decoration:none;color:inherit"><h3>指標辭典</h3>${IND.length} 個流病指標：定義、公式、為什麼用、怎麼解讀、常見錯誤。</a>
+        <a class="card" href="#textbook" style="text-decoration:none;color:inherit"><h3>教科書對照</h3>每週主題對應 Gordis 中譯本與史麗珠《流行病學原理》的章節。</a>
+        <a class="card" href="#reports" style="text-decoration:none;color:inherit"><h3>年報與文獻</h3>Utstein 報告、救護年報，以及實際使用這些指標的已發表研究。</a>
+      </div>
+      <p class="note">${esc(C.meta)}。日期依 2027/2/25 開課推算，以學校校曆為準。所有資料皆為教學用模擬資料，不代表任何真實個人、機構或地區。</p>`;
   }
 
   function renderSetup() {
-    view.innerHTML = `<div class="eyebrow">SETUP · 第一週上課前完成</div><h1 class="wtitle">RStudio 準備</h1>
+    view.innerHTML = crumb([["課程首頁", "#home"], ["RStudio 準備"]]) + `<div class="eyebrow">SETUP · 第一週上課前完成</div><h1 class="h1">RStudio 準備</h1>
       <p class="lede">整學期都用同一個 R 專案：開一次專案，之後每週只要打開當週的程式檔逐段執行。</p>
       <h2 class="sec">一次性設定</h2>
       <div class="studio"><ol>
         <li>安裝 R（<a href="https://cran.r-project.org/" target="_blank" rel="noopener">CRAN</a>），再安裝 RStudio Desktop（<a href="https://posit.co/download/rstudio-desktop/" target="_blank" rel="noopener">Posit</a>）。順序不能顛倒。</li>
-        <li>下載 <a href="${ZIP}" download><code>${ZIP}</code></a>，解壓縮到<strong>沒有中文與空白</strong>的路徑，例如 <code>C:\\R\\epi-ems</code> 或 <code>~/R/epi-ems</code>。</li>
-        <li>雙擊資料夾裡的 <code>epi-ems.Rproj</code>。RStudio 會把工作目錄自動設在專案資料夾，程式中的 <code>data/ohca.csv</code> 就找得到。</li>
-        <li>在 Console 執行一次 <code>install.packages("survival")</code>（第 7、13 週用到；其他週只用 R 內建函式）。</li>
-        <li>打開 <code>R/weeks/w01.R</code>，按 <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Enter</kbd>（Mac：<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>Enter</kbd>）整份執行。看到 <code>36499 10</code> 就代表設定完成。</li>
-      </ol></div>
+        <li>下載 <a href="${ZIP}" download><code>${ZIP}</code></a>，解壓縮到<strong>沒有中文與空白</strong>的路徑，例如 <code>C:\\R\\epi-ems</code>。</li>
+        <li>雙擊資料夾裡的 <code>epi-ems.Rproj</code>。RStudio 會把工作目錄自動設在專案資料夾。</li>
+        <li>在 Console 執行一次 <code>install.packages("survival")</code>（第 7、13 週用到）。</li>
+        <li>打開 <code>R/weeks/w01.R</code>，按 <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Enter</kbd> 整份執行。看到 <code>36499 10</code> 就完成了。</li></ol></div>
       <h2 class="sec">每週上課怎麼跟</h2>
       <div class="studio"><ol>
-        <li>開啟 <code>epi-ems.Rproj</code> → 右下 Files 窗格進入 <code>R/weeks/</code> → 打開當週檔案，例如 <code>w05.R</code>。</li>
-        <li>每個 <code>## ----</code> 是一段。游標放在該段，按 <kbd>Ctrl</kbd>+<kbd>Enter</kbd> 逐行執行，一邊對照網站上的「參考輸出」。</li>
-        <li>按 <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>O</kbd> 可開啟文件大綱，直接跳到某一段。</li>
-        <li>每週頁面最後有「動手改一改」：改一個參數再跑一次，把結果寫進課堂筆記。</li>
-      </ol></div>
+        <li>開啟 <code>epi-ems.Rproj</code> → 右下 Files 窗格進入 <code>R/weeks/</code> → 打開當週檔案。</li>
+        <li>每個 <code>## ----</code> 是一段。游標放在該段，按 <kbd>Ctrl</kbd>+<kbd>Enter</kbd> 逐行執行，對照網站「R 實作」分頁的參考輸出。</li>
+        <li><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>O</kbd> 開啟大綱，可直接跳到某一段。</li>
+        <li>每週最後做「動手改一改」，把結果寫進課堂筆記。</li></ol></div>
       <h2 class="sec">常見問題</h2>
       <div class="tbl"><table><thead><tr><th>訊息</th><th>原因與解法</th></tr></thead><tbody>
-        <tr><td><code>cannot open file 'data/ohca.csv'</code></td><td>沒有從 <code>epi-ems.Rproj</code> 開啟，工作目錄不對。關掉 RStudio，改雙擊 <code>.Rproj</code>；或 Session → Set Working Directory → To Project Directory。</td></tr>
+        <tr><td><code>cannot open file 'data/ohca.csv'</code></td><td>沒有從 <code>epi-ems.Rproj</code> 開啟。改雙擊 <code>.Rproj</code>，或 Session → Set Working Directory → To Project Directory。</td></tr>
         <tr><td><code>object 'ohca' not found</code></td><td>跳著執行。請從該週第一段依序往下跑。</td></tr>
         <tr><td><code>there is no package called 'survival'</code></td><td>執行 <code>install.packages("survival")</code>。</td></tr>
-        <tr><td>程式中的中文變亂碼</td><td>File → Reopen with Encoding → UTF-8；並在 Tools → Global Options → Code → Saving 把預設編碼設為 UTF-8。</td></tr>
-        <tr><td>圖的中文字變方塊</td><td>課程的圖都使用英文標籤；自己加中文標籤時，Windows 可加 <code>par(family = "Microsoft JhengHei")</code>。</td></tr>
+        <tr><td>程式中的中文變亂碼</td><td>File → Reopen with Encoding → UTF-8。</td></tr>
+        <tr><td>圖的中文字變方塊</td><td>課程的圖都用英文標籤；要加中文時，Windows 可加 <code>par(family = "Microsoft JhengHei")</code>。</td></tr>
       </tbody></table></div>`;
+  }
+
+  function renderTextbook() {
+    view.innerHTML = crumb([["課程首頁", "#home"], ["教科書對照"]]) + `<div class="eyebrow">TEXTBOOKS</div><h1 class="h1">教科書對照</h1>
+      <p class="lede">每週主題都對應到兩本指定教科書的章節；教科書沒有涵蓋的部分以「延伸」標示，並在該週「教科書與文獻」分頁附上原始文獻。</p>
+      <div class="grid2"><div class="card"><h3>教科書 G</h3><a href="${TB.G.url}" target="_blank" rel="noopener">${esc(TB.G.name)}</a></div>
+        <div class="card"><h3>教科書 S</h3><a href="${TB.S.url}" target="_blank" rel="noopener">${esc(TB.S.name)}</a></div></div>
+      <div class="tbl"><table><thead><tr><th>週</th><th>主題</th><th>Gordis（G）</th><th>史麗珠（S）</th><th>延伸</th></tr></thead><tbody>
+      ${C.weeks.map(w => { const r = R[w.n] || {}; return `<tr><td class="num">${wl(w.n)}</td><td>${esc(w.title)}</td><td>${esc(r.G || "—")}</td><td>${esc(r.S || "—")}</td><td>${esc(r.ext || "")}</td></tr>` }).join("")}
+      </tbody></table></div>
+      <p class="note">章節依藝軒圖書（Gordis 第 5 版中譯）與博客來（史麗珠二版）公開目錄比對。</p>`;
+  }
+
+  function termCard(x, n, showWeek) {
+    return `<article class="term" data-hay="${esc((x.t + x.en + x.d).toLowerCase())}"><header><b>${esc(x.t)}</b><i>${esc(x.en)}</i></header><p>${esc(x.d)}</p>
+      ${x.ex ? `<div class="ex">${esc(x.ex)}</div>` : ""}
+      ${x.anim && AN[x.anim] ? `<a class="go" href="#w${pad(n)}-anim">看動畫：${esc(AN[x.anim].title)} →</a>` : ""}
+      ${showWeek ? `<div class="note" style="margin-top:6px">${wl(n)}</div>` : ""}</article>`;
+  }
+  function renderTerms() {
+    view.innerHTML = crumb([["課程首頁", "#home"], ["名詞索引"]]) + `<div class="eyebrow">TERMS</div><h1 class="h1">名詞索引</h1>
+      <p class="lede">依週次排列。輸入關鍵字可即時篩選。</p>
+      <input class="filter" id="tf" type="search" placeholder="篩選名詞（中文或英文）" aria-label="篩選名詞">
+      <div id="tl">${Object.entries(T).filter(([, a]) => a.length).map(([n, a]) => `<section data-w="${n}"><h2 class="sec">${wl(+n)} ${esc(C.weeks.find(w => w.n === +n).title)}</h2><div class="terms">${a.map(x => termCard(x, +n, false)).join("")}</div></section>`).join("")}</div>`;
+    const tf = view.querySelector("#tf");
+    tf.addEventListener("input", () => { const s = tf.value.trim().toLowerCase();
+      view.querySelectorAll("#tl section").forEach(sec => { let any = false; sec.querySelectorAll(".term").forEach(c => { const m = !s || c.dataset.hay.includes(s); c.hidden = !m; any = any || m }); sec.hidden = !any }) });
   }
 
   function indCard(x, showWeeks) {
-    return `<article class="ind" id="ind-${x.id}">
-      <header><b>${esc(x.zh)}</b><i>${esc(x.en)}</i></header>
-      <p class="def">${esc(x.def)}</p>
-      <div class="formula">${esc(x.formula)}</div>
-      <dl><dt>為什麼用</dt><dd>${esc(x.why)}</dd><dt>怎麼解讀</dt><dd>${esc(x.how)}</dd>
-      <dt>常見錯誤</dt><dd>${esc(x.pitfall)}</dd><dt>北濱市</dt><dd class="ex">${esc(x.ex)}</dd></dl>
-      ${showWeeks ? `<div class="wks">出現週次：${x.weeks.map(weekLink).join(" ")}</div>` : ""}
-    </article>`;
+    return `<article class="ind" id="ind-${x.id}"><header><b>${esc(x.zh)}</b><i>${esc(x.en)}</i></header>
+      <p class="def">${esc(x.def)}</p><div class="formula">${esc(x.formula)}</div>
+      <dl><dt>為什麼用</dt><dd>${esc(x.why)}</dd><dt>怎麼解讀</dt><dd>${esc(x.how)}</dd><dt>常見錯誤</dt><dd>${esc(x.pitfall)}</dd><dt>北濱市</dt><dd class="ex">${esc(x.ex)}</dd></dl>
+      ${showWeeks ? `<div class="wks">出現週次：${x.weeks.map(wl).join(" ")}</div>` : ""}</article>`;
   }
-
   function renderGlossary() {
     const cats = [...new Set(IND.map(x => x.cat))];
-    view.innerHTML = `<div class="eyebrow">GLOSSARY · ${IND.length} 個指標</div><h1 class="wtitle">指標辭典</h1>
-      <p class="lede">每個指標都回答五件事：它是什麼、怎麼算、什麼時候該用、數字怎麼讀、最常犯的錯。考試與報告請以這裡的定義為準。</p>
-      <div class="tbl"><table><thead><tr><th>分類</th><th>指標</th></tr></thead><tbody>
-      ${cats.map(c => `<tr><td><b>${esc(c)}</b></td><td>${IND.filter(x => x.cat === c).map(x => `<a href="#glossary" data-jump="ind-${x.id}">${esc(x.zh)}</a>`).join("、")}</td></tr>`).join("")}
-      </tbody></table></div>
-      ${cats.map(c => `<h2 class="sec glo-cat">${esc(c)}</h2><div class="inds">${IND.filter(x => x.cat === c).map(x => indCard(x, true)).join("")}</div>`).join("")}`;
-    view.querySelectorAll("[data-jump]").forEach(a => a.addEventListener("click", e => {
-      e.preventDefault(); document.getElementById(a.dataset.jump).scrollIntoView({ behavior: "smooth", block: "start" }) }));
+    view.innerHTML = crumb([["課程首頁", "#home"], ["指標辭典"]]) + `<div class="eyebrow">INDICATORS · ${IND.length} 個指標</div><h1 class="h1">指標辭典</h1>
+      <p class="lede">每個指標都回答五件事：它是什麼、怎麼算、什麼時候用、數字怎麼讀、最常犯的錯。考試與報告以這裡的定義為準。</p>
+      <div class="chips">${cats.map((c, i) => `<a class="chip" href="#glossary" data-jump="cat-${i}">${esc(c)}</a>`).join("")}</div>
+      ${cats.map((c, i) => `<h2 class="sec" id="cat-${i}">${esc(c)}</h2><div class="inds">${IND.filter(x => x.cat === c).map(x => indCard(x, true)).join("")}</div>`).join("")}`;
+    view.querySelectorAll("[data-jump]").forEach(a => a.addEventListener("click", e => { e.preventDefault(); document.getElementById(a.dataset.jump).scrollIntoView({ behavior: "smooth" }) }));
   }
 
   function renderData() {
-    view.innerHTML = `<div class="eyebrow">DATA · 北濱市（虛構）</div><h1 class="wtitle">資料與變項說明</h1>
-      <p class="lede">15 份 CSV 都在 R 專案的 <code>data/</code> 資料夾，由 <code>R/sim_data.R</code>（固定亂數種子）產生；全班拿到的資料完全相同。</p>
-      <p><a class="dl" href="${ZIP}" download>下載 R 專案</a></p>
+    view.innerHTML = crumb([["課程首頁", "#home"], ["資料與變項"]]) + `<div class="eyebrow">DATA · 北濱市（虛構）</div><h1 class="h1">資料與變項說明</h1>
+      <p class="lede">15 份 CSV 都在 R 專案的 <code>data/</code> 資料夾，由 <code>R/sim_data.R</code>（固定亂數種子）產生，全班資料完全相同。</p>
+      <p><a class="btn" href="${ZIP}" download>下載 R 專案</a></p>
       <div class="tbl"><table><thead><tr><th>檔案</th><th>內容</th><th>筆數</th><th>週次</th></tr></thead><tbody>
-      ${D.map(d => `<tr id="ds-${d.file}"><td><a class="chip" href="data/${d.file}" download>${d.file}</a></td>
-        <td><b>${esc(d.name)}</b><br><span class="note">${esc(d.desc)}</span>
-        <details><summary>欄位說明</summary><dl class="cols">${Object.entries(d.cols).map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")}</dl></details></td>
-        <td class="num">${d.rows.toLocaleString()}</td><td class="num">${d.weeks.map(weekLink).join(" ")}</td></tr>`).join("")}
-      </tbody></table></div>`;
+      ${D.map(d => `<tr><td><code>${d.file}</code></td><td><b>${esc(d.name)}</b><br><span class="note">${esc(d.desc)}</span>
+        <details class="cols"><summary>欄位說明</summary><dl class="cols">${Object.entries(d.cols).map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")}</dl></details></td>
+        <td class="num">${d.rows.toLocaleString()}</td><td class="num">${d.weeks.map(wl).join(" ")}</td></tr>`).join("")}</tbody></table></div>`;
   }
 
   function renderReports() {
     const seen = new Map();
-    C.weeks.forEach(w => [w.report, w.extraReport].filter(Boolean).forEach(r => {
-      if (!seen.has(r.url)) seen.set(r.url, { name: r.name.split("：")[0], url: r.url, weeks: [] });
-      if (!seen.get(r.url).weeks.includes(w.n)) seen.get(r.url).weeks.push(w.n);
-    }));
-    view.innerHTML = `<div class="eyebrow">REPORTS</div><h1 class="wtitle">年報與 Utstein 報告</h1>
-      <p class="lede">每週的「年報對照」都從這些報告出題：先在真實報告裡找到指標，確認它的分子與分母，再用模擬資料重算一次。</p>
+    C.weeks.forEach(w => [w.report, w.extraReport].filter(Boolean).forEach(r => { if (!seen.has(r.url)) seen.set(r.url, { name: r.name.split("：")[0], url: r.url, weeks: [] }); if (!seen.get(r.url).weeks.includes(w.n)) seen.get(r.url).weeks.push(w.n) }));
+    const lit = []; Object.entries(R).forEach(([n, r]) => (r.refs || []).forEach(x => lit.push({ ...x, n: +n })));
+    view.innerHTML = crumb([["課程首頁", "#home"], ["年報與文獻"]]) + `<div class="eyebrow">REPORTS & LITERATURE</div><h1 class="h1">年報與文獻</h1>
+      <p class="lede">年報用來練習「在真實報告裡找到指標」；文獻證明這些指標與方法確實被用在救護與災難研究中。</p>
+      <h2 class="sec">年報與 Utstein 報告</h2>
       <div class="tbl"><table><thead><tr><th>報告</th><th>週次</th></tr></thead><tbody>
-      ${[...seen.values()].map(r => `<tr><td><a href="${r.url}" target="_blank" rel="noopener">${esc(r.name)}</a></td><td class="num">${r.weeks.map(weekLink).join(" ")}</td></tr>`).join("")}
-      </tbody></table></div>
-      <p class="note">台灣目前沒有全國統一的 OHCA 與創傷登錄年報；這個缺口本身就是第 2 週與第 18 週的討論題。</p>`;
+      ${[...seen.values()].map(r => `<tr><td><a href="${r.url}" target="_blank" rel="noopener">${esc(r.name)}</a></td><td class="num">${r.weeks.map(wl).join(" ")}</td></tr>`).join("")}</tbody></table></div>
+      <h2 class="sec">已發表研究（依週次）</h2>
+      <div class="tbl"><table><thead><tr><th>週</th><th>文獻</th><th>用到什麼</th></tr></thead><tbody>
+      ${lit.map(x => `<tr><td class="num">${wl(x.n)}</td><td><a href="${x.url}" target="_blank" rel="noopener">${esc(x.cite)}</a></td><td>${esc(x.uses)}</td></tr>`).join("")}</tbody></table></div>
+      <p class="note">部分連結為 PubMed 標題搜尋，點開後第一筆即為該文獻。</p>`;
   }
 
   function haddonTable() {
     const rows = ["事前（Pre-event）", "事中（Event）", "事後（Post-event）"], cols = ["宿主（人）", "媒介／載具", "物理環境", "社會環境"];
-    return `<h2 class="sec">課堂實作：Haddon 矩陣</h2><p class="note">以「夜間機車自撞」為例，每格寫一個可介入的因子，並標出屬於初段、次段或末段預防。</p>
+    return `<h2 class="sec">課堂實作：Haddon 矩陣</h2><p class="note">以「夜間機車自撞」為例，每格寫一個可介入的因子，並標出屬於初段、次段或三段預防。</p>
       <div class="tbl"><table class="matrix"><thead><tr><th></th>${cols.map(c => `<th>${c}</th>`).join("")}</tr></thead><tbody>
-      ${rows.map((r, i) => `<tr><th>${r}</th>${cols.map((c, j) => `<td>${i === 0 && j === 0 ? "酒後駕駛、疲勞" : i === 1 && j === 1 ? "安全帽品質" : i === 2 && j === 3 ? "旁觀者止血與報案" : ""}</td>`).join("")}</tr>`).join("")}
-      </tbody></table></div>`;
+      ${rows.map((r, i) => `<tr><th>${r}</th>${cols.map((c, j) => `<td>${i === 0 && j === 0 ? "酒後駕駛、疲勞" : i === 1 && j === 1 ? "安全帽品質" : i === 2 && j === 3 ? "旁觀者止血與報案" : ""}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
   }
-
-  function dagSvg() {
-    const N = [["rural", "鄉村區", 40, 30, ""], ["age", "年齡", 260, 30, ""], ["resp", "反應時間", 40, 150, "x"], ["cpr", "旁觀者 CPR", 260, 100, ""],
-               ["rhythm", "初始心律", 260, 200, ""], ["surv", "存活出院", 480, 150, "y"]];
-    const pos = Object.fromEntries(N.map(n => [n[0], [n[2] + 55, n[3] + 18]]));
-    const E = [["rural", "resp"], ["rural", "cpr"], ["rural", "age"], ["age", "surv"], ["cpr", "surv"], ["resp", "rhythm"], ["rhythm", "surv"], ["resp", "surv"], ["cpr", "rhythm"]];
-    const line = ([a, b]) => { const [x1, y1] = pos[a], [x2, y2] = pos[b]; const dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy);
-      const s = 34 / L, t = (L - 40) / L; return `<line class="e" x1="${x1 + dx * s}" y1="${y1 + dy * s}" x2="${x1 + dx * t}" y2="${y1 + dy * t}" marker-end="url(#ah)"/>` };
-    return `<h2 class="sec">本週 DAG</h2><div class="tbl" style="padding:10px"><svg class="dag" viewBox="0 0 600 250" role="img" aria-label="反應時間與存活的有向無環圖">
-      <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" style="color:var(--muted)"/></marker></defs>
-      ${E.map(line).join("")}
-      ${N.map(n => `<g class="n ${n[4]}"><rect x="${n[2]}" y="${n[3]}" width="110" height="36" rx="8"/><text x="${n[2] + 55}" y="${n[3] + 23}" text-anchor="middle">${n[1]}</text></g>`).join("")}
-      </svg></div><p class="note">要估反應時間的「總效應」：調整鄉村區（打斷後門路徑），不調整初始心律（中介）。程式中的三個模型就是這三種選擇。</p>`;
-  }
-
   function checklistTable() {
-    const rows = [["OHCA 登錄研究", "Utstein 2024", "流程圖、Utstein 比較組、核心時間點"], ["觀察性研究（世代、病例對照、橫斷）", "STROBE", "研究對象選取、偏誤處理、遺漏值"],
-      ["例行收集資料（登錄、健保、救護紀錄）", "RECORD", "資料連結與代碼定義"], ["診斷／檢傷工具準確度", "STARD", "參考標準、2×2 表、不確定結果"], ["隨機試驗", "CONSORT", "CONSORT 流程圖、ITT、主要結果"]];
+    const rows = [["OHCA 登錄研究", "Utstein 2024", "流程圖、Utstein 比較組、核心時間點"], ["觀察性研究", "STROBE", "研究對象選取、偏誤處理、遺漏值"], ["例行收集資料", "RECORD", "資料連結與代碼定義"], ["診斷／檢傷工具準確度", "STARD", "參考標準、2×2 表"], ["隨機試驗", "CONSORT", "流程圖、ITT、主要結果"]];
     return `<h2 class="sec">報告指引對照</h2><div class="tbl"><table><thead><tr><th>文章類型</th><th>指引</th><th>導讀時至少檢查</th></tr></thead><tbody>
-      ${rows.map(r => `<tr><td>${r[0]}</td><td><b>${r[1]}</b></td><td>${r[2]}</td></tr>`).join("")}</tbody></table></div>
-      <p class="note">指引全文見 <a href="https://www.equator-network.org/" target="_blank" rel="noopener">EQUATOR Network</a>。導讀當日繳交 PDF。</p>`;
+      ${rows.map(r => `<tr><td>${r[0]}</td><td><b>${r[1]}</b></td><td>${r[2]}</td></tr>`).join("")}</tbody></table></div>`;
   }
-
-  function studioBox(w, hasCode) {
-    if (!hasCode) return "";
-    return `<div class="studio"><h3>在 RStudio 跟著做</h3><ol>
-      <li>開啟 <code>epi-ems.Rproj</code>，再打開 <code>R/weeks/w${pad(w.n)}.R</code>。</li>
-      <li>由上往下逐段執行（<kbd>Ctrl</kbd>+<kbd>Enter</kbd>），每段跑完對照下方「參考輸出」。數字不同時，先檢查是不是跳過了前面的段落。</li>
-      <li>把每段輸出用自己的話寫成一句結論，例如「Hill 區粗率較高，主要是年齡結構造成」。</li>
-    </ol>${w.tryit ? `<div class="tryit"><b>動手改一改：</b>${esc(w.tryit)}</div>` : ""}</div>`;
-  }
-
-  function renderWeek(n) {
-    const w = C.weeks.find(x => x.n === n); if (!w) return renderHome();
-    const chunks = CODE["w" + pad(n)] || [];
-    const phase = C.phases.find(p => p.id === w.phase);
-    const inds = IND.filter(x => x.weeks.includes(n));
-    const prev = C.weeks.find(x => x.n === n - 1), next = C.weeks.find(x => x.n === n + 1);
-    view.innerHTML = `
-      <div class="eyebrow">W${pad(n)} · ${w.date} · ${phase.name}${w.exam ? " · 考試" : ""}${w.flexible ? " · 彈性教學" : ""}</div>
-      <h1 class="wtitle">${esc(w.title)}</h1>
-      <p class="lede">${esc(w.lede)}</p>
-      <div class="grid2">
-        <div class="box"><h3>學習目標</h3><ul>${w.goals.map(g => `<li>${esc(g)}</li>`).join("")}</ul>
-          ${w.flexible ? `<p class="note" style="margin:8px 0 0">形式：${esc(w.flexible)}</p>` : ""}</div>
-        ${w.report ? `<div class="box report"><h3>年報對照</h3><a href="${w.report.url}" target="_blank" rel="noopener">${esc(w.report.name)}</a>
-          <p class="q">${esc(w.report.task)}</p>${w.extraReport ? `<p class="q note">延伸：<a href="${w.extraReport.url}" target="_blank" rel="noopener">${esc(w.extraReport.name)}</a></p>` : ""}</div>` : ""}
-      </div>
-      ${inds.length ? `<h2 class="sec">${w.exam ? "考試範圍指標" : "本週指標"}</h2><div class="inds">${inds.map(x => indCard(x, false)).join("")}</div>` : ""}
-      ${w.haddon ? haddonTable() : ""}${w.dag ? dagSvg() : ""}${w.checklist ? checklistTable() : ""}
-      ${w.data.length ? `<div class="box" style="margin-bottom:22px"><h3>本週資料</h3><div class="chips">${w.data.map(f => `<a class="chip" href="#data">${f}</a>`).join("")}</div></div>` : ""}
-      ${chunks.length ? `<h2 class="sec">R 實作</h2>${studioBox(w, true)}<div class="chunks">${chunks.map((c, i) => chunkHtml(n, c, i)).join("")}</div>` : ""}
-      <div class="bar" style="margin-top:36px;justify-content:space-between">
-        ${prev ? `<a href="#w${pad(prev.n)}">← W${pad(prev.n)} ${esc(prev.title)}</a>` : "<span></span>"}
-        ${next ? `<a href="#w${pad(next.n)}">W${pad(next.n)} ${esc(next.title)} →</a>` : ""}
-      </div>`;
-  }
-
   function hl(code) { return esc(code).split("\n").map(l => l.replace(/(^|\s)(#.*)$/, '$1<span class="cm">$2</span>')).join("\n") }
   function chunkHtml(n, c, i) {
     const id = `w${pad(n)}-${i}`;
-    return `<section class="chunk" id="${id}">
-      <h2><span class="k">${pad(i + 1)}</span>${esc(c.title)}</h2>
-      ${c.text ? `<p class="ex">${esc(c.text)}</p>` : ""}
-      <pre class="code" id="code-${id}">${hl(c.code)}</pre>
-      <div class="bar"><button data-copy="${id}">複製這段</button></div>
-      <div class="out">
-        ${c.output || c.plot ? `<div class="lab">參考輸出</div>` : ""}
-        ${c.output ? `<pre class="res">${esc(c.output)}</pre>` : ""}
-        ${c.plot ? `<div class="fig"><img src="${c.plot}" alt="${esc(c.title)} 的圖" loading="lazy"></div>` : ""}
-      </div>
-    </section>`;
+    return `<section class="chunk"><h3><span class="k">${pad(i + 1)}</span>${esc(c.title)}</h3>${c.text ? `<p class="ex">${esc(c.text)}</p>` : ""}
+      <pre class="code" id="code-${id}">${hl(c.code)}</pre><div class="bar"><button data-copy="${id}">複製這段</button></div>
+      <div class="out">${c.output || c.plot ? `<div class="lab">參考輸出</div>` : ""}${c.output ? `<pre class="res">${esc(c.output)}</pre>` : ""}${c.plot ? `<div class="fig"><img src="${c.plot}" alt="${esc(c.title)} 的圖" loading="lazy"></div>` : ""}</div></section>`;
   }
   async function onCopy(e) {
     const b = e.currentTarget, pre = document.getElementById("code-" + b.dataset.copy);
@@ -407,7 +457,57 @@ kbd { font-family: var(--font-mono); font-size: 12px; border: 1px solid var(--li
     setTimeout(() => b.textContent = "複製這段", 1600);
   }
 
-  route();
+  function renderWeek(n, tab) {
+    const w = C.weeks.find(x => x.n === n); if (!w) return renderHome();
+    const terms = T[n] || [], inds = IND.filter(x => x.weeks.includes(n)), chunks = CODE["w" + pad(n)] || [], ref = R[n] || {};
+    const anims = [...new Set(terms.map(x => x.anim).filter(a => a && AN[a]))];
+    const tabs = [["ov", "概覽"], ["terms", "名詞", terms.length], ["ind", "指標", inds.length], ["anim", "動畫", anims.length], ["r", "R 實作", chunks.length], ["refs", "教科書與文獻", (ref.refs || []).length]]
+      .filter(t => t[0] === "ov" || t[0] === "refs" || t[2]);
+    if (!tabs.find(t => t[0] === tab)) tab = "ov";
+    const prev = C.weeks.find(x => x.n === n - 1), next = C.weeks.find(x => x.n === n + 1);
+    let body = "";
+    if (tab === "ov") {
+      const flow = [terms.length && `讀「名詞」分頁的 ${terms.length} 個名詞`, anims.length && `操作 ${anims.length} 個「動畫」`, inds.length && `讀懂 ${inds.length} 個「指標」的定義與用法`,
+        w.report && `完成「年報對照」題`, chunks.length && `在 RStudio 跑完 w${pad(n)}.R 並對照參考輸出`, w.tryit && `做「動手改一改」`].filter(Boolean);
+      body = `<div class="grid2">
+        <div class="card"><h3>學習目標</h3><ul>${w.goals.map(g => `<li>${esc(g)}</li>`).join("")}</ul>${w.flexible ? `<p class="note" style="margin:8px 0 0">形式：${esc(w.flexible)}</p>` : ""}</div>
+        ${flow.length ? `<div class="card"><h3>本週學習流程</h3><ol class="steps">${flow.map(s => `<li>${s}</li>`).join("")}</ol></div>` : ""}
+        ${w.report ? `<div class="card report"><h3>年報對照</h3><a href="${w.report.url}" target="_blank" rel="noopener">${esc(w.report.name)}</a><p style="margin:6px 0 0">${esc(w.report.task)}</p>
+          ${w.extraReport ? `<p class="note" style="margin:6px 0 0">延伸：<a href="${w.extraReport.url}" target="_blank" rel="noopener">${esc(w.extraReport.name)}</a></p>` : ""}</div>` : ""}
+        <div class="card"><h3>教科書</h3><dl class="tb"><dt>Gordis</dt><dd>${esc(ref.G || "—")}</dd><dt>史麗珠</dt><dd>${esc(ref.S || "—")}</dd>${ref.ext ? `<dt>延伸</dt><dd>${esc(ref.ext)}</dd>` : ""}</dl></div>
+      </div>
+      ${w.data.length ? `<div class="chips">${w.data.map(f => `<a class="chip mono" href="#data">${f}</a>`).join("")}</div>` : ""}
+      ${w.haddon ? haddonTable() : ""}${w.checklist ? checklistTable() : ""}`;
+    } else if (tab === "terms") {
+      body = `<p class="note">先讀懂這些名詞再進入指標與實作。有「看動畫」的名詞，可以到動畫分頁操作。</p><div class="terms">${terms.map(x => termCard(x, n, false)).join("")}</div>`;
+    } else if (tab === "ind") {
+      body = `<div class="inds">${inds.map(x => indCard(x, x.weeks.length > 1)).join("")}</div>`;
+    } else if (tab === "anim") {
+      body = anims.map(k => `<section class="anim"><h3>${esc(AN[k].title)}</h3><p>${esc(AN[k].desc)}</p><div data-anim="${k}"></div></section>`).join("");
+    } else if (tab === "r") {
+      body = `<div class="studio"><h3>在 RStudio 跟著做</h3><ol>
+        <li>開啟 <code>epi-ems.Rproj</code>，再打開 <code>R/weeks/w${pad(n)}.R</code>。</li>
+        <li>由上往下逐段執行（<kbd>Ctrl</kbd>+<kbd>Enter</kbd>），每段跑完對照下方參考輸出。</li>
+        <li>把每段輸出用自己的話寫成一句結論。</li></ol>${w.tryit ? `<div class="tryit"><b>動手改一改：</b>${esc(w.tryit)}</div>` : ""}</div>
+        <div class="chunks">${chunks.map((c, i) => chunkHtml(n, c, i)).join("")}</div>`;
+    } else if (tab === "refs") {
+      body = `<div class="card" style="margin-bottom:20px"><h3>教科書對應章節</h3><dl class="tb"><dt>Gordis</dt><dd>${esc(ref.G || "—")}</dd><dt>史麗珠</dt><dd>${esc(ref.S || "—")}</dd>${ref.ext ? `<dt>延伸</dt><dd>${esc(ref.ext)}</dd>` : ""}</dl></div>
+        ${(ref.refs || []).length ? `<h2 class="sec" style="margin-top:0">實際使用這些方法的研究</h2><ul class="refs">${ref.refs.map(x => `<li><a href="${x.url}" target="_blank" rel="noopener">${esc(x.cite)}</a><span class="u">${esc(x.uses)}</span></li>`).join("")}</ul>` : `<p class="note">考試週沒有新文獻，請複習各週文獻。</p>`}`;
+    }
+    view.innerHTML = crumb([["課程首頁", "#home"], [PH[w.phase], `#w${pad(C.weeks.find(x => x.phase === w.phase).n)}`], [`W${pad(n)}`]]) + `
+      <div class="eyebrow">W${pad(n)} · ${w.date}${w.exam ? " · 考試" : ""}${w.flexible ? " · 彈性教學" : ""}</div>
+      <h1 class="h1">${esc(w.title)}</h1><p class="lede">${esc(w.lede)}</p>
+      <nav class="tabs" aria-label="單元分頁">${tabs.map(t => `<a href="#w${pad(n)}${t[0] === "ov" ? "" : "-" + t[0]}" class="${t[0] === tab ? "on" : ""}">${t[1]}${t[2] ? `<span class="n">${t[2]}</span>` : ""}</a>`).join("")}</nav>
+      ${body}
+      <div class="unitbar">${prev ? `<a href="#w${pad(prev.n)}">← W${pad(prev.n)} ${esc(prev.title)}</a>` : "<span></span>"}
+        <button class="donebtn ${done.has(n) ? "done" : ""}" id="doneBtn">${done.has(n) ? "✓ 本週已完成" : "標記本週已完成"}</button>
+        ${next ? `<a href="#w${pad(next.n)}">W${pad(next.n)} ${esc(next.title)} →</a>` : "<span></span>"}</div>`;
+    view.querySelectorAll("[data-anim]").forEach(el => { try { AN[el.dataset.anim].mount(el) } catch (e) { el.textContent = "動畫載入失敗：" + e.message } });
+    view.querySelector("#doneBtn").addEventListener("click", e => { done.has(n) ? done.delete(n) : done.add(n); setDone(done); renderNav();
+      e.currentTarget.classList.toggle("done", done.has(n)); e.currentTarget.textContent = done.has(n) ? "✓ 本週已完成" : "標記本週已完成" });
+  }
+
+  renderNav(); route();
 })();
 </script>
 </body></html>
