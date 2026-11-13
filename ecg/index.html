@@ -93,7 +93,7 @@ section.view{display:flex;flex-direction:column;gap:22px}
 .prose ul,.prose ol{margin:0;padding-left:1.3em}
 .prose li{margin:2px 0}
 .fn{font-size:.88rem;color:var(--muted);border-left:3px solid var(--line);padding-left:10px}
-.err{display:inline-block;font-size:.78rem;font-weight:700;color:var(--warn);background:var(--warn-soft);border-radius:5px;padding:0 6px;margin:0 4px;vertical-align:1px;white-space:nowrap}
+.err{display:inline-block;font-size:.78rem;font-weight:700;color:var(--warn);background:var(--warn-soft);border-radius:5px;padding:0 6px;margin:0 4px;vertical-align:1px}
 .errbox{background:var(--warn-soft);border-radius:8px;padding:10px 14px;font-size:.93rem}
 .errbox b{color:var(--warn)}
 .supp{display:inline-block;font-size:.76rem;font-weight:700;color:var(--k);border:1px solid var(--k);border-radius:5px;padding:0 6px;margin-right:4px;vertical-align:1px}
@@ -293,6 +293,7 @@ table.jt .tn{display:block;font-size:.82rem;color:var(--warn);margin-top:2px}
 .unitnav{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:16px}
 .unitnav a{text-decoration:none;font-weight:700}
 .foot{color:var(--muted);font-size:.85rem;border-top:1px solid var(--line);padding-top:16px;margin-top:20px}
+html[lang="en"] .dupen{display:none}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -317,6 +318,7 @@ table.jt .tn{display:block;font-size:.82rem;color:var(--warn);margin-top:2px}
       <a href="#practice">判讀練習</a>
       <a href="#quiz">快問快答</a>
     </nav>
+    <a class="iconbtn" id="langBtn" href="en.html" hreflang="en" lang="en" style="text-decoration:none;color:var(--ink)" title="English version">EN</a>
     <button class="iconbtn" id="bigBtn" aria-pressed="false" title="放大字級，適合投影">投影字級</button>
   </div>
 </header>
@@ -1956,7 +1958,7 @@ function cellDraw(){
   const N=window.innerWidth<600?6:8;const H=190;const {c,w}=fitCanvas(cv,H);
   c.fillStyle=tok('--surface');c.fillRect(0,0,w,H);
   const gap=6,cw=(w-20-gap*(N-1))/N,top=46,ch=86;
-  c.font='500 12px '+tok('--f-body');c.fillStyle=tok('--muted');c.fillText('細胞外',4,16);c.fillText('細胞內',4,top+ch/2+4-30);
+  c.font='500 12px '+tok('--f-body');c.fillStyle=tok('--muted');c.fillText('細胞外',4,16);c.fillText('細胞內',10,top+ch+18);
   for(let i=0;i<N;i++){
     const st=cellState(CELL.u,i,N);const isDep=st==='dep'||st==='front';
     const shrink=isDep?.12:0;const x=10+i*(cw+gap)+cw*shrink/2,ww=cw*(1-shrink);
@@ -2047,7 +2049,7 @@ function ionText(force){
   $('#ionMv').textContent=(ionV()<0?'−':'+')+Math.abs(Math.round(ionV()))+' mV';
   if(ph===ION.last&&!force)return;ION.last=ph;
   const T=TXT[ION.type][ph];
-  $('#ionBadge').textContent='第 '+ph+' 期';$('#ionTitle').textContent=T[0].split('｜')[1];
+  $('#ionBadge').textContent='第 '+ph+' 期';$('#ionTitle').textContent=T[0].split(/[｜|]/)[1].trim();
   $('#ionIons').textContent=T[1];$('#ionState').textContent=T[2];$('#ionEcg').textContent=T[3];
   $$('#ionPhases button').forEach(b=>b.classList.toggle('cur',+b.dataset.p===ph));
 }
@@ -2163,7 +2165,7 @@ function leadSVG(sel){
   ${['I','II','III'].map(line).join('')}
   ${['RA','LA','LL'].map(p=>`<circle cx="${EL[p][0]}" cy="${EL[p][1]}" r="11" fill="var(--surface)" stroke="var(--ink)" stroke-width="2"/><text x="${EL[p][0]}" y="${EL[p][1]+4}" text-anchor="middle" style="font:700 10px var(--f-mono);fill:var(--ink)">${p}</text>`).join('')}
   ${sign(L.a,'−')}${sign(L.b,'+')}
-  <text x="160" y="296" text-anchor="middle" class="sm">${L.t.split('：')[0]}</text>
+  <text x="160" y="296" text-anchor="middle" class="sm">${L.t.split(/[：:]/)[0]}</text>
   </svg><p class="note" style="margin-top:8px">${L.t}</p>`;
 }
 function leadBind(){const go=v=>{setPressed($('#leadSeg'),v);$('#leadHolder').innerHTML=leadSVG(v);};$$('#leadSeg button').forEach(b=>b.onclick=()=>go(b.dataset.v));go('II');}
@@ -2711,7 +2713,7 @@ function prRender(){
   const res=$('#prResult');
   if(fin){const R=RH[PR.rid];const tot=REC.length;const ok=REC.filter(([,q])=>PR.K[q].includes(PR.ans[q])).length;
     res.innerHTML=`<div class="rcard"><div><span class="eyebrow">判讀結果 · ${ok}/${tot} 欄正確${PR.s.variant?' · 這一條：'+(VARTXT[PR.s.variant]||PR.s.variant):''}</span>
-      <div class="nm">${R.zh}</div><div class="en">${R.en}</div></div>
+      <div class="nm">${R.zh}</div><div class="en dupen">${R.en}</div></div>
       <p>${R.why}</p>
       <div class="tscroll"><table class="jt"><thead><tr><th>判斷條件</th><th>${esc(R.en)}</th></tr></thead><tbody>${TBL_ROWS.map((f,i)=>`<tr><th>${f}</th><td>${esc(R.tbl[i])}</td></tr>`).join('')}</tbody></table></div>
       <div class="ems"><b>到院前重點：</b>${esc(R.ems)}</div>
@@ -2752,7 +2754,7 @@ function qzRender(){
   $('#qzH').textContent=QZ.i>QZ.n?'完成':'第 '+QZ.i+' 題';
   $('#qzScore').textContent=`${QZ.score} / ${QZ.done}`;
   const box=$('#qzOpts');
-  box.innerHTML=QZ.opts.map(r=>{let c='opt';if(QZ.ans){if(r===QZ.rid)c+=' right';else if(r===QZ.ans)c+=' wrong';}return `<button class="${c}" data-r="${r}" ${QZ.ans?'disabled':''}>${RH[r].zh}<br><span class="mono muted" style="font-size:.8rem">${RH[r].en}</span></button>`;}).join('');
+  box.innerHTML=QZ.opts.map(r=>{let c='opt';if(QZ.ans){if(r===QZ.rid)c+=' right';else if(r===QZ.ans)c+=' wrong';}return `<button class="${c}" data-r="${r}" ${QZ.ans?'disabled':''}>${RH[r].zh}<span class="dupen"><br><span class="mono muted" style="font-size:.8rem">${RH[r].en}</span></span></button>`;}).join('');
   $$('button',box).forEach(b=>b.onclick=()=>{QZ.ans=b.dataset.r;QZ.done++;if(QZ.ans===QZ.rid)QZ.score++;qzRender();});
   const fb=$('#qzFb');
   if(QZ.ans){const ok=QZ.ans===QZ.rid,R=RH[QZ.rid];fb.innerHTML=`<div class="fb ${ok?'ok':'no'}"><strong>${ok?'正確':'答案是「'+R.zh+'」'}</strong>${R.why}</div>`;}else fb.innerHTML='';
@@ -2829,6 +2831,7 @@ function init(){
   avnTick=makeDotAnim('#avnHolder',AVN_SVG,AVN_STEPS,{prev:'#avnPrev',next:'#avnNext',badge:'#avnBadge',title:'#avnTitle',text:'#avnText',dots:'#avnDots'},2.4);
   avrTick=makeDotAnim('#avrHolder',AVR_SVG,AVR_STEPS,{prev:'#avrPrev',next:'#avrNext',badge:'#avrBadge',title:'#avrTitle',text:'#avrText',dots:'#avrDots'},2.6);
   prBind();qzBind();planBind();
+  const lb=$('#langBtn');if(lb)lb.addEventListener('click',()=>{lb.href=lb.getAttribute('href').split('#')[0]+location.hash;});
   $('#bigBtn').onclick=()=>{const on=!document.documentElement.classList.contains('big');document.documentElement.classList.toggle('big',on);$('#bigBtn').setAttribute('aria-pressed',String(on));requestAnimationFrame(redrawAll);};
   window.addEventListener('hashchange',show);
   let rz;window.addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(redrawAll,80);});
@@ -2839,6 +2842,5 @@ function init(){
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>requestAnimationFrame(redrawAll));
 init();
 </script>
-
 </body>
 </html>

@@ -129,7 +129,7 @@
       card.appendChild(el("p", null, pick(c, "desc")));
       if (c.url) {
         var a = el("a", "card-link", strings.visitSite);
-        a.href = c.url;
+        a.href = (state.lang === "en" && c.url_en) || c.url;
         a.target = "_blank";
         a.rel = "noopener";
         card.appendChild(a);

@@ -5,7 +5,8 @@
     "title_en": "Prehospital ECG: Concepts and Interpretation",
     "desc_zh": "完整收錄講義 8 個單元：心臟解剖與傳導、離子通道與動作電位、心電圖波形的生成、六步驟判讀，以及竇性、心房、交界、心室心律（含 AVNRT／AVRT 動畫）。附引導式判讀練習（模擬心律條無限出題）、快問快答與 90 分鐘排課工具。",
     "desc_en": "All eight handout units: cardiac anatomy and conduction, ion channels and action potentials, how ECG waves form, the six-step method, and sinus, atrial, junctional and ventricular rhythms (with AVNRT/AVRT animations). Includes guided practice on unlimited simulated strips, a quick quiz, and a 90-minute lesson planner.",
-    "url": "https://drjackchang.org/ecg/"
+    "url": "https://drjackchang.org/ecg/",
+    "url_en": "https://drjackchang.org/ecg/en.html"
   },
   {
     "id": "epi-ems",
