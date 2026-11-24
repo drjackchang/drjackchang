@@ -73,11 +73,13 @@ function isRail(x,y){return y===RAILY}
 var reserved={};
 function reserve(x,y,lx,ly){for(var i=x;i<x+lx;i++)for(var j=y;j<y+ly;j++)reserved[i+','+j]=1}
 // landmarks plus a lawn margin so they stand apart from the houses
-reserve(0,1,6,5);    // campus
+// Tall buildings sit at least ceil(height/36) rows in front of the loop's back roads (y0 and x0),
+// so nothing ever hides a vehicle on a road behind it.
+reserve(0,1,7,5);    // campus
 reserve(7,1,5,5);    // medical centre
-reserve(6,7,5,4);    // tech lab
-reserve(0,7,4,1);    // station platform
-reserve(0,12,6,3);   // HQ
+reserve(6,7,6,4);    // tech lab
+reserve(3,7,4,1);    // station platform
+reserve(0,8,4,3);    // HQ
 
 var ground=$('ground'), objs=[];
 function tile(x,y,f,stroke){quad(ground,iso(x,y,0),iso(x+1,y,0),iso(x+1,y+1,0),iso(x,y+1,0),f,stroke?{stroke:stroke,'stroke-width':.6}:null)}
@@ -100,7 +102,7 @@ function tile(x,y,f,stroke){quad(ground,iso(x,y,0),iso(x+1,y,0),iso(x+1,y+1,0),i
     var p=iso(w[0],w[1],0);sv('path',{d:'M'+(p[0]-10)+','+p[1]+' q5,-4 10,0 t10,0',fill:'none',stroke:'var(--water2)','stroke-width':2.4,'stroke-linecap':'round',class:'shimmer',style:'animation-delay:-'+(i*.6)+'s'},ground)});
   quad(ground,iso(6.3,18.1,0),iso(12.7,18.1,0),iso(12.7,18.9,0),iso(6.3,18.9,0),'var(--road)');
   for(var u=6.8;u<12.3;u+=.7){var a2=iso(u,18.5,0),b2=iso(u+.35,18.5,0);sv('line',{x1:a2[0],y1:a2[1],x2:b2[0],y2:b2[1],stroke:'#FFFFFF','stroke-width':2},ground)}
-  var oc=iso(3,4,0);sv('ellipse',{cx:oc[0],cy:oc[1],rx:58,ry:27,fill:'var(--oval)',stroke:'#FFFFFF','stroke-width':2},ground);
+  var oc=iso(2.6,2.4,0);sv('ellipse',{cx:oc[0],cy:oc[1],rx:52,ry:25,fill:'var(--oval)',stroke:'#FFFFFF','stroke-width':2},ground);
   sv('ellipse',{cx:oc[0],cy:oc[1],rx:14,ry:7,fill:'none',stroke:'#FFFFFF','stroke-width':1.5},ground);
   sv('line',{x1:oc[0]-20,y1:oc[1]-10,x2:oc[0]+20,y2:oc[1]+10,stroke:'#FFFFFF','stroke-width':1,opacity:.6},ground);
   var hp=iso(11.4,19.5,0);sv('ellipse',{cx:hp[0],cy:hp[1],rx:22,ry:11,fill:'var(--char-t)'},ground);sv('ellipse',{cx:hp[0],cy:hp[1],rx:15,ry:7.5,fill:'none',stroke:'var(--signal)','stroke-width':2},ground);
@@ -116,7 +118,7 @@ function tile(x,y,f,stroke){quad(ground,iso(x,y,0),iso(x+1,y,0),iso(x+1,y+1,0),i
 var loopTiles=[];
 (function(){var L0=LOOP;for(var x=L0.x0;x<=L0.x1;x++)loopTiles.push([x,L0.y1]);for(var y=L0.y1-1;y>=L0.y0;y--)loopTiles.push([L0.x1,y]);
   for(var x2=L0.x1-1;x2>=L0.x0;x2--)loopTiles.push([x2,L0.y0]);for(var y2=L0.y0+1;y2<L0.y1;y2++)loopTiles.push([L0.x0,y2]);})();
-while(!(loopTiles[0][0]===5&&loopTiles[0][1]===LOOP.y1))loopTiles.push(loopTiles.shift());
+while(!(loopTiles[0][0]===1&&loopTiles[0][1]===LOOP.y1))loopTiles.push(loopTiles.shift());
 
 /* painter's order: every object and moving vehicle sits in a depth band keyed by its footprint centre (gx+gy) */
 var bandRoot=$('objBack'), bands={}, KMIN=-160, KMAX=280;
@@ -148,32 +150,32 @@ function house(g,x,y,wall,roof,pool){
   hipRoof(g,ox-.04,oy-.04,lx+.08,ly+.08,h,12,roof);
 }
 
-// HQ: ambulance station, brick with roller doors and a comms mast
-addObj(2.5+12.8,function(g){var x=1,y=12;shadow(g,x,y,3,1.6,30);box(g,x,y,3,1.6,30,'brick');
+// HQ: ambulance station inside the loop, roller doors facing the road in front of it
+addObj(1.9+8.8,function(g){var x=.4,y=8;shadow(g,x,y,3,1.6,30);box(g,x,y,3,1.6,30,'brick');
   box(g,x-.04,y-.04,3.08,1.68,6,'white',30);
   for(var i=0;i<3;i++){quad(g,iso(x+i+.12,y+1.6,0),iso(x+i+.88,y+1.6,0),iso(x+i+.88,y+1.6,24),iso(x+i+.12,y+1.6,24),i===1?'var(--road)':'var(--white-l)')}
   for(var j=0;j<3;j++){var zz=4+j*6.5;quad(g,iso(x+3,y+.15,zz),iso(x+3,y+1.45,zz),iso(x+3,y+1.45,zz+2),iso(x+3,y+.15,zz+2),'var(--white-r)')}
   var c=iso(x+1.5,y+1.6,32);sv('path',{d:'M'+(c[0]-8)+','+(c[1]-4)+'h16M'+c[0]+','+(c[1]-12)+'v16',stroke:'var(--signal)','stroke-width':4},g);
-  var m0=iso(x+.4,y+.3,36),m1=iso(x+.4,y+.3,96);sv('line',{x1:m0[0],y1:m0[1],x2:m1[0],y2:m1[1],stroke:'var(--roof-r)','stroke-width':3},g);
+  var m0=iso(x+2.6,y+.3,36),m1=iso(x+2.6,y+.3,96);sv('line',{x1:m0[0],y1:m0[1],x2:m1[0],y2:m1[1],stroke:'var(--roof-r)','stroke-width':3},g);
   sv('circle',{cx:m1[0],cy:m1[1],r:4,fill:'var(--signal)',class:'beacon'},g);
   tops.hq=iso(x+1.5,y+.8,104);});
-// Campus: tall brick tower, lecture halls and the oval
-addObj(3+3,function(g){var x=1,y=1;
+// Campus: tall brick tower and lecture halls set back behind the oval
+addObj(3.5+4.7,function(g){var x=3,y=4;
+  shadow(g,x-2,y+.2,1.6,.9,22);box(g,x-2,y+.2,1.6,.9,22,'cream');windows(g,x-2,y+.2,1.6,.9,22,{fh:12,cols:2.5});
   shadow(g,x,y,1,1.4,120);box(g,x,y,1,1.4,120,'brick');windows(g,x,y,1,1.4,120,{fh:11,cols:3,w:.7,wh:.5,col:'var(--win2)'});
   box(g,x-.05,y-.05,1.1,1.5,4,'char',120);
   shadow(g,x+1.3,y,2.5,1,34);box(g,x+1.3,y,2.5,1,34,'brick');windows(g,x+1.3,y,2.5,1,34,{fh:14,cols:2});box(g,x+1.25,y-.05,2.6,1.1,4,'cream',34);
-  shadow(g,x+1.3,y+1.3,1.4,.9,22);box(g,x+1.3,y+1.3,1.4,.9,22,'cream');windows(g,x+1.3,y+1.3,1.4,.9,22,{fh:12,cols:2.5});
   tops.school=iso(x+.5,y+.7,132);});
 // Research: medical centre with rooftop helipad (the helicopter's home)
 var HOSPH=96;
-addObj(9.9+2.9,function(g){var x=8,y=1;
-  shadow(g,x,y,3.8,3.8,40);box(g,x,y,3.8,3.8,36,'hosp');windows(g,x,y,3.8,3.8,36,{fh:12,cols:2});
-  box(g,x+.9,y+.6,2.5,2.5,HOSPH-36,'hosp',36);windows(g,x+.9,y+.6,2.5,2.5,HOSPH-36,{fh:12,cols:2.4,z0:36,w:.75});
-  box(g,x+.88,y+.58,2.54,2.54,5,'navy',HOSPH);
-  var hp=iso(x+2.15,y+1.85,HOSPH+5);sv('ellipse',{cx:hp[0],cy:hp[1],rx:30,ry:15,fill:'var(--char-t)'},g);sv('ellipse',{cx:hp[0],cy:hp[1],rx:21,ry:10.5,fill:'none',stroke:'var(--yellow-t)','stroke-width':2.5},g);
+addObj(9.5+4.4,function(g){var x=7.6,y=3;
+  shadow(g,x,y,3.8,2.8,40);box(g,x,y,3.8,2.8,36,'hosp');windows(g,x,y,3.8,2.8,36,{fh:12,cols:2});
+  box(g,x+.7,y+.5,2.4,1.8,HOSPH-36,'hosp',36);windows(g,x+.7,y+.5,2.4,1.8,HOSPH-36,{fh:12,cols:2.4,z0:36,w:.75});
+  box(g,x+.68,y+.48,2.44,1.84,5,'navy',HOSPH);
+  var hp=iso(x+1.9,y+1.4,HOSPH+5);sv('ellipse',{cx:hp[0],cy:hp[1],rx:30,ry:15,fill:'var(--char-t)'},g);sv('ellipse',{cx:hp[0],cy:hp[1],rx:21,ry:10.5,fill:'none',stroke:'var(--yellow-t)','stroke-width':2.5},g);
   var t=sv('text',{x:hp[0],y:hp[1]+4,'text-anchor':'middle','font-family':'Inter,sans-serif','font-weight':800,'font-size':14,fill:'#FFFFFF'},g);t.textContent='H';
-  var cr=iso(x+3.5,y+3.3,24);sv('path',{d:'M'+(cr[0]-7)+','+cr[1]+'h14M'+cr[0]+','+(cr[1]-7)+'v14',stroke:'var(--signal)','stroke-width':4},g);
-  tops.lab=iso(x+2.15,y+1.85,HOSPH+30);});
+  var cr=iso(x+3.3,y+2.4,24);sv('path',{d:'M'+(cr[0]-7)+','+cr[1]+'h14M'+cr[0]+','+(cr[1]-7)+'v14',stroke:'var(--signal)','stroke-width':4},g);
+  tops.lab=iso(x+1.9,y+1.4,HOSPH+30);});
 // Tech Lab: glass office with antenna and dish
 addObj(8.3+8.8,function(g){var x=7,y=8;shadow(g,x,y,2.6,1.6,58);box(g,x,y,2.6,1.6,58,'teal');windows(g,x,y,2.6,1.6,58,{fh:11,cols:3,w:.85,wh:.55});
   box(g,x+.2,y+.2,.7,.6,8,'roof',58);
@@ -182,8 +184,8 @@ addObj(8.3+8.8,function(g){var x=7,y=8;shadow(g,x,y,2.6,1.6,58);box(g,x,y,2.6,1.
   var d=iso(x+1.2,y+.6,70);sv('ellipse',{cx:d[0],cy:d[1],rx:13,ry:8,fill:'var(--white-t)',stroke:'var(--roof-r)','stroke-width':1.5},g);
   tops.it=iso(x+1.3,y+.8,104);});
 // Railway station platform + canopy, on the south side of the line
-addObj(2+7.35,function(g){box(g,.5,7.05,3,.6,4,'cream');box(g,.7,7.15,2.6,.4,2,'char',22);
-  for(var i=0;i<4;i++){var a=iso(.8+i*.8,7.35,4),b=iso(.8+i*.8,7.35,22);sv('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:'var(--char-r)','stroke-width':2},g)}});
+addObj(5+7.35,function(g){box(g,3.5,7.05,3,.6,4,'cream');box(g,3.7,7.15,2.6,.4,2,'char',16);
+  for(var i=0;i<4;i++){var a=iso(3.8+i*.8,7.35,4),b=iso(3.8+i*.8,7.35,16);sv('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:'var(--char-r)','stroke-width':2},g)}});
 // Airport on the island: terminal and control tower
 addObj(9+19.5,function(g){var x=7,y=19.1;shadow(g,x,y,3.4,.8,22);box(g,x,y,3.4,.8,22,'white');windows(g,x,y,3.4,.8,22,{fh:10,cols:2.5,w:.85});box(g,x-.04,y-.04,3.48,.88,3,'navy',22);
   var tx=10.8,ty=17.4;box(g,tx,ty,.4,.4,64,'white');box(g,tx-.12,ty-.12,.64,.64,12,'glass',64);box(g,tx-.14,ty-.14,.68,.68,3,'navy',76);
@@ -195,19 +197,22 @@ for(var bx=-17,bi=0;bx<32;bx+=2,bi++){(function(x,m){addObj(x+.5+15.5,function(g
   quad(g,a,b,pk1,pk1,M(m,'l'));quad(g,pk2,pk1,b,c,M('roof','r'))})})(bx,BB[bi%BB.length])}
 
 // suburb filler
+function clearOf(x,y,n){for(var k=1;k<=n;k++){if(isRoad(x,y-k)||isRail(x,y-k)||isRoad(x-k,y))return false}return true}
 var seed=11;function rnd(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646}
 var walls=['cream','brick','cream','white','brick'], roofs=['terra','char','terra','char','roof'];
 for(var x=-18;x<32;x++)for(var y=-18;y<15;y++){
   if(reserved[x+','+y]||isRoad(x,y)||isRail(x,y)||isSea(x,y)||isBeach(x,y))continue;
   (function(x,y){
     var r=rnd(), inside=x>LOOP.x0&&x<LOOP.x1&&y>LOOP.y0&&y<LOOP.y1;
+    // nature strips: no house on the first row in front of a road or the railway, no gum tree on the first two
+    if(!clearOf(x,y,1))return;
     if(!inside&&r<.5){var w=walls[Math.floor(rnd()*walls.length)],rf=roofs[Math.floor(rnd()*roofs.length)],pool=rnd()<.22;
       addObj(x+y+1,function(g){house(g,x,y,w,rf,pool)})}
-    else if(r<(inside?.55:.85)){var s=.8+rnd()*.35;addObj(x+y+1,function(g){gum(g,x+.5,y+.5,s)})}
+    else if(r<(inside?.55:.85)&&clearOf(x,y,2)){var s=.8+rnd()*.35;addObj(x+y+1,function(g){gum(g,x+.5,y+.5,s)})}
   })(x,y);
 }
-// a few trees on the landmark lawns
-[[.4,5.4],[5.4,5.2],[6.6,1.6],[6.5,4.6],[6.4,7.4],[10.4,10.3],[5.3,12.6],[.4,14.3],[5.2,14.2],[6.4,20.6],[12.3,17.3],[6.3,17.2]].forEach(function(t){addObj(t[0]+t[1],function(g){gum(g,t[0],t[1],.8)})});
+// a few trees on the landmark lawns and the island
+[[6.4,20.6],[12.3,17.3],[6.3,17.2],[4.6,8.6],[11.3,8.4],[6.6,2.4]].filter(function(t){return clearOf(Math.floor(t[0]),Math.floor(t[1]),2)}).forEach(function(t){addObj(t[0]+t[1],function(g){gum(g,t[0],t[1],.8)})});
 
 objs.sort(function(a,b){return a.d-b.d});
 objs.forEach(function(o){o.fn(band(o.d))});
@@ -243,7 +248,7 @@ function posOn(u,off){off=off||0;
   return {gx:gx,gy:gy,dir:dir};
 }
 function idxOf(x,y){for(var i=0;i<LP;i++)if(loopTiles[i][0]===x&&loopTiles[i][1]===y)return i;return 0}
-var stops=[{id:'hq',u:0},{id:'it',u:idxOf(8,LOOP.y1)},{id:'lab',u:idxOf(LOOP.x1,3)},{id:'school',u:idxOf(LOOP.x0,4)}];
+var stops=[{id:'hq',u:0},{id:'it',u:idxOf(8,LOOP.y1)},{id:'lab',u:idxOf(LOOP.x1,4)},{id:'school',u:idxOf(LOOP.x0,3)}];
 
 /* train: three silver cars on the line */
 var trainCars=[sv('g',{},bandRoot),sv('g',{},bandRoot),sv('g',{},bandRoot)];
@@ -255,7 +260,7 @@ function drawTrain(gx){for(var i=0;i<3;i++){var g=trainCars[i];while(g.firstChil
 
 /* helicopter: white HEMS aircraft drawn flat in grid space; lifts straight up, turns, cruises, settles straight down */
 var air=$('air'),hShadowG=sv('g',{},air),heliG=sv('g',{},air);
-var HP_A={gx:10.15,gy:2.85,z:HOSPH+5}, HP_B={gx:11.4,gy:19.5,z:0}, CRU=105;
+var HP_A={gx:9.5,gy:4.4,z:HOSPH+5}, HP_B={gx:11.4,gy:19.5,z:0}, CRU=105;
 var HDG=Math.atan2(HP_B.gy-HP_A.gy,HP_B.gx-HP_A.gx);
 function hpoly(g,base,th,sc,uv,fill,dy,extra){
   var c=Math.cos(th),s2=Math.sin(th);
@@ -266,7 +271,7 @@ var FUS=[[.58,0],[.52,.12],[.36,.2],[-.12,.21],[-.3,.13],[-.36,0],[-.3,-.13],[-.
 function drawHeli(gx,gy,z,th,rot,now){
   while(heliG.firstChild)heliG.removeChild(heliG.firstChild);
   while(hShadowG.firstChild)hShadowG.removeChild(hShadowG.firstChild);
-  var onRoof=gx>8.9&&gx<11.4&&gy>1.6&&gy<4.1, gz=onRoof?HOSPH+5:0;
+  var onRoof=gx>8.3&&gx<10.7&&gy>3.5&&gy<5.3, gz=onRoof?HOSPH+5:0;
   var sc=.95*(1+z/700), base=iso(gx,gy,z), sb=iso(gx,gy,gz);
   var sh=Math.max(0,1-(z-gz)/220);
   if(sh>0){var sg=sv('g',{opacity:(.9*sh).toFixed(2)},hShadowG);
@@ -341,7 +346,7 @@ function planeAt(t){ // one 16 s cycle
 
 /* ---------- pins and rings (pins themselves are built by main.js) ---------- */
 var VB=[0,0,1000,700], current='hq', manualUntil=0;
-var ringAt={hq:iso(2.5,14.1,0),it:iso(8.3,10.3,0),school:iso(3,4,0),lab:iso(9.9,5.4,0),abroad:iso(9,18.5,0)}, ringEls={};
+var ringAt={hq:iso(1.9,10.3,0),it:iso(8.3,10.3,0),school:iso(2.6,2.4,0),lab:iso(11.7,4.5,0),abroad:iso(9,18.5,0)}, ringEls={};
 for(var rid in ringAt){ringEls[rid]=sv('ellipse',{class:'ring',cx:ringAt[rid][0],cy:ringAt[rid][1],rx:18,ry:9},$('rings'))}
 // pins follow the rendered SVG (the map may be cropped to fill a taller box)
 function placePins(){var svg=$('townSvg'),m=svg.getScreenCTM(),r=$('townMap').getBoundingClientRect();if(!m)return;
@@ -349,11 +354,11 @@ function placePins(){var svg=$('townSvg'),m=svg.getScreenCTM(),r=$('townMap').ge
     var pt=svg.createSVGPoint();pt.x=t[0];pt.y=t[1];var q=pt.matrixTransform(m);
     b.style.left=(q.x-r.left).toFixed(1)+'px';b.style.top=(q.y-r.top).toFixed(1)+'px'})}
 function applyViewBox(){var box=$('townMap'),narrow=box.clientWidth<600;
-  // desktop: always show the core of the town (x 0-1000, y 15-705) and add more suburb on the long side
+  // desktop: always show the core of the town (x 0-1000, y 40-740) and add more suburb on the long side
   var w=box.clientWidth||1000,h=box.clientHeight||700;
-  if(narrow)VB=[10,-10,900,740];
-  else if(w/h>1000/690){var W=690*w/h;VB=[500-W/2,15,W,690]}
-  else{var H=1000*h/w;VB=[0,360-H/2,1000,H]}$('townSvg').setAttribute('viewBox',VB.join(' '));placePins()}
+  if(narrow)VB=[10,10,900,740];
+  else if(w/h>1000/700){var W=700*w/h;VB=[500-W/2,40,W,700]}
+  else{var H=1000*h/w;VB=[0,390-H/2,1000,H]}$('townSvg').setAttribute('viewBox',VB.join(' '));placePins()}
 function setRing(id){current=id;for(var k in ringEls)ringEls[k].classList.toggle('go',k===id&&!reduce)}
 function auto(){return performance.now()>manualUntil}
 // a failing listener must never stop the animation loop
