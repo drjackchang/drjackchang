@@ -93,8 +93,17 @@ ul{list-style:none;margin:0;padding:0;}
 .contact-row a{display:inline-block;font-size:.85rem;text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:.4em .9em;background:#fff;}
 .contact-row a:hover{border-color:var(--signal);color:var(--signal);}
 section[id]{scroll-margin-top:84px;}
+/* name band: a dark slate strip that sets the profile apart from the nav above and the map below */
+.hero-band{background:#1E3440;color:#fff;border-bottom:4px solid var(--signal);}
+.hero-band .hero-photo{box-shadow:0 0 0 3px rgba(255,255,255,.85);}
+.hero-band .hero-name{color:#fff;}
+.hero-band .hero-name-sub{color:#B9CFD9;}
+.hero-band .hero-title{color:#D7E2E8;}
+.hero-band .tag-row li{background:rgba(255,255,255,.12);color:#EAF1F4;}
+.hero-band .contact-row a{background:transparent;color:#fff;border-color:rgba(255,255,255,.4);}
+.hero-band .contact-row a:hover{background:#fff;color:#1E3440;border-color:#fff;}
 .town-map{
-  position:relative;width:100%;max-width:100%;aspect-ratio:2/1;min-height:360px;max-height:74vh;overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  position:relative;width:100%;max-width:100%;aspect-ratio:2/1;min-height:360px;max-height:74vh;overflow:hidden;border-bottom:1px solid var(--line);
   background:var(--water);
   --grass1:#A9C88A;--grass2:#A0C080;--apron:#CDD2CA;--ballast:#ABA396;--sleeper:#8A6F55;--rail:#6F767B;--oval:#7DBB5E;
   --pool:#7FD3E6;--gum1:#93AD7E;--gum2:#728F63;--bark:#E6DFD2;--road:#5D656C;--lane:#F3E4A8;--water:#5AAED5;--water2:#86C6E4;
