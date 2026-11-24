@@ -13,7 +13,7 @@
       tabAll: "全部", tabJournal: "期刊論文", tabConference: "研討會論文", tabBook: "專書與專章",
       orcidBadge: "ORCID 同步", footerNote: "內容以 JSON 資料檔維護，著作清單定期與 ORCID 同步。",
       visitSite: "前往網站 →", viewProject: "查看 →",
-      mapHint: "點選或滑過地圖上的地點，查看各領域的內容", pubStats: "期刊論文 {j} · 研討會論文 {c} · 專書與專章 {b}",
+      mapHint: "點地點看內容 · 救護車會依序巡迴各站", dispUnit: "救護 91", st_enroute: "出勤中", st_onscene: "抵達", st_fly: "空勤出勤", st_manual: "檢視中", st_parked: "待命", pubStats: "期刊論文 {j} · 研討會論文 {c} · 專書與專章 {b}",
       langBtn: "EN"
     },
     en: {
@@ -27,7 +27,7 @@
       tabAll: "All", tabJournal: "Journal Articles", tabConference: "Conference Papers", tabBook: "Books & Chapters",
       orcidBadge: "ORCID synced", footerNote: "Content is maintained via JSON data files; publications sync with ORCID on a schedule.",
       visitSite: "Visit site →", viewProject: "View →",
-      mapHint: "Hover or tap a place on the map to see what happens there", pubStats: "Journal articles {j} · Conference papers {c} · Books & chapters {b}",
+      mapHint: "Tap a place to read more · the ambulance tours each stop", dispUnit: "MEDIC 91", st_enroute: "En route", st_onscene: "On scene", st_fly: "Air unit", st_manual: "Viewing", st_parked: "Standby", pubStats: "Journal articles {j} · Conference papers {c} · Books & chapters {b}",
       langBtn: "中文"
     }
   };
@@ -37,6 +37,7 @@
     data: null,
     pubFilter: "all",
     place: "hq",
+    status: "onscene",
     pubExpanded: false
   };
 
@@ -253,7 +254,6 @@
   }
 
 
-  var MQ_MOBILE = window.matchMedia("(max-width: 860px)");
 
   function placeTag(p) {
     var d = state.data;
@@ -279,7 +279,7 @@
   function placeItems(p, list) {
     var d = state.data, strings = UI[state.lang];
     if (p.items === "courses") {
-      (d.courses || []).forEach(function (c) {
+      (d.courses || []).slice(0, 4).forEach(function (c) {
         list.appendChild(itemLink(pick(c, "title"), pick(c, "desc"), (state.lang === "en" && c.url_en) || c.url));
       });
     } else if (p.items === "research") {
@@ -301,7 +301,16 @@
     }
   }
 
-  function renderPanel() {
+  function renderStatus() {
+    var strings = UI[state.lang];
+    var s = state.status || "onscene";
+    document.getElementById("dispUnit").textContent = strings.dispUnit;
+    var st = document.getElementById("dispStatus");
+    st.textContent = strings["st_" + s] || "";
+    st.classList.toggle("on", s !== "enroute" && s !== "parked");
+  }
+
+  function renderPanel(animate) {
     var places = (state.data.map || {}).places || [];
     var p = places.filter(function (x) { return x.id === state.place; })[0] || places[0];
     if (!p) return;
@@ -317,56 +326,57 @@
     cta.textContent = pick(p, "cta") + " →";
     cta.href = "#" + p.anchor;
     body.appendChild(cta);
-    document.querySelectorAll("#mapPins .pin").forEach(function (b) {
+    if (animate && !(window.TOWN && window.TOWN.reduced)) {
+      body.classList.remove("swap"); void body.offsetWidth; body.classList.add("swap");
+    }
+    document.querySelectorAll("#mapPins .pin, #placeChips .chip").forEach(function (b) {
       b.setAttribute("aria-pressed", String(b.getAttribute("data-id") === p.id));
     });
+    if (window.TOWN) window.TOWN.setRing(p.id);
+    renderStatus();
   }
+
+  function choosePlace(id) {
+    state.place = id;
+    state.status = "manual";
+    if (window.TOWN) window.TOWN.hold(12000);
+    renderPanel(true);
+  }
+
+  // the town animation reports each stop of the ambulance tour and each helicopter landing
+  window.TOWN_EVENT = function (id, status) {
+    if (!state.data) return;
+    state.status = status;
+    if (id) { state.place = id; renderPanel(true); } else { renderStatus(); }
+  };
 
   function renderMap() {
     var places = (state.data.map || {}).places || [];
-    var pins = window.MAP_PINS || { desk: {}, mob: {} };
     var wrap = document.getElementById("mapPins");
     var chips = document.getElementById("placeChips");
     wrap.innerHTML = "";
     chips.innerHTML = "";
     places.forEach(function (p) {
-      var b = el("button", "pin");
+      var b = el("button", p.id === "abroad" ? "pin intl" : "pin");
       b.type = "button";
       b.setAttribute("data-id", p.id);
-      var dk = pins.desk[p.id] || [50, 50], mb = pins.mob[p.id] || [50, 50];
-      b.style.setProperty("--dx", dk[0] + "%");
-      b.style.setProperty("--dy", dk[1] + "%");
-      b.style.setProperty("--mx", mb[0] + "%");
-      b.style.setProperty("--my", mb[1] + "%");
       var nm = el("span", "pin-name"); nm.textContent = pick(p, "name");
       var tg = el("span", "pin-tag"); tg.textContent = placeTag(p);
       b.appendChild(nm); b.appendChild(tg);
-      function choose() { state.place = p.id; renderPanel(); }
-      b.addEventListener("click", function () {
-        if (MQ_MOBILE.matches) {
-          var target = document.getElementById(p.anchor);
-          if (target) target.scrollIntoView({ behavior: "smooth" });
-        } else { choose(); }
-      });
-      b.addEventListener("mouseenter", function () { if (!MQ_MOBILE.matches) choose(); });
-      b.addEventListener("focus", function () { if (!MQ_MOBILE.matches) choose(); });
+      b.setAttribute("aria-label", pick(p, "name") + " · " + placeTag(p));
+      b.addEventListener("click", function () { choosePlace(p.id); });
       wrap.appendChild(b);
 
-      var c = el("a", "chip");
-      c.href = "#" + p.anchor;
-      c.textContent = pick(p, "name") + " · " + placeTag(p);
+      var c = el("button", "chip");
+      c.type = "button";
+      c.setAttribute("data-id", p.id);
+      c.textContent = pick(p, "name");
+      c.addEventListener("click", function () { choosePlace(p.id); });
       chips.appendChild(c);
     });
     document.getElementById("mapHint").textContent = UI[state.lang].mapHint;
-    renderPanel();
-  }
-
-  function pauseMapIfReduced() {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      document.querySelectorAll(".map-svg").forEach(function (svg) {
-        if (svg.pauseAnimations) svg.pauseAnimations();
-      });
-    }
+    if (window.TOWN) window.TOWN.placePins();
+    renderPanel(false);
   }
 
   function renderAll() {
@@ -384,7 +394,6 @@
   }
 
   function init() {
-    pauseMapIfReduced();
     document.getElementById("langToggle").addEventListener("click", function () {
       state.lang = state.lang === "zh" ? "en" : "zh";
       localStorage.setItem("lang", state.lang);

@@ -19,6 +19,7 @@
 - **新增一筆科技部／國科會計畫或產學合作** → 編輯 `data/grants.json`，`type` 填 `nstc` 或 `industry`
 - **新增一則動態消息** → 編輯 `data/news.json`
 - **改個人簡介、聯絡方式、研究關鍵字** → 編輯 `data/site.json`
+- **改首頁地圖上各地點的說明文字與清單** → 編輯 `data/map.json`（地圖動畫本身在 `js/town.js`）
 
 存檔、`git push` 上去，網站就會自動更新，不用改任何程式碼。
 
