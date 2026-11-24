@@ -12,7 +12,7 @@ var NS='http://www.w3.org/2000/svg';
 function sv(tag,a,parent){var e=document.createElementNS(NS,tag);for(var k in a)e.setAttribute(k,a[k]);if(parent)parent.appendChild(e);return e}
 function ease(f){return f<.5?2*f*f:1-Math.pow(-2*f+2,2)/2}
 /* ---------- isometric engine ---------- */
-var TW=36, TH=18, OX=500, OY=96, N=16;
+var TW=36, TH=18, OX=500, OY=145, N=16;
 function iso(gx,gy,z){return [(gx-gy)*TW+OX,(gx+gy)*TH+OY-(z||0)]}
 function pts(arr){return arr.map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1)}).join(' ')}
 function quad(g,a,b,c,d,fill,extra){var e=sv('polygon',{points:pts([a,b,c,d]),fill:fill},g);if(extra)for(var k in extra)e.setAttribute(k,extra[k]);return e}
@@ -52,74 +52,78 @@ function tree(g,gx,gy,s){
 }
 
 /* ---------- town layout: a Clayton-style south-east Melbourne suburb ---------- */
-// grid: land y<=12, beach y=13, bay y>=14; airport island x 6-12, y 15-18
-function isIsland(x,y){return x>=6&&x<=12&&y>=15&&y<=18}
-function isSea(x,y){return y>=14&&!isIsland(x,y)}
-function isBeach(x,y){return y===13}
-var LOOP={x0:1,x1:10,y0:1,y1:10};
+// land y<=14, beach y=15, bay y>=16; airport island x 6-12, y 17-20
+function isIsland(x,y){return x>=6&&x<=12&&y>=17&&y<=20}
+function isSea(x,y){return y>=16&&!isIsland(x,y)}
+function isBeach(x,y){return y===15}
+var LOOP={x0:-1,x1:12,y0:0,y1:11};
 function onLoop(x,y){return (x>=LOOP.x0&&x<=LOOP.x1&&(y===LOOP.y0||y===LOOP.y1))||(y>=LOOP.y0&&y<=LOOP.y1&&(x===LOOP.x0||x===LOOP.x1))}
-var XST=[-5,15], YST=[-5];
+var XST=[-6,17], YST=[-5], RAILY=6;
 function isRoad(x,y){
-  if(y>12)return false;
+  if(y>14)return false;
   if(onLoop(x,y))return true;
-  if((y===LOOP.y0||y===LOOP.y1)&&(x<LOOP.x0||x>LOOP.x1))return true;           // Wellington Rd / Princes Hwy run on
-  if((x===LOOP.x0||x===LOOP.x1)&&y<LOOP.y0)return true;                        // Clayton Rd north
+  if((y===LOOP.y0||y===LOOP.y1)&&(x<LOOP.x0||x>LOOP.x1))return true;
+  if((x===LOOP.x0||x===LOOP.x1)&&y<LOOP.y0)return true;
   if(XST.indexOf(x)>=0)return true;
   if(YST.indexOf(y)>=0&&(x<LOOP.x0||x>LOOP.x1||y<LOOP.y0))return true;
-  if(x===LOOP.x1&&y>LOOP.y1)return true;                                       // down to the beach
+  if(x===LOOP.x1&&y>LOOP.y1)return true;
   return false;
 }
-function isRail(x,y){return y===7&&y<=12}
+function isRail(x,y){return y===RAILY}
 var reserved={};
 function reserve(x,y,lx,ly){for(var i=x;i<x+lx;i++)for(var j=y;j<y+ly;j++)reserved[i+','+j]=1}
-var LM={hq:[2,11,3,2],campus:[2,2,4,4],hosp:[6,2,4,4],it:[6,8,3,2],station:[3,8,3,1]};
-for(var k in LM)reserve.apply(null,LM[k]);
+// landmarks plus a lawn margin so they stand apart from the houses
+reserve(0,1,6,5);    // campus
+reserve(7,1,5,5);    // medical centre
+reserve(6,7,5,4);    // tech lab
+reserve(0,7,4,1);    // station platform
+reserve(0,12,6,3);   // HQ
 
 var ground=$('ground'), objs=[];
 function tile(x,y,f,stroke){quad(ground,iso(x,y,0),iso(x+1,y,0),iso(x+1,y+1,0),iso(x,y+1,0),f,stroke?{stroke:stroke,'stroke-width':.6}:null)}
 (function drawGround(){
-  for(var x=-10;x<24;x++)for(var y=-10;y<24;y++){
+  for(var x=-12;x<26;x++)for(var y=-12;y<26;y++){
     var f;
     if(isSea(x,y))f='var(--water)';
-    else if(isBeach(x,y)||(isIsland(x,y)&&(x===6||x===12||y===15||y===18)))f='var(--sand)';
+    else if(isBeach(x,y)||(isIsland(x,y)&&(x===6||x===12||y===17||y===20)))f='var(--sand)';
     else if(isIsland(x,y))f='var(--apron)';
     else if(isRoad(x,y))f='var(--road)';
     else if(isRail(x,y))f='var(--ballast)';
     else f=(x+y)%2?'var(--grass1)':'var(--grass2)';
     tile(x,y,f,isSea(x,y)?null:'rgba(0,0,0,.05)');
   }
-  // rail line: sleepers + two rails, straight through the suburb (level crossings at the loop roads)
-  var r0=iso(-10,7.3,0),r1=iso(24,7.3,0),r2=iso(-10,7.7,0),r3=iso(24,7.7,0);
-  for(var s=-10;s<24;s+=.34){var a=iso(s,7.2,0),b=iso(s,7.8,0);sv('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:'var(--sleeper)','stroke-width':3},ground)}
+  var r0=iso(-12,RAILY+.3,0),r1=iso(26,RAILY+.3,0),r2=iso(-12,RAILY+.7,0),r3=iso(26,RAILY+.7,0);
+  for(var s=-12;s<26;s+=.34){var a=iso(s,RAILY+.2,0),b=iso(s,RAILY+.8,0);sv('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:'var(--sleeper)','stroke-width':3},ground)}
   sv('line',{x1:r0[0],y1:r0[1],x2:r1[0],y2:r1[1],stroke:'var(--rail)','stroke-width':2},ground);
   sv('line',{x1:r2[0],y1:r2[1],x2:r3[0],y2:r3[1],stroke:'var(--rail)','stroke-width':2},ground);
-  // waves
-  [[0,15.5],[-3,17.2],[3,19.3],[14,15.4],[16.5,17],[-6,15],[1,21],[14.5,20]].forEach(function(w,i){
+  [[0,17.5],[-3,19.2],[3,21.3],[14,17.4],[16.5,19],[-6,17],[1,23],[14.5,22]].forEach(function(w,i){
     var p=iso(w[0],w[1],0);sv('path',{d:'M'+(p[0]-10)+','+p[1]+' q5,-4 10,0 t10,0',fill:'none',stroke:'var(--water2)','stroke-width':2.4,'stroke-linecap':'round',class:'shimmer',style:'animation-delay:-'+(i*.6)+'s'},ground)});
-  // airport runway + markings
-  quad(ground,iso(6.3,16.1,0),iso(12.7,16.1,0),iso(12.7,16.9,0),iso(6.3,16.9,0),'var(--road)');
-  for(var u=6.8;u<12.3;u+=.7){var a2=iso(u,16.5,0),b2=iso(u+.35,16.5,0);sv('line',{x1:a2[0],y1:a2[1],x2:b2[0],y2:b2[1],stroke:'#FFFFFF','stroke-width':2},ground)}
-  // AFL oval on the campus
-  var oc=iso(3,4.6,0);sv('ellipse',{cx:oc[0],cy:oc[1],rx:58,ry:27,fill:'var(--oval)',stroke:'#FFFFFF','stroke-width':2},ground);
+  quad(ground,iso(6.3,18.1,0),iso(12.7,18.1,0),iso(12.7,18.9,0),iso(6.3,18.9,0),'var(--road)');
+  for(var u=6.8;u<12.3;u+=.7){var a2=iso(u,18.5,0),b2=iso(u+.35,18.5,0);sv('line',{x1:a2[0],y1:a2[1],x2:b2[0],y2:b2[1],stroke:'#FFFFFF','stroke-width':2},ground)}
+  var oc=iso(3,4,0);sv('ellipse',{cx:oc[0],cy:oc[1],rx:58,ry:27,fill:'var(--oval)',stroke:'#FFFFFF','stroke-width':2},ground);
   sv('ellipse',{cx:oc[0],cy:oc[1],rx:14,ry:7,fill:'none',stroke:'#FFFFFF','stroke-width':1.5},ground);
   sv('line',{x1:oc[0]-20,y1:oc[1]-10,x2:oc[0]+20,y2:oc[1]+10,stroke:'#FFFFFF','stroke-width':1,opacity:.6},ground);
-  // helipad on the island
-  var hp=iso(11.4,17.5,0);sv('ellipse',{cx:hp[0],cy:hp[1],rx:22,ry:11,fill:'var(--char-t)'},ground);sv('ellipse',{cx:hp[0],cy:hp[1],rx:15,ry:7.5,fill:'none',stroke:'var(--signal)','stroke-width':2},ground);
+  var hp=iso(11.4,19.5,0);sv('ellipse',{cx:hp[0],cy:hp[1],rx:22,ry:11,fill:'var(--char-t)'},ground);sv('ellipse',{cx:hp[0],cy:hp[1],rx:15,ry:7.5,fill:'none',stroke:'var(--signal)','stroke-width':2},ground);
 })();
 
-// lane markings: dashed centre lines on every street
 (function(){
   var lines=[];
-  [LOOP.y0,LOOP.y1].concat(YST).forEach(function(y){lines.push([[-10,y+.5],[24,y+.5]])});
-  [LOOP.x0,LOOP.x1].concat(XST).forEach(function(x){lines.push([[x+.5,-10],[x+.5,x===LOOP.x1?13:(x===LOOP.x0?LOOP.y1+1:13)]])});
+  [LOOP.y0,LOOP.y1].concat(YST).forEach(function(y){lines.push([[-12,y+.5],[26,y+.5]])});
+  [LOOP.x0,LOOP.x1].concat(XST).forEach(function(x){lines.push([[x+.5,-12],[x+.5,x===LOOP.x0?LOOP.y1+1:15]])});
   lines.forEach(function(l){var a=iso(l[0][0],l[0][1],0),b=iso(l[1][0],l[1][1],0);sv('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],class:'lane'},ground)});
 })();
 
 var loopTiles=[];
-(function(){for(var x=1;x<=10;x++)loopTiles.push([x,10]);for(var y=9;y>=1;y--)loopTiles.push([10,y]);for(var x2=9;x2>=1;x2--)loopTiles.push([x2,1]);for(var y2=2;y2<=9;y2++)loopTiles.push([1,y2]);})();
-while(!(loopTiles[0][0]===3&&loopTiles[0][1]===10))loopTiles.push(loopTiles.shift());
+(function(){var L0=LOOP;for(var x=L0.x0;x<=L0.x1;x++)loopTiles.push([x,L0.y1]);for(var y=L0.y1-1;y>=L0.y0;y--)loopTiles.push([L0.x1,y]);
+  for(var x2=L0.x1-1;x2>=L0.x0;x2--)loopTiles.push([x2,L0.y0]);for(var y2=L0.y0+1;y2<L0.y1;y2++)loopTiles.push([L0.x0,y2]);})();
+while(!(loopTiles[0][0]===5&&loopTiles[0][1]===LOOP.y1))loopTiles.push(loopTiles.shift());
 
-function addObj(depth,fn,row){objs.push({d:depth,fn:fn,front:row===undefined||row>=8})}
+/* painter's order: every object and moving vehicle sits in a depth band keyed by its footprint centre (gx+gy) */
+var bandRoot=$('objBack'), bands={}, KMIN=-140, KMAX=260;
+for(var bi0=KMIN;bi0<=KMAX;bi0++)bands[bi0]=sv('g',{},bandRoot);
+function band(key){return bands[Math.max(KMIN,Math.min(KMAX,Math.round(key*4)))]}
+function place(g,key){var b=band(key);if(g.parentNode!==b)b.appendChild(g)}
+function addObj(key,fn){objs.push({d:key,fn:fn})}
 var tops={};
 function hipRoof(g,x,y,lx,ly,h,rh,mat){
   var A=iso(x,y,h),B=iso(x+lx,y,h),C=iso(x+lx,y+ly,h),D=iso(x,y+ly,h);
@@ -144,72 +148,73 @@ function house(g,x,y,wall,roof,pool){
   hipRoof(g,ox-.04,oy-.04,lx+.08,ly+.08,h,12,roof);
 }
 
-// HQ: ambulance station on Princes Hwy, brick with roller doors and a comms mast
-addObj(2+11+3+2,function(g){var x=2,y=11;shadow(g,x,y,3,1.6,30);box(g,x,y,3,1.6,30,'brick');
+// HQ: ambulance station, brick with roller doors and a comms mast
+addObj(2.5+12.8,function(g){var x=1,y=12;shadow(g,x,y,3,1.6,30);box(g,x,y,3,1.6,30,'brick');
   box(g,x-.04,y-.04,3.08,1.68,6,'white',30);
   for(var i=0;i<3;i++){quad(g,iso(x+i+.12,y+1.6,0),iso(x+i+.88,y+1.6,0),iso(x+i+.88,y+1.6,24),iso(x+i+.12,y+1.6,24),i===1?'var(--road)':'var(--white-l)')}
   for(var j=0;j<3;j++){var zz=4+j*6.5;quad(g,iso(x+3,y+.15,zz),iso(x+3,y+1.45,zz),iso(x+3,y+1.45,zz+2),iso(x+3,y+.15,zz+2),'var(--white-r)')}
   var c=iso(x+1.5,y+1.6,32);sv('path',{d:'M'+(c[0]-8)+','+(c[1]-4)+'h16M'+c[0]+','+(c[1]-12)+'v16',stroke:'var(--signal)','stroke-width':4},g);
   var m0=iso(x+.4,y+.3,36),m1=iso(x+.4,y+.3,96);sv('line',{x1:m0[0],y1:m0[1],x2:m1[0],y2:m1[1],stroke:'var(--roof-r)','stroke-width':3},g);
   sv('circle',{cx:m1[0],cy:m1[1],r:4,fill:'var(--signal)',class:'beacon'},g);
-  tops.hq=iso(x+1.5,y+.8,104);},11);
-// Campus: brick lecture halls, a tall brick tower, the oval
-addObj(2+2+4+1,function(g){var x=2,y=2;
+  tops.hq=iso(x+1.5,y+.8,104);});
+// Campus: tall brick tower, lecture halls and the oval
+addObj(3+3,function(g){var x=1,y=1;
   shadow(g,x,y,1,1.4,120);box(g,x,y,1,1.4,120,'brick');windows(g,x,y,1,1.4,120,{fh:11,cols:3,w:.7,wh:.5,col:'var(--win2)'});
   box(g,x-.05,y-.05,1.1,1.5,4,'char',120);
   shadow(g,x+1.3,y,2.5,1,34);box(g,x+1.3,y,2.5,1,34,'brick');windows(g,x+1.3,y,2.5,1,34,{fh:14,cols:2});box(g,x+1.25,y-.05,2.6,1.1,4,'cream',34);
   shadow(g,x+1.3,y+1.3,1.4,.9,22);box(g,x+1.3,y+1.3,1.4,.9,22,'cream');windows(g,x+1.3,y+1.3,1.4,.9,22,{fh:12,cols:2.5});
-  tops.school=iso(x+.5,y+.7,132);},2);
+  tops.school=iso(x+.5,y+.7,132);});
 // Research: medical centre with rooftop helipad (the helicopter's home)
 var HOSPH=96;
-addObj(6+2+4+4,function(g){var x=6,y=2;
-  shadow(g,x,y,4,4,40);box(g,x,y,4,4,36,'hosp');windows(g,x,y,4,4,36,{fh:12,cols:2});
-  box(g,x+1,y+.6,2.6,2.6,HOSPH-36,'hosp',36);windows(g,x+1,y+.6,2.6,2.6,HOSPH-36,{fh:12,cols:2.4,z0:36,w:.75});
-  box(g,x+.98,y+.58,2.64,2.64,5,'navy',HOSPH);
-  var hp=iso(x+2.3,y+1.9,HOSPH+5);sv('ellipse',{cx:hp[0],cy:hp[1],rx:30,ry:15,fill:'var(--char-t)'},g);sv('ellipse',{cx:hp[0],cy:hp[1],rx:21,ry:10.5,fill:'none',stroke:'var(--yellow-t)','stroke-width':2.5},g);
+addObj(9.9+2.9,function(g){var x=8,y=1;
+  shadow(g,x,y,3.8,3.8,40);box(g,x,y,3.8,3.8,36,'hosp');windows(g,x,y,3.8,3.8,36,{fh:12,cols:2});
+  box(g,x+.9,y+.6,2.5,2.5,HOSPH-36,'hosp',36);windows(g,x+.9,y+.6,2.5,2.5,HOSPH-36,{fh:12,cols:2.4,z0:36,w:.75});
+  box(g,x+.88,y+.58,2.54,2.54,5,'navy',HOSPH);
+  var hp=iso(x+2.15,y+1.85,HOSPH+5);sv('ellipse',{cx:hp[0],cy:hp[1],rx:30,ry:15,fill:'var(--char-t)'},g);sv('ellipse',{cx:hp[0],cy:hp[1],rx:21,ry:10.5,fill:'none',stroke:'var(--yellow-t)','stroke-width':2.5},g);
   var t=sv('text',{x:hp[0],y:hp[1]+4,'text-anchor':'middle','font-family':'Inter,sans-serif','font-weight':800,'font-size':14,fill:'#FFFFFF'},g);t.textContent='H';
-  var cr=iso(x+3.6,y+3.4,24);sv('path',{d:'M'+(cr[0]-7)+','+cr[1]+'h14M'+cr[0]+','+(cr[1]-7)+'v14',stroke:'var(--signal)','stroke-width':4},g);
-  tops.lab=iso(x+2.3,y+1.9,HOSPH+30);},2);
-// Tech Lab: glass office with antenna and dish (precinct-style)
-addObj(6+8+3+2,function(g){var x=6,y=8;shadow(g,x,y,2.6,1.6,58);box(g,x,y,2.6,1.6,58,'teal');windows(g,x,y,2.6,1.6,58,{fh:11,cols:3,w:.85,wh:.55});
+  var cr=iso(x+3.5,y+3.3,24);sv('path',{d:'M'+(cr[0]-7)+','+cr[1]+'h14M'+cr[0]+','+(cr[1]-7)+'v14',stroke:'var(--signal)','stroke-width':4},g);
+  tops.lab=iso(x+2.15,y+1.85,HOSPH+30);});
+// Tech Lab: glass office with antenna and dish
+addObj(8.3+8.8,function(g){var x=7,y=8;shadow(g,x,y,2.6,1.6,58);box(g,x,y,2.6,1.6,58,'teal');windows(g,x,y,2.6,1.6,58,{fh:11,cols:3,w:.85,wh:.55});
   box(g,x+.2,y+.2,.7,.6,8,'roof',58);
   var a=iso(x+2.2,y+1.2,58),b=iso(x+2.2,y+1.2,96);sv('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:'var(--roof-r)','stroke-width':3},g);
   sv('circle',{cx:b[0],cy:b[1],r:4.5,fill:'var(--signal)',class:'beacon'},g);
   var d=iso(x+1.2,y+.6,70);sv('ellipse',{cx:d[0],cy:d[1],rx:13,ry:8,fill:'var(--white-t)',stroke:'var(--roof-r)','stroke-width':1.5},g);
-  tops.it=iso(x+1.3,y+.8,104);},8);
-// Railway station platform + canopy
-addObj(3+8+3+1,function(g){box(g,3,8.05,3,.6,4,'cream');box(g,3.2,8.15,2.6,.4,2,'char',22);
-  for(var i=0;i<4;i++){var a=iso(3.3+i*.8,8.35,4),b=iso(3.3+i*.8,8.35,22);sv('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:'var(--char-r)','stroke-width':2},g)}});
-// Airport on the island: terminal, control tower, parked jet
-addObj(7+17+3+1,function(g){var x=7,y=17.1;shadow(g,x,y,3.4,.8,22);box(g,x,y,3.4,.8,22,'white');windows(g,x,y,3.4,.8,22,{fh:10,cols:2.5,w:.85});box(g,x-.04,y-.04,3.48,.88,3,'navy',22);
-  var tx=10.8,ty=15.4;box(g,tx,ty,.4,.4,64,'white');box(g,tx-.12,ty-.12,.64,.64,12,'glass',64);box(g,tx-.14,ty-.14,.68,.68,3,'navy',76);
-  tops.abroad=iso(9,17.4,40);});
+  tops.it=iso(x+1.3,y+.8,104);});
+// Railway station platform + canopy, on the south side of the line
+addObj(2+7.35,function(g){box(g,.5,7.05,3,.6,4,'cream');box(g,.7,7.15,2.6,.4,2,'char',22);
+  for(var i=0;i<4;i++){var a=iso(.8+i*.8,7.35,4),b=iso(.8+i*.8,7.35,22);sv('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:'var(--char-r)','stroke-width':2},g)}});
+// Airport on the island: terminal and control tower
+addObj(9+19.5,function(g){var x=7,y=19.1;shadow(g,x,y,3.4,.8,22);box(g,x,y,3.4,.8,22,'white');windows(g,x,y,3.4,.8,22,{fh:10,cols:2.5,w:.85});box(g,x-.04,y-.04,3.48,.88,3,'navy',22);
+  var tx=10.8,ty=17.4;box(g,tx,ty,.4,.4,64,'white');box(g,tx-.12,ty-.12,.64,.64,12,'glass',64);box(g,tx-.14,ty-.14,.68,.68,3,'navy',76);
+  tops.abroad=iso(9,19.4,40);});
 // bathing boxes along the beach (Brighton-style)
 var BB=['red','yellow','navy','green','white','red','yellow','green'];
-for(var bx=-9,bi=0;bx<24;bx+=2,bi++){(function(x,m){if(x>=1&&x<=4)return;addObj(x+13+1,function(g){box(g,x+.3,13.25,.42,.42,12,m);
-  var a=iso(x+.3,13.67,12),b=iso(x+.72,13.67,12),c=iso(x+.72,13.25,12),pk1=iso(x+.51,13.67,19),pk2=iso(x+.51,13.25,19);
+for(var bx=-11,bi=0;bx<26;bx+=2,bi++){(function(x,m){addObj(x+.5+15.5,function(g){box(g,x+.3,15.25,.42,.42,12,m);
+  var a=iso(x+.3,15.67,12),b=iso(x+.72,15.67,12),c=iso(x+.72,15.25,12),pk1=iso(x+.51,15.67,19),pk2=iso(x+.51,15.25,19);
   quad(g,a,b,pk1,pk1,M(m,'l'));quad(g,pk2,pk1,b,c,M('roof','r'))})})(bx,BB[bi%BB.length])}
 
 // suburb filler
 var seed=11;function rnd(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646}
 var walls=['cream','brick','cream','white','brick'], roofs=['terra','char','terra','char','roof'];
-for(var x=-10;x<24;x++)for(var y=-10;y<13;y++){
+for(var x=-12;x<26;x++)for(var y=-12;y<15;y++){
   if(reserved[x+','+y]||isRoad(x,y)||isRail(x,y)||isSea(x,y)||isBeach(x,y))continue;
   (function(x,y){
     var r=rnd(), inside=x>LOOP.x0&&x<LOOP.x1&&y>LOOP.y0&&y<LOOP.y1;
-    if(!inside&&r<.58){var w=walls[Math.floor(rnd()*walls.length)],rf=roofs[Math.floor(rnd()*roofs.length)],pool=rnd()<.22;
-      addObj(x+y+1.6,function(g){house(g,x,y,w,rf,pool)},y)}
-    else if(r<(inside?.7:.9)){var s=.8+rnd()*.35;addObj(x+y+1,function(g){gum(g,x+.5,y+.5,s)},y)}
+    if(!inside&&r<.5){var w=walls[Math.floor(rnd()*walls.length)],rf=roofs[Math.floor(rnd()*roofs.length)],pool=rnd()<.22;
+      addObj(x+y+1,function(g){house(g,x,y,w,rf,pool)})}
+    else if(r<(inside?.55:.85)){var s=.8+rnd()*.35;addObj(x+y+1,function(g){gum(g,x+.5,y+.5,s)})}
   })(x,y);
 }
-[[6.4,18.6],[12.3,15.3],[6.3,15.2]].forEach(function(t){addObj(t[0]+t[1],function(g){gum(g,t[0],t[1],.7)})});
+// a few trees on the landmark lawns
+[[.4,5.4],[5.4,5.2],[6.6,1.6],[6.5,4.6],[6.4,7.4],[10.4,10.3],[5.3,12.6],[.4,14.3],[5.2,14.2],[6.4,20.6],[12.3,17.3],[6.3,17.2]].forEach(function(t){addObj(t[0]+t[1],function(g){gum(g,t[0],t[1],.8)})});
 
 objs.sort(function(a,b){return a.d-b.d});
-var ogB=$('objBack'),ogF=$('objFront');objs.forEach(function(o){o.fn(o.front?ogF:ogB)});
+objs.forEach(function(o){o.fn(band(o.d))});
 
 /* ---------- vehicles ---------- */
 var movers=$('movers');
-function vehicle(mat,len,wid,h,emergency){var g=sv('g',{},movers);g._mat=mat;g._len=len;g._wid=wid;g._h=h;g._em=emergency;return g}
+function vehicle(mat,len,wid,h,emergency){var g=sv('g',{},bandRoot);g._mat=mat;g._len=len;g._wid=wid;g._h=h;g._em=emergency;return g}
 function drawVehicle(g,gx,gy,dir){
   while(g.firstChild)g.removeChild(g.firstChild);
   var lx=dir==='x'?g._len:g._wid, ly=dir==='x'?g._wid:g._len, x=gx-lx/2, y=gy-ly/2;
@@ -226,6 +231,7 @@ function drawVehicle(g,gx,gy,dir){
     sv('rect',{x:c0[0]-10,y:c0[1]-5,width:9,height:5,rx:1.5,fill:'#FF3B22',class:'lb1'},g);
     sv('rect',{x:c0[0]+1,y:c0[1]-5,width:9,height:5,rx:1.5,fill:'#2F7BFF',class:'lb2'},g);
   } else box(g,x,y,lx,ly,g._h,g._mat);
+  place(g,gx+gy);
 }
 var amb=vehicle('white',.82,.42,18,true);
 var cars=[vehicle('navy',.5,.3,9,false),vehicle('yellow',.5,.3,9,false),vehicle('green',.5,.3,9,false)];
@@ -237,18 +243,19 @@ function posOn(u,off){off=off||0;
   return {gx:gx,gy:gy,dir:dir};
 }
 function idxOf(x,y){for(var i=0;i<LP;i++)if(loopTiles[i][0]===x&&loopTiles[i][1]===y)return i;return 0}
-var stops=[{id:'hq',u:0},{id:'it',u:idxOf(7,10)},{id:'lab',u:idxOf(10,4)},{id:'school',u:idxOf(4,1)}];
+var stops=[{id:'hq',u:0},{id:'it',u:idxOf(8,LOOP.y1)},{id:'lab',u:idxOf(LOOP.x1,3)},{id:'school',u:idxOf(LOOP.x0,4)}];
 
 /* train: three silver cars on the line */
-var trainG=$('trainLayer');
-function drawTrain(gx){while(trainG.firstChild)trainG.removeChild(trainG.firstChild);
-  for(var i=2;i>=0;i--){var x=gx-i*1.15;box(trainG,x,7.25,1.05,.5,14,'train');
-    quad(trainG,iso(x+.05,7.75,6),iso(x+1,7.75,6),iso(x+1,7.75,10),iso(x+.05,7.75,10),'var(--navy-l)');
-    quad(trainG,iso(x+.05,7.75,10),iso(x+1,7.75,10),iso(x+1,7.75,11.5),iso(x+.05,7.75,11.5),'var(--yellow-l)')}}
+var trainCars=[sv('g',{},bandRoot),sv('g',{},bandRoot),sv('g',{},bandRoot)];
+function drawTrain(gx){for(var i=0;i<3;i++){var g=trainCars[i];while(g.firstChild)g.removeChild(g.firstChild);
+    var x=gx-i*1.15,y=RAILY+.25;box(g,x,y,1.05,.5,14,'train');
+    quad(g,iso(x+.05,y+.5,6),iso(x+1,y+.5,6),iso(x+1,y+.5,10),iso(x+.05,y+.5,10),'var(--navy-l)');
+    quad(g,iso(x+.05,y+.5,10),iso(x+1,y+.5,10),iso(x+1,y+.5,11.5),iso(x+.05,y+.5,11.5),'var(--yellow-l)');
+    place(g,x+.52+RAILY+.5)}}
 
 /* helicopter: white HEMS aircraft drawn flat in grid space; lifts straight up, turns, cruises, settles straight down */
 var air=$('air'),hShadowG=sv('g',{},air),heliG=sv('g',{},air);
-var HP_A={gx:8.3,gy:3.9,z:HOSPH+5}, HP_B={gx:11.4,gy:17.5,z:0}, CRU=105;
+var HP_A={gx:10.15,gy:2.85,z:HOSPH+5}, HP_B={gx:11.4,gy:19.5,z:0}, CRU=105;
 var HDG=Math.atan2(HP_B.gy-HP_A.gy,HP_B.gx-HP_A.gx);
 function hpoly(g,base,th,sc,uv,fill,dy,extra){
   var c=Math.cos(th),s2=Math.sin(th);
@@ -259,7 +266,7 @@ var FUS=[[.58,0],[.52,.12],[.36,.2],[-.12,.21],[-.3,.13],[-.36,0],[-.3,-.13],[-.
 function drawHeli(gx,gy,z,th,rot,now){
   while(heliG.firstChild)heliG.removeChild(heliG.firstChild);
   while(hShadowG.firstChild)hShadowG.removeChild(hShadowG.firstChild);
-  var onRoof=gx>7.1&&gx<9.5&&gy>2.7&&gy<5.1, gz=onRoof?HOSPH+5:0;
+  var onRoof=gx>8.9&&gx<11.4&&gy>1.6&&gy<4.1, gz=onRoof?HOSPH+5:0;
   var sc=.95*(1+z/700), base=iso(gx,gy,z), sb=iso(gx,gy,gz);
   var sh=Math.max(0,1-(z-gz)/220);
   if(sh>0){var sg=sv('g',{opacity:(.9*sh).toFixed(2)},hShadowG);
@@ -318,7 +325,7 @@ function planeShape(g,body,wing,shadowOnly){
 }
 planeShape(pShadow,'var(--shadow)','var(--shadow)',true);
 planeShape(plane,'#FFFFFF','#E3E8EC',false);
-var RW_Y=16.5;
+var RW_Y=18.5;
 function planeAt(t){ // one 16 s cycle
   var gx,alt=0,op=1;
   if(t<.1){gx=6.9}
@@ -334,11 +341,17 @@ function planeAt(t){ // one 16 s cycle
 
 /* ---------- pins and rings (pins themselves are built by main.js) ---------- */
 var VB=[0,0,1000,700], current='hq', manualUntil=0;
-var ringAt={hq:iso(3.5,12.9,0),it:iso(7.3,9.8,0),school:iso(3,4.6,0),lab:iso(8,4.6,0),abroad:iso(9,16.5,0)}, ringEls={};
+var ringAt={hq:iso(2.5,14.1,0),it:iso(8.3,10.3,0),school:iso(3,4,0),lab:iso(9.9,5.4,0),abroad:iso(9,18.5,0)}, ringEls={};
 for(var rid in ringAt){ringEls[rid]=sv('ellipse',{class:'ring',cx:ringAt[rid][0],cy:ringAt[rid][1],rx:18,ry:9},$('rings'))}
-function placePins(){document.querySelectorAll('#mapPins .pin').forEach(function(b){var t=tops[b.getAttribute('data-id')];if(!t)return;
-  b.style.left=((t[0]-VB[0])/VB[2]*100)+'%';b.style.top=((t[1]-VB[1])/VB[3]*100)+'%'})}
-function applyViewBox(){var narrow=$('townMap').clientWidth<600;VB=narrow?[60,-40,820,680]:[0,0,1000,700];$('townSvg').setAttribute('viewBox',VB.join(' '));placePins()}
+// pins follow the rendered SVG (the map may be cropped to fill a taller box)
+function placePins(){var svg=$('townSvg'),m=svg.getScreenCTM(),r=$('townMap').getBoundingClientRect();if(!m)return;
+  document.querySelectorAll('#mapPins .pin').forEach(function(b){var t=tops[b.getAttribute('data-id')];if(!t)return;
+    var pt=svg.createSVGPoint();pt.x=t[0];pt.y=t[1];var q=pt.matrixTransform(m);
+    b.style.left=(q.x-r.left).toFixed(1)+'px';b.style.top=(q.y-r.top).toFixed(1)+'px'})}
+function applyViewBox(){var box=$('townMap'),narrow=box.clientWidth<600;
+  // desktop: keep the full town width and grow the view vertically when the box is taller than 10:7
+  var H=box.clientWidth?1000*box.clientHeight/box.clientWidth:700;
+  VB=narrow?[10,-10,900,740]:[0,362-H/2,1000,H];$('townSvg').setAttribute('viewBox',VB.join(' '));placePins()}
 function setRing(id){current=id;for(var k in ringEls)ringEls[k].classList.toggle('go',k===id&&!reduce)}
 function auto(){return performance.now()>manualUntil}
 function notify(id,status){if(window.TOWN_EVENT)window.TOWN_EVENT(id,status)}

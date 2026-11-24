@@ -34,6 +34,7 @@
   <section class="town-hero" id="top">
     <div class="town-in">
       <div class="town-intro">
+       <div class="town-intro-in">
         <div class="town-id">
           <div class="id-card">
             <img class="hero-photo" src="Jack.jpg" alt="張育通博士照片" width="64" height="64">
@@ -52,14 +53,15 @@
           </div>
           <div class="panel-body" id="panelBody"></div>
         </section>
+       </div>
       </div>
-      <div class="town-mapwrap">
         <div class="town-map" id="townMap">
-          <svg id="townSvg" viewBox="0 0 1000 700" aria-hidden="true">
+          <svg id="townSvg" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
             <g id="ground"></g><g id="rings"></g><g id="objBack"></g><g id="trainLayer"></g><g id="objFront"></g><g id="movers"></g><g id="air"></g>
           </svg>
           <div class="map-pins" id="mapPins"></div>
         </div>
+      <div class="town-below">
         <nav class="place-chips" id="placeChips" aria-label="地點"></nav>
         <p class="map-hint" id="mapHint"></p>
       </div>
