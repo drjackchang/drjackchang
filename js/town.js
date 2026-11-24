@@ -356,7 +356,8 @@ function applyViewBox(){var box=$('townMap'),narrow=box.clientWidth<600;
   else{var H=1000*h/w;VB=[0,360-H/2,1000,H]}$('townSvg').setAttribute('viewBox',VB.join(' '));placePins()}
 function setRing(id){current=id;for(var k in ringEls)ringEls[k].classList.toggle('go',k===id&&!reduce)}
 function auto(){return performance.now()>manualUntil}
-function notify(id,status){if(window.TOWN_EVENT)window.TOWN_EVENT(id,status)}
+// a failing listener must never stop the animation loop
+function notify(id,status){try{if(window.TOWN_EVENT)window.TOWN_EVENT(id,status)}catch(err){if(window.console)console.warn('TOWN_EVENT',err)}}
 window.TOWN={placePins:placePins,setRing:setRing,hold:function(ms){manualUntil=performance.now()+ms},reduced:reduce};
 
 /* ---------- timeline ---------- */
@@ -381,6 +382,7 @@ var step=0,t0=null,hs=0,ht0=null,carU=[8,20,30],last=null,start=null;
 function enter(st){if(st.k==='dwell'){if(auto())notify(st.id,'onscene')}else if(auto()&&current!=='abroad')notify(null,'enroute')}
 function setAmb(u){var p=posOn(u,.2);drawVehicle(amb,p.gx,p.gy,p.dir)}
 function frame(now){
+  requestAnimationFrame(frame);
   if(t0===null){t0=ht0=start=last=now;enter(seq[step])}
   var dt=Math.min(.1,(now-last)/1000);last=now;
   var st=seq[step],e=now-t0;
@@ -393,7 +395,6 @@ function frame(now){
   planeAt(((now-start)/16000)%1);
   drawTrain(-14+(((now-start)/16000)%1)*40);
   cars.forEach(function(c,i){carU[i]-=dt*1.2;var p=posOn(carU[i],.2);drawVehicle(c,p.gx,p.gy,p.dir)});
-  requestAnimationFrame(frame);
 }
 setAmb(0);drawHeli(HP_A.gx,HP_A.gy,HP_A.z,HDG+Math.PI,.4,0);planeAt(0);drawTrain(3);
 cars.forEach(function(c,i){var p=posOn(carU[i],.2);drawVehicle(c,p.gx,p.gy,p.dir)});
