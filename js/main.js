@@ -13,7 +13,7 @@
       tabAll: "全部", tabJournal: "期刊論文", tabConference: "研討會論文", tabBook: "專書與專章",
       orcidBadge: "ORCID 同步", footerNote: "內容以 JSON 資料檔維護，著作清單定期與 ORCID 同步。",
       visitSite: "前往網站 →", viewProject: "查看 →",
-      mapHint: "點地點看內容 · 救護車會依序巡迴各站", dispUnit: "救護 91", st_enroute: "出勤中", st_onscene: "抵達", st_fly: "空勤出勤", st_manual: "檢視中", st_parked: "待命", pubStats: "期刊論文 {j} · 研討會論文 {c} · 專書與專章 {b}",
+      mapHint: "點地圖上的地標，直接前往下方對應內容",
       langBtn: "EN"
     },
     en: {
@@ -27,7 +27,7 @@
       tabAll: "All", tabJournal: "Journal Articles", tabConference: "Conference Papers", tabBook: "Books & Chapters",
       orcidBadge: "ORCID synced", footerNote: "Content is maintained via JSON data files; publications sync with ORCID on a schedule.",
       visitSite: "Visit site →", viewProject: "View →",
-      mapHint: "Tap a place to read more · the ambulance tours each stop", dispUnit: "MEDIC 91", st_enroute: "En route", st_onscene: "On scene", st_fly: "Air unit", st_manual: "Viewing", st_parked: "Standby", pubStats: "Journal articles {j} · Conference papers {c} · Books & chapters {b}",
+      mapHint: "Tap a landmark on the map to jump to that section",
       langBtn: "中文"
     }
   };
@@ -37,7 +37,6 @@
     data: null,
     pubFilter: "all",
     place: "hq",
-    status: "onscene",
     pubExpanded: false
   };
 
@@ -71,7 +70,10 @@
   function renderHero(site) {
     document.querySelector(".brand").textContent = pick(site, "name");
     document.getElementById("heroName").textContent = pick(site, "name");
-    document.getElementById("heroTitle").textContent = pick(site, "title");
+    var sub = document.getElementById("heroNameSub");
+    if (sub) sub.textContent = state.lang === "zh" ? (site.name_en || "") : (site.name_zh || "");
+    // one role per line
+    document.getElementById("heroTitle").textContent = pick(site, "title").split(/\s*[‧·]\s*/).join("\n");
     document.getElementById("footerAffil").textContent = pick(site, "affiliation");
 
     var tags = state.lang === "zh" ? site.tags_zh : site.tags_en;
@@ -262,121 +264,33 @@
       .replace("{pubs}", (d.publications || []).length);
   }
 
-  function itemLink(t, d, href) {
-    var li = el("li");
-    var node = el(href ? "a" : "div", "panel-item");
-    if (href) {
-      node.href = href;
-      if (href.indexOf("http") === 0) { node.target = "_blank"; node.rel = "noopener"; }
-    }
-    node.appendChild(el("b", null, ""));
-    node.firstChild.textContent = t;
-    if (d) { var sp = el("span"); sp.textContent = d; node.appendChild(sp); }
-    li.appendChild(node);
-    return li;
+  function goTo(anchor) {
+    var target = document.getElementById(anchor);
+    if (target) target.scrollIntoView({ behavior: window.TOWN && window.TOWN.reduced ? "auto" : "smooth", block: "start" });
   }
 
-  function placeItems(p, list) {
-    var d = state.data, strings = UI[state.lang];
-    if (p.items === "courses") {
-      (d.courses || []).slice(0, 4).forEach(function (c) {
-        list.appendChild(itemLink(pick(c, "title"), pick(c, "desc"), (state.lang === "en" && c.url_en) || c.url));
-      });
-    } else if (p.items === "research") {
-      (d.grants || []).forEach(function (g) {
-        list.appendChild(itemLink(g.number || "", pick(g, "name")));
-      });
-      var pubs = (d.publications || []).slice().sort(function (a, b) { return (b.year || 0) - (a.year || 0); });
-      pubs.slice(0, 3).forEach(function (pb) {
-        list.appendChild(itemLink([pb.venue, pb.year].filter(Boolean).join(" · "), pick(pb, "title"), pb.doi ? "https://doi.org/" + pb.doi : null));
-      });
-      var n = { journal: 0, conference: 0, book: 0 };
-      (d.publications || []).forEach(function (pb) { if (n[pb.type] !== undefined) n[pb.type]++; });
-      list.appendChild(itemLink(state.lang === "zh" ? "著作統計" : "Publication count",
-        strings.pubStats.replace("{j}", n.journal).replace("{c}", n.conference).replace("{b}", n.book)));
-    } else {
-      (p.items || []).forEach(function (it) {
-        list.appendChild(itemLink(pick(it, "t"), pick(it, "d"), it.href));
-      });
-    }
-  }
-
-  function renderStatus() {
-    var strings = UI[state.lang];
-    var s = state.status || "onscene";
-    document.getElementById("dispUnit").textContent = strings.dispUnit;
-    var st = document.getElementById("dispStatus");
-    st.textContent = strings["st_" + s] || "";
-    st.classList.toggle("on", s !== "enroute" && s !== "parked");
-  }
-
-  function renderPanel(animate) {
-    var places = (state.data.map || {}).places || [];
-    var p = places.filter(function (x) { return x.id === state.place; })[0] || places[0];
-    if (!p) return;
-    var body = document.getElementById("panelBody");
-    body.innerHTML = "";
-    body.appendChild(el("p", "panel-kicker", "")).textContent = pick(p, "kicker");
-    body.appendChild(el("h2", "panel-title", "")).textContent = pick(p, "name");
-    body.appendChild(el("p", "panel-lead", "")).textContent = pick(p, "lead");
-    var list = el("ul", "panel-list");
-    placeItems(p, list);
-    body.appendChild(list);
-    var cta = el("a", "panel-cta", "");
-    cta.textContent = pick(p, "cta") + " →";
-    cta.href = "#" + p.anchor;
-    body.appendChild(cta);
-    if (animate && !(window.TOWN && window.TOWN.reduced)) {
-      body.classList.remove("swap"); void body.offsetWidth; body.classList.add("swap");
-    }
-    document.querySelectorAll("#mapPins .pin, #placeChips .chip").forEach(function (b) {
-      b.setAttribute("aria-pressed", String(b.getAttribute("data-id") === p.id));
-    });
-    if (window.TOWN) window.TOWN.setRing(p.id);
-    renderStatus();
-  }
-
-  function choosePlace(id) {
-    state.place = id;
-    state.status = "manual";
-    if (window.TOWN) window.TOWN.hold(12000);
-    renderPanel(true);
-  }
-
-  // the town animation reports each stop of the ambulance tour and each helicopter landing
-  window.TOWN_EVENT = function (id, status) {
-    if (!state.data) return;
-    state.status = status;
-    if (id) { state.place = id; renderPanel(true); } else { renderStatus(); }
+  // the town animation reports each ambulance stop; the matching landmark gets a pulse ring
+  window.TOWN_EVENT = function (id) {
+    if (id && window.TOWN) window.TOWN.setRing(id);
   };
 
   function renderMap() {
     var places = (state.data.map || {}).places || [];
     var wrap = document.getElementById("mapPins");
-    var chips = document.getElementById("placeChips");
     wrap.innerHTML = "";
-    chips.innerHTML = "";
     places.forEach(function (p) {
-      var b = el("button", p.id === "abroad" ? "pin intl" : "pin");
-      b.type = "button";
+      var b = el("a", p.id === "abroad" ? "pin intl" : "pin");
+      b.href = "#" + p.anchor;
       b.setAttribute("data-id", p.id);
       var nm = el("span", "pin-name"); nm.textContent = pick(p, "name");
       var tg = el("span", "pin-tag"); tg.textContent = placeTag(p);
       b.appendChild(nm); b.appendChild(tg);
-      b.setAttribute("aria-label", pick(p, "name") + " · " + placeTag(p));
-      b.addEventListener("click", function () { choosePlace(p.id); });
+      b.setAttribute("aria-label", pick(p, "name") + " · " + placeTag(p) + " · " + pick(p, "cta"));
+      b.addEventListener("click", function (e) { e.preventDefault(); goTo(p.anchor); });
       wrap.appendChild(b);
-
-      var c = el("button", "chip");
-      c.type = "button";
-      c.setAttribute("data-id", p.id);
-      c.textContent = pick(p, "name");
-      c.addEventListener("click", function () { choosePlace(p.id); });
-      chips.appendChild(c);
     });
     document.getElementById("mapHint").textContent = UI[state.lang].mapHint;
     if (window.TOWN) window.TOWN.placePins();
-    renderPanel(false);
   }
 
   function renderAll() {

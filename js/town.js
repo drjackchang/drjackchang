@@ -82,7 +82,7 @@ reserve(0,12,6,3);   // HQ
 var ground=$('ground'), objs=[];
 function tile(x,y,f,stroke){quad(ground,iso(x,y,0),iso(x+1,y,0),iso(x+1,y+1,0),iso(x,y+1,0),f,stroke?{stroke:stroke,'stroke-width':.6}:null)}
 (function drawGround(){
-  for(var x=-12;x<26;x++)for(var y=-12;y<26;y++){
+  for(var x=-18;x<32;x++)for(var y=-18;y<30;y++){
     var f;
     if(isSea(x,y))f='var(--water)';
     else if(isBeach(x,y)||(isIsland(x,y)&&(x===6||x===12||y===17||y===20)))f='var(--sand)';
@@ -92,8 +92,8 @@ function tile(x,y,f,stroke){quad(ground,iso(x,y,0),iso(x+1,y,0),iso(x+1,y+1,0),i
     else f=(x+y)%2?'var(--grass1)':'var(--grass2)';
     tile(x,y,f,isSea(x,y)?null:'rgba(0,0,0,.05)');
   }
-  var r0=iso(-12,RAILY+.3,0),r1=iso(26,RAILY+.3,0),r2=iso(-12,RAILY+.7,0),r3=iso(26,RAILY+.7,0);
-  for(var s=-12;s<26;s+=.34){var a=iso(s,RAILY+.2,0),b=iso(s,RAILY+.8,0);sv('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:'var(--sleeper)','stroke-width':3},ground)}
+  var r0=iso(-18,RAILY+.3,0),r1=iso(32,RAILY+.3,0),r2=iso(-18,RAILY+.7,0),r3=iso(32,RAILY+.7,0);
+  for(var s=-18;s<32;s+=.34){var a=iso(s,RAILY+.2,0),b=iso(s,RAILY+.8,0);sv('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:'var(--sleeper)','stroke-width':3},ground)}
   sv('line',{x1:r0[0],y1:r0[1],x2:r1[0],y2:r1[1],stroke:'var(--rail)','stroke-width':2},ground);
   sv('line',{x1:r2[0],y1:r2[1],x2:r3[0],y2:r3[1],stroke:'var(--rail)','stroke-width':2},ground);
   [[0,17.5],[-3,19.2],[3,21.3],[14,17.4],[16.5,19],[-6,17],[1,23],[14.5,22]].forEach(function(w,i){
@@ -108,8 +108,8 @@ function tile(x,y,f,stroke){quad(ground,iso(x,y,0),iso(x+1,y,0),iso(x+1,y+1,0),i
 
 (function(){
   var lines=[];
-  [LOOP.y0,LOOP.y1].concat(YST).forEach(function(y){lines.push([[-12,y+.5],[26,y+.5]])});
-  [LOOP.x0,LOOP.x1].concat(XST).forEach(function(x){lines.push([[x+.5,-12],[x+.5,x===LOOP.x0?LOOP.y1+1:15]])});
+  [LOOP.y0,LOOP.y1].concat(YST).forEach(function(y){lines.push([[-18,y+.5],[32,y+.5]])});
+  [LOOP.x0,LOOP.x1].concat(XST).forEach(function(x){lines.push([[x+.5,-18],[x+.5,x===LOOP.x0?LOOP.y1+1:15]])});
   lines.forEach(function(l){var a=iso(l[0][0],l[0][1],0),b=iso(l[1][0],l[1][1],0);sv('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],class:'lane'},ground)});
 })();
 
@@ -119,7 +119,7 @@ var loopTiles=[];
 while(!(loopTiles[0][0]===5&&loopTiles[0][1]===LOOP.y1))loopTiles.push(loopTiles.shift());
 
 /* painter's order: every object and moving vehicle sits in a depth band keyed by its footprint centre (gx+gy) */
-var bandRoot=$('objBack'), bands={}, KMIN=-140, KMAX=260;
+var bandRoot=$('objBack'), bands={}, KMIN=-160, KMAX=280;
 for(var bi0=KMIN;bi0<=KMAX;bi0++)bands[bi0]=sv('g',{},bandRoot);
 function band(key){return bands[Math.max(KMIN,Math.min(KMAX,Math.round(key*4)))]}
 function place(g,key){var b=band(key);if(g.parentNode!==b)b.appendChild(g)}
@@ -190,14 +190,14 @@ addObj(9+19.5,function(g){var x=7,y=19.1;shadow(g,x,y,3.4,.8,22);box(g,x,y,3.4,.
   tops.abroad=iso(9,19.4,40);});
 // bathing boxes along the beach (Brighton-style)
 var BB=['red','yellow','navy','green','white','red','yellow','green'];
-for(var bx=-11,bi=0;bx<26;bx+=2,bi++){(function(x,m){addObj(x+.5+15.5,function(g){box(g,x+.3,15.25,.42,.42,12,m);
+for(var bx=-17,bi=0;bx<32;bx+=2,bi++){(function(x,m){addObj(x+.5+15.5,function(g){box(g,x+.3,15.25,.42,.42,12,m);
   var a=iso(x+.3,15.67,12),b=iso(x+.72,15.67,12),c=iso(x+.72,15.25,12),pk1=iso(x+.51,15.67,19),pk2=iso(x+.51,15.25,19);
   quad(g,a,b,pk1,pk1,M(m,'l'));quad(g,pk2,pk1,b,c,M('roof','r'))})})(bx,BB[bi%BB.length])}
 
 // suburb filler
 var seed=11;function rnd(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646}
 var walls=['cream','brick','cream','white','brick'], roofs=['terra','char','terra','char','roof'];
-for(var x=-12;x<26;x++)for(var y=-12;y<15;y++){
+for(var x=-18;x<32;x++)for(var y=-18;y<15;y++){
   if(reserved[x+','+y]||isRoad(x,y)||isRail(x,y)||isSea(x,y)||isBeach(x,y))continue;
   (function(x,y){
     var r=rnd(), inside=x>LOOP.x0&&x<LOOP.x1&&y>LOOP.y0&&y<LOOP.y1;
@@ -349,9 +349,11 @@ function placePins(){var svg=$('townSvg'),m=svg.getScreenCTM(),r=$('townMap').ge
     var pt=svg.createSVGPoint();pt.x=t[0];pt.y=t[1];var q=pt.matrixTransform(m);
     b.style.left=(q.x-r.left).toFixed(1)+'px';b.style.top=(q.y-r.top).toFixed(1)+'px'})}
 function applyViewBox(){var box=$('townMap'),narrow=box.clientWidth<600;
-  // desktop: keep the full town width and grow the view vertically when the box is taller than 10:7
-  var H=box.clientWidth?1000*box.clientHeight/box.clientWidth:700;
-  VB=narrow?[10,-10,900,740]:[0,362-H/2,1000,H];$('townSvg').setAttribute('viewBox',VB.join(' '));placePins()}
+  // desktop: always show the core of the town (x 0-1000, y 15-705) and add more suburb on the long side
+  var w=box.clientWidth||1000,h=box.clientHeight||700;
+  if(narrow)VB=[10,-10,900,740];
+  else if(w/h>1000/690){var W=690*w/h;VB=[500-W/2,15,W,690]}
+  else{var H=1000*h/w;VB=[0,360-H/2,1000,H]}$('townSvg').setAttribute('viewBox',VB.join(' '));placePins()}
 function setRing(id){current=id;for(var k in ringEls)ringEls[k].classList.toggle('go',k===id&&!reduce)}
 function auto(){return performance.now()>manualUntil}
 function notify(id,status){if(window.TOWN_EVENT)window.TOWN_EVENT(id,status)}
