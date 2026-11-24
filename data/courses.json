@@ -9,6 +9,15 @@
     "url_en": "https://drjackchang.org/ecg/en.html"
   },
   {
+    "id": "patho",
+    "title_zh": "CPG 病理推理：從指引看見病理機轉",
+    "title_en": "CPG Pathophysiology Reasoning",
+    "desc_zh": "把 Ambulance Victoria CPG 的 50 個主題拆回病理生理機轉，用機轉因果鏈、互動模型、處置模擬與病例推理練習到院前臨床推理。附 11 個主訴鑑別練習、台灣 EMT-1／EMT-2／EMT-P 執行範圍標註，以及臨床指導員帶教指南、討論題、測驗與作業。",
+    "desc_en": "Breaks 50 Ambulance Victoria CPG topics back down to their pathophysiology and teaches prehospital clinical reasoning through mechanism chains, interactive models, management simulations and case reasoning. Includes 11 differential diagnosis modules, Taiwanese EMT-1/EMT-2/EMT-P scope-of-practice notes, and a clinical instructor guide with discussion questions, quizzes and assignments.",
+    "url": "https://drjackchang.github.io/patho/",
+    "url_en": "https://drjackchang.github.io/patho/en/"
+  },
+  {
     "id": "epi-ems",
     "title_zh": "流行病學方法論（EMS 與災難數據版）",
     "title_en": "Epidemiology Methods: EMS & Disaster Data",
