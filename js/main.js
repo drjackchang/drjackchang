@@ -13,6 +13,7 @@
       tabAll: "全部", tabJournal: "期刊論文", tabConference: "研討會論文", tabBook: "專書與專章",
       orcidBadge: "ORCID 同步", footerNote: "內容以 JSON 資料檔維護，著作清單定期與 ORCID 同步。",
       visitSite: "前往網站 →", viewProject: "查看 →",
+      mapHint: "點選或滑過地圖上的地點，查看各領域的內容", pubStats: "期刊論文 {j} · 研討會論文 {c} · 專書與專章 {b}",
       langBtn: "EN"
     },
     en: {
@@ -26,6 +27,7 @@
       tabAll: "All", tabJournal: "Journal Articles", tabConference: "Conference Papers", tabBook: "Books & Chapters",
       orcidBadge: "ORCID synced", footerNote: "Content is maintained via JSON data files; publications sync with ORCID on a schedule.",
       visitSite: "Visit site →", viewProject: "View →",
+      mapHint: "Hover or tap a place on the map to see what happens there", pubStats: "Journal articles {j} · Conference papers {c} · Books & chapters {b}",
       langBtn: "中文"
     }
   };
@@ -34,6 +36,7 @@
     lang: localStorage.getItem("lang") || (navigator.language.indexOf("zh") === 0 ? "zh" : "en"),
     data: null,
     pubFilter: "all",
+    place: "hq",
     pubExpanded: false
   };
 
@@ -249,6 +252,123 @@
     });
   }
 
+
+  var MQ_MOBILE = window.matchMedia("(max-width: 860px)");
+
+  function placeTag(p) {
+    var d = state.data;
+    return pick(p, "tag")
+      .replace("{courses}", (d.courses || []).length)
+      .replace("{pubs}", (d.publications || []).length);
+  }
+
+  function itemLink(t, d, href) {
+    var li = el("li");
+    var node = el(href ? "a" : "div", "panel-item");
+    if (href) {
+      node.href = href;
+      if (href.indexOf("http") === 0) { node.target = "_blank"; node.rel = "noopener"; }
+    }
+    node.appendChild(el("b", null, ""));
+    node.firstChild.textContent = t;
+    if (d) { var sp = el("span"); sp.textContent = d; node.appendChild(sp); }
+    li.appendChild(node);
+    return li;
+  }
+
+  function placeItems(p, list) {
+    var d = state.data, strings = UI[state.lang];
+    if (p.items === "courses") {
+      (d.courses || []).forEach(function (c) {
+        list.appendChild(itemLink(pick(c, "title"), pick(c, "desc"), (state.lang === "en" && c.url_en) || c.url));
+      });
+    } else if (p.items === "research") {
+      (d.grants || []).forEach(function (g) {
+        list.appendChild(itemLink(g.number || "", pick(g, "name")));
+      });
+      var pubs = (d.publications || []).slice().sort(function (a, b) { return (b.year || 0) - (a.year || 0); });
+      pubs.slice(0, 3).forEach(function (pb) {
+        list.appendChild(itemLink([pb.venue, pb.year].filter(Boolean).join(" · "), pick(pb, "title"), pb.doi ? "https://doi.org/" + pb.doi : null));
+      });
+      var n = { journal: 0, conference: 0, book: 0 };
+      (d.publications || []).forEach(function (pb) { if (n[pb.type] !== undefined) n[pb.type]++; });
+      list.appendChild(itemLink(state.lang === "zh" ? "著作統計" : "Publication count",
+        strings.pubStats.replace("{j}", n.journal).replace("{c}", n.conference).replace("{b}", n.book)));
+    } else {
+      (p.items || []).forEach(function (it) {
+        list.appendChild(itemLink(pick(it, "t"), pick(it, "d"), it.href));
+      });
+    }
+  }
+
+  function renderPanel() {
+    var places = (state.data.map || {}).places || [];
+    var p = places.filter(function (x) { return x.id === state.place; })[0] || places[0];
+    if (!p) return;
+    var body = document.getElementById("panelBody");
+    body.innerHTML = "";
+    body.appendChild(el("p", "panel-kicker", "")).textContent = pick(p, "kicker");
+    body.appendChild(el("h2", "panel-title", "")).textContent = pick(p, "name");
+    body.appendChild(el("p", "panel-lead", "")).textContent = pick(p, "lead");
+    var list = el("ul", "panel-list");
+    placeItems(p, list);
+    body.appendChild(list);
+    var cta = el("a", "panel-cta", "");
+    cta.textContent = pick(p, "cta") + " →";
+    cta.href = "#" + p.anchor;
+    body.appendChild(cta);
+    document.querySelectorAll("#mapPins .pin").forEach(function (b) {
+      b.setAttribute("aria-pressed", String(b.getAttribute("data-id") === p.id));
+    });
+  }
+
+  function renderMap() {
+    var places = (state.data.map || {}).places || [];
+    var pins = window.MAP_PINS || { desk: {}, mob: {} };
+    var wrap = document.getElementById("mapPins");
+    var chips = document.getElementById("placeChips");
+    wrap.innerHTML = "";
+    chips.innerHTML = "";
+    places.forEach(function (p) {
+      var b = el("button", "pin");
+      b.type = "button";
+      b.setAttribute("data-id", p.id);
+      var dk = pins.desk[p.id] || [50, 50], mb = pins.mob[p.id] || [50, 50];
+      b.style.setProperty("--dx", dk[0] + "%");
+      b.style.setProperty("--dy", dk[1] + "%");
+      b.style.setProperty("--mx", mb[0] + "%");
+      b.style.setProperty("--my", mb[1] + "%");
+      var nm = el("span", "pin-name"); nm.textContent = pick(p, "name");
+      var tg = el("span", "pin-tag"); tg.textContent = placeTag(p);
+      b.appendChild(nm); b.appendChild(tg);
+      function choose() { state.place = p.id; renderPanel(); }
+      b.addEventListener("click", function () {
+        if (MQ_MOBILE.matches) {
+          var target = document.getElementById(p.anchor);
+          if (target) target.scrollIntoView({ behavior: "smooth" });
+        } else { choose(); }
+      });
+      b.addEventListener("mouseenter", function () { if (!MQ_MOBILE.matches) choose(); });
+      b.addEventListener("focus", function () { if (!MQ_MOBILE.matches) choose(); });
+      wrap.appendChild(b);
+
+      var c = el("a", "chip");
+      c.href = "#" + p.anchor;
+      c.textContent = pick(p, "name") + " · " + placeTag(p);
+      chips.appendChild(c);
+    });
+    document.getElementById("mapHint").textContent = UI[state.lang].mapHint;
+    renderPanel();
+  }
+
+  function pauseMapIfReduced() {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.querySelectorAll(".map-svg").forEach(function (svg) {
+        if (svg.pauseAnimations) svg.pauseAnimations();
+      });
+    }
+  }
+
   function renderAll() {
     applyStaticStrings();
     if (!state.data) return;
@@ -260,9 +380,11 @@
     renderPubTabs();
     renderPublications(state.data.publications);
     renderNews(state.data.news);
+    renderMap();
   }
 
   function init() {
+    pauseMapIfReduced();
     document.getElementById("langToggle").addEventListener("click", function () {
       state.lang = state.lang === "zh" ? "en" : "zh";
       localStorage.setItem("lang", state.lang);
@@ -280,7 +402,8 @@
       fetch("data/grants.json").then(function (r) { return r.json(); }),
       fetch("data/courses.json").then(function (r) { return r.json(); }),
       fetch("data/publications.json").then(function (r) { return r.json(); }),
-      fetch("data/news.json").then(function (r) { return r.json(); })
+      fetch("data/news.json").then(function (r) { return r.json(); }),
+      fetch("data/map.json").then(function (r) { return r.json(); })
     ]).then(function (results) {
       state.data = {
         site: results[0],
@@ -288,7 +411,8 @@
         grants: results[2],
         courses: results[3],
         publications: results[4],
-        news: results[5]
+        news: results[5],
+        map: results[6]
       };
       renderAll();
     }).catch(function (err) {

@@ -1,0 +1,155 @@
+{
+  "places": [
+    {
+      "id": "hq",
+      "name_zh": "HQ",
+      "name_en": "HQ",
+      "tag_zh": "個人簡介",
+      "tag_en": "Profile",
+      "kicker_zh": "HQ · PROFILE",
+      "kicker_en": "HQ · PROFILE",
+      "anchor": "about",
+      "cta_zh": "完整簡介",
+      "cta_en": "Full profile",
+      "lead_zh": "國立臺北護理健康大學健康科技學院副教授，台灣醫療救護學會秘書長。國立臺灣師範大學教育學博士（健康促進與衛生教育）、澳洲 Monash University 救護學學士，具 20 年新北市政府消防局救護技術員實務經驗，曾任亞東紀念醫院災難管理專員，負責全院緊急應變規劃、DMAT 建置與演訓。",
+      "lead_en": "Associate Professor, College of Health Technology, National Taipei University of Nursing and Health Sciences, and Secretary-General of the Taiwan Society of Paramedicine. Doctorate in Education (Health Promotion and Health Education) from National Taiwan Normal University and a Bachelor of Emergency Health (Paramedic) from Monash University. Twenty years as an EMT with the New Taipei City Fire Department and four years as disaster management specialist at Far Eastern Memorial Hospital.",
+      "items": [
+        {
+          "t_zh": "現職",
+          "t_en": "Position",
+          "d_zh": "國立臺北護理健康大學 健康科技學院 副教授",
+          "d_en": "Associate Professor, College of Health Technology, NTUNHS"
+        },
+        {
+          "t_zh": "學會職務",
+          "t_en": "Society role",
+          "d_zh": "台灣醫療救護學會（TSP）秘書長",
+          "d_en": "Secretary-General, Taiwan Society of Paramedicine (TSP)"
+        },
+        {
+          "t_zh": "學歷",
+          "t_en": "Education",
+          "d_zh": "國立臺灣師範大學 教育學博士（健康促進與衛生教育）· 澳洲 Monash University 救護學學士",
+          "d_en": "Doctorate in Education (Health Promotion and Health Education), NTNU · Bachelor of Emergency Health (Paramedic), Monash University"
+        },
+        {
+          "t_zh": "實務經歷",
+          "t_en": "Field experience",
+          "d_zh": "新北市政府消防局救護技術員 20 年 · 亞東紀念醫院災難管理 4 年",
+          "d_en": "EMT, New Taipei City Fire Department (20 years) · Disaster management, Far Eastern Memorial Hospital (4 years)"
+        },
+        {
+          "t_zh": "聯絡",
+          "t_en": "Contact",
+          "d_zh": "yutung@ntunhs.edu.tw",
+          "d_en": "yutung@ntunhs.edu.tw",
+          "href": "mailto:yutung@ntunhs.edu.tw"
+        }
+      ]
+    },
+    {
+      "id": "school",
+      "name_zh": "學校",
+      "name_en": "Campus",
+      "tag_zh": "{courses} 門課程",
+      "tag_en": "{courses} courses",
+      "kicker_zh": "CAMPUS · TEACHING",
+      "kicker_en": "CAMPUS · TEACHING",
+      "anchor": "courses",
+      "cta_zh": "全部課程",
+      "cta_en": "All courses",
+      "lead_zh": "主授健康科技學院碩士班流行病學方法論、進階應用統計學與韌性科技專題研討，並於國立臺灣師範大學以全英語講授安全教育。各課程均建置開放式互動教材網站，供學生與第一線人員自主學習。",
+      "lead_en": "Teaches graduate courses in epidemiological methods, applied statistics and resilience technology at NTUNHS, and Safety Education in English at National Taiwan Normal University. Every course has an open interactive website for students and frontline clinicians.",
+      "items": "courses"
+    },
+    {
+      "id": "lab",
+      "name_zh": "研究中心",
+      "name_en": "Research",
+      "tag_zh": "{pubs} 篇著作",
+      "tag_en": "{pubs} publications",
+      "kicker_zh": "RESEARCH · PUBLICATIONS",
+      "kicker_en": "RESEARCH · PUBLICATIONS",
+      "anchor": "publications",
+      "cta_zh": "全部著作",
+      "cta_en": "All publications",
+      "lead_zh": "以行為科學與生物統計方法，探討救護人員職業傷害與心理健康、到院前臨床決策、創傷登錄品質及災難應變。著作清單每週自 ORCID 同步。",
+      "lead_en": "Uses behavioural science and biostatistics to study occupational injury and mental health among EMS personnel, prehospital clinical decision-making, trauma registry quality and disaster response. Publications sync weekly from ORCID.",
+      "items": "research"
+    },
+    {
+      "id": "it",
+      "name_zh": "IT 中心",
+      "name_en": "Tech Lab",
+      "tag_zh": "3 項研發",
+      "tag_en": "3 R&D projects",
+      "kicker_zh": "TECH LAB · R&D",
+      "kicker_en": "TECH LAB · R&D",
+      "anchor": "research",
+      "cta_zh": "全部專案",
+      "cta_en": "All projects",
+      "lead_zh": "將救護與災難應變之現場需求轉化為可驗證的科技方案，涵蓋智慧檢傷、沉浸式應變訓練與照護場域疏散系統。",
+      "lead_en": "Turns field needs in EMS and disaster response into testable technology: smart triage, immersive response training and evacuation systems for care facilities.",
+      "items": [
+        {
+          "t_zh": "E-Badge 智慧電子檢傷標識",
+          "t_en": "E-Badge smart triage tag",
+          "d_zh": "電子紙床頭卡，災時即時轉換為 START 檢傷卡與疏散標示",
+          "d_en": "An e-paper bedside card that switches to a START triage tag and evacuation marker in a disaster"
+        },
+        {
+          "t_zh": "天然災害應變流程訓練系統",
+          "t_en": "Disaster response training system",
+          "d_zh": "結合 VR、災情查通報與 EOC 協同應變之概念驗證（新北市）",
+          "d_en": "VR proof of concept combining incident reporting and EOC coordination (New Taipei City)"
+        },
+        {
+          "t_zh": "照顧場域緊急疏散智慧化",
+          "t_en": "Smart evacuation for care facilities",
+          "d_zh": "資訊工業策進會產學合作 115D036",
+          "d_en": "Industry collaboration with III, 115D036"
+        }
+      ]
+    },
+    {
+      "id": "abroad",
+      "name_zh": "國外",
+      "name_en": "Overseas",
+      "tag_zh": "國際合作",
+      "tag_en": "Collaboration",
+      "kicker_zh": "INTERNATIONAL · COLLABORATION",
+      "kicker_en": "INTERNATIONAL · COLLABORATION",
+      "anchor": "research",
+      "cta_zh": "國際合作",
+      "cta_en": "Collaboration",
+      "lead_zh": "與澳洲、瑞士及美國等地之研究與實務單位合作，推動跨國到院前研究與國際學術交流。",
+      "lead_en": "Works with research and service partners in Australia, Switzerland and the United States on cross-national prehospital research and academic exchange.",
+      "items": [
+        {
+          "t_zh": "PEACE Study",
+          "t_en": "PEACE Study",
+          "d_zh": "跨國到院前臨終照護決策研究",
+          "d_en": "Cross-national study of prehospital end-of-life decision-making"
+        },
+        {
+          "t_zh": "PERIC 2026",
+          "t_en": "PERIC 2026",
+          "d_zh": "Resilience and Technology in EMS 國際研討會",
+          "d_en": "International conference: Resilience and Technology in EMS"
+        },
+        {
+          "t_zh": "Take Action 3.0",
+          "t_en": "Take Action 3.0",
+          "d_zh": "與美國在台協會（AIT）合作之社區醫療韌性計畫",
+          "d_en": "Community health resilience programme with the American Institute in Taiwan"
+        },
+        {
+          "t_zh": "Monash University",
+          "t_en": "Monash University",
+          "d_zh": "救護學學士 · 澳洲救護實務",
+          "d_en": "Paramedic degree and Australian EMS practice"
+        }
+      ]
+    }
+  ]
+}
